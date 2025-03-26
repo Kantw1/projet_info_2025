@@ -1,11 +1,11 @@
 <?php
 session_start(); // Démarrer la session
 
-// Paramètres de connexion à la base de données
-$host = "localhost"; // ou l'adresse de ton serveur
-$dbname = "smarthouse"; // Nom de la base de données
-$username = "root";  // Nom d'utilisateur MySQL
-$password = "";      // Mot de passe MySQL (laisser vide pour XAMPP)
+// Connexion à la base de données
+$host = "localhost";
+$dbname = "smarthouse";
+$username = "root";
+$password = "";
 
 $conn = new mysqli($host, $username, $password, $dbname);
 
@@ -13,4 +13,48 @@ $conn = new mysqli($host, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Erreur de connexion : " . $conn->connect_error);
 }
+
+// Vérifie que l'id est présent dans la session
+if (isset($_SESSION['id'])) {
+    $id = $_SESSION['id'];
+
+    // Préparation de la requête pour récupérer les infos utilisateur
+    $stmt = $conn->prepare("SELECT lastname, firstname, mail, type FROM users WHERE id = ?");
+    $stmt->bind_param("i", $id);
+
+    $stmt->execute();
+
+    // Récupération des résultats
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+
+        // Affectation des valeurs récupérées
+        $lastname = $user['lastname'];
+        $firstname = $user['firstname'];
+        $mail = $user['mail'];
+        $type = $user['type'];
+
+        $userData = array(
+            'last_name' => $lastname,
+            'first_name' => $firstname,
+            'mail' => $mail,
+            'type' => $type
+        );
+        // Convertir le tableau en format JSON et le renvoyer
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($userData);
+
+    } else {
+        echo "Aucun utilisateur trouvé pour cet ID.";
+    }
+
+    $stmt->close();
+
+} else {
+    echo "ID utilisateur manquant dans la session.";
+}
+
+$conn->close();
 ?>

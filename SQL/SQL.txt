@@ -2,6 +2,7 @@ CREATE TABLE house(
     id INT PRIMARY KEY,
     id_eau INT,
     FOREIGN KEY (id_eau) REFERENCES eau(id),
+    adresse VARCHAR(255),
     id_electricite INT,
     FOREIGN KEY (id_electricite) REFERENCES electricite(id)
 );
@@ -11,8 +12,7 @@ CREATE TABLE users(
     lastname VARCHAR(255), 
     firstname VARCHAR(255),
     mail VARCHAR(255),  
-    adresse VARCHAR(255),
-    type INT,
+    type VARCHAR(255),
     id_house INT,
     FOREIGN KEY (id_house) REFERENCES house(id)
 );

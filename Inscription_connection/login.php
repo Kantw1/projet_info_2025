@@ -34,10 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password, $hashed_password)) {
             // Stocker les informations de l'utilisateur en session
             $_SESSION['id'] = $id;
-            $_SESSION['lastname'] = $lastname;
-            $_SESSION['firstname'] = $firstname;
-            $_SESSION['mail'] = $mail;
-            $_SESSION['type'] = $type;
+            //$_SESSION['lastname'] = $lastname;
+            //$_SESSION['firstname'] = $firstname;
+            //$_SESSION['mail'] = $mail;
+            //$_SESSION['type'] = $type;
 
             // Rediriger l'utilisateur selon son type
             if ($type == 'admin') {

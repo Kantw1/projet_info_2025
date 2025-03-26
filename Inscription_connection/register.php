@@ -43,10 +43,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute()) {
             // Stocker les informations de l'utilisateur dans la session
             $_SESSION['id'] = $id;
-            $_SESSION['lastname'] = $lastname;
-            $_SESSION['firstname'] = $firstname;
-            $_SESSION['mail'] = $mail;
-            $_SESSION['type'] = $type;
+            //$_SESSION['lastname'] = $lastname;
+            //$_SESSION['firstname'] = $firstname;
+            //$_SESSION['mail'] = $mail;
+            //$_SESSION['type'] = $type;
 
             // Redirection vers admin.html après inscription réussie
             header("Location: ../AdminPage/admin.html?success=1");

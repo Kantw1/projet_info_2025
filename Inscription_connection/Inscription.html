@@ -41,6 +41,15 @@
             <label for="confirm_password">Confirmer le mot de passe :</label>
             <input type="password" id="confirm_password" name="confirm_password" required>
 
+            <label for="name">Nom de la maison :</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="adresse">Adresse :</label>
+            <input type="text" id="adresse" name="adresse" 
+                pattern="^[0-9]+ [a-zA-Z]+(?: [a-zA-Z]+)*$" 
+                title="L'adresse doit commencer par un numéro suivi du nom de la rue." 
+                required>
+
             <button type="submit">S'inscrire</button>
         </form>
     </div>

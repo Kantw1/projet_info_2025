@@ -2,10 +2,10 @@
 const profileApp = new Vue({
     el: "#profile-app",
     data: {
-        lastname: '',
-        firstname: '',
-        mail: '',
-        type: ''
+        lastname    : '',
+        firstname   : '',
+        mail        : '',
+        type        : ''
     }
 });
 

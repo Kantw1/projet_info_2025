@@ -43,10 +43,10 @@
 
             <section id="profile" class="tab-content">
                 <h2>Profil</h2>
-                <p>Nom : <span id="user-name">Admin</span></p>
-                <p>Grade : <span id="user-role">Administrateur</span></p>
-                <p>ID : <span id="user-id">001</span></p>
-                <p>Mot de passe : <span id="user-password">********</span></p>
+                <p>Nom : <span>{{ lastname }}</span></p>
+                <p>Prénom : <span>{{ firstname }}</span></p>
+                <p>Mail : <span>{{ mail }}</span></p>
+                <p>Type : <span>{{ type }}</span></p>
                 <button id="edit-profile">Modifier le profil</button>
             </section>
 
@@ -64,6 +64,8 @@
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="admin.js"></script>
+    <script src="adminProfile.js"></script>
 </body>
 </html>

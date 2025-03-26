@@ -2,10 +2,10 @@
 session_start(); // Ouvre une session PHP
 
 // Paramètres de connexion à la base de données
-$host = "localhost"; // ou l'adresse de ton serveur
-$dbname = "smarthouse"; // Nom de la base de données
-$username = "root";  // Nom d'utilisateur MySQL
-$password = "";      // Mot de passe MySQL (laisser vide pour XAMPP)
+$host = "localhost";
+$dbname = "smarthouse";
+$username = "root";
+$password = "";
 
 $conn = new mysqli($host, $username, $password, $dbname);
 
@@ -29,30 +29,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        // Redirection vers inscription.html avec un message d'erreur
         header("Location: inscription.html?error=Email déjà utilisé !");
         exit();
     } else {
-        // Hachage du mot de passe pour la sécurité
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        // Requête SQL pour insérer l'utilisateur
-        $stmt = $conn->prepare("INSERT INTO USERS (lastname, firstname, mail, password, type) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $lastname, $firstname, $mail, $hashed_password, $type);
-
+        // Création d'une maison dans la table house
+        $stmt = $conn->prepare("INSERT INTO house () VALUES ()");
         if ($stmt->execute()) {
-            // Stocker les informations de l'utilisateur dans la session
-            $_SESSION['id'] = $id;
-            //$_SESSION['lastname'] = $lastname;
-            //$_SESSION['firstname'] = $firstname;
-            //$_SESSION['mail'] = $mail;
-            //$_SESSION['type'] = $type;
+            // Récupération directe de l'id généré pour la maison
+            $id_house = $conn->insert_id;
 
-            // Redirection vers admin.html après inscription réussie
-            header("Location: ../AdminPage/admin.html?success=1");
-            exit();
+            // Hachage du mot de passe
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+            // Requête SQL pour insérer l'utilisateur avec l'id_house
+            $stmt = $conn->prepare("INSERT INTO USERS (lastname, firstname, mail, password, type, id_house) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssssi", $lastname, $firstname, $mail, $hashed_password, $type, $id_house);
+
+            if ($stmt->execute()) {
+                // Stocker les informations dans la session
+                $_SESSION['id'] = $conn->insert_id;
+                $_SESSION['id_house'] = $id_house;  // ID maison créée juste avant
+                
+                header("Location: ../AdminPage/admin.html?success=1");
+                exit();
+            } else {
+                header("Location: inscription.html?error=Erreur lors de l'inscription utilisateur!");
+                exit();
+            }
+
         } else {
-            header("Location: inscription.html?error=Erreur lors de l'inscription !");
+            header("Location: inscription.html?error=Erreur lors de la création de la maison!");
             exit();
         }
     }

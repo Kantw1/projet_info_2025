@@ -11,8 +11,10 @@ $conn = new mysqli($host, $username, $password, $dbname);
 
 // Vérification de la connexion
 if ($conn->connect_error) {
-    die("Erreur de connexion : " . $conn->connect_error);
+    die(json_encode(['error' => 'Erreur de connexion : ' . $conn->connect_error]));
 }
+
+header('Content-Type: application/json; charset=utf-8');
 
 // Vérifie que l'id est présent dans la session
 if (isset($_SESSION['id'])) {
@@ -21,7 +23,6 @@ if (isset($_SESSION['id'])) {
     // Préparation de la requête pour récupérer les infos utilisateur
     $stmt = $conn->prepare("SELECT lastname, firstname, mail, type FROM users WHERE id = ?");
     $stmt->bind_param("i", $id);
-
     $stmt->execute();
 
     // Récupération des résultats
@@ -42,18 +43,18 @@ if (isset($_SESSION['id'])) {
             'mail' => $mail,
             'type' => $type
         );
+
         // Convertir le tableau en format JSON et le renvoyer
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($userData);
+        echo json_encode($userData);
 
     } else {
-        echo "Aucun utilisateur trouvé pour cet ID.";
+        echo json_encode(['error' => 'Aucun utilisateur trouvé pour cet ID.']);
     }
 
     $stmt->close();
 
 } else {
-    echo "ID utilisateur manquant dans la session.";
+    echo json_encode(['error' => 'ID utilisateur manquant dans la session.']);
 }
 
 $conn->close();

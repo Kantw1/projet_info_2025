@@ -1,0 +1,31 @@
+CREATE TABLE house(
+id INT PRIMARY KEY,
+id_eau INT,
+FOREIGN KEY (id_eau) REFERENCES eau(id),
+id_electricte INT,
+FOREIGN KEY (id_electricite) REFERENCES electricite(id)
+);
+
+
+CREATE TABLE users(
+id INT PRIMARY KEY,
+lastanme VARCHAR(255),
+firstname VARCHAR(255),
+mail VARVHAR(255),
+adresse VARCHAR(255),
+type INT,
+id_house INT,
+FOREIGN KEY (id_house) REFERENCES house(id)
+);
+
+
+CREATE TABLE objet_connecte(
+id INT PRIMARY KEY,
+type VARCHAR(255),
+id_house INT,
+FOREIGN KEY id_house REFERENCES house(id)
+);
+
+
+
+

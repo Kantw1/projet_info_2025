@@ -52,10 +52,11 @@
 
             <section id="users" class="tab-content">
                 <h2>Gestion des utilisateurs</h2>
-                <ul id="user-list">
-                    <li>ID: 001 - Admin - Administrateur <button class="remove-user">Supprimer</button></li>
-                    <li>ID: 002 - Utilisateur1 - Gestion <button class="remove-user">Supprimer</button></li>
-                    <li>ID: 003 - Utilisateur2 - Utilisateur simple <button class="remove-user">Supprimer</button></li>
+                <ul id="users">
+                    <li v-for="(user, index) in users" :key="index">
+                        {{ user.firstname }} {{ user.lastname }} - {{ user.type }}
+                        <button class="remove-user">Supprimer</button>
+                    </li>
                 </ul>
 
                 <a href="../Inscription_connection/ajouter_utilisateur.html">
@@ -70,5 +71,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="admin.js"></script>
     <script src="adminProfile.js"></script>
+    <script src="userHouse.js"></script>
 </body>
 </html>

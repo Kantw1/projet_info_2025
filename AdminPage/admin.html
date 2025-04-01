@@ -58,7 +58,7 @@
                 <ul id="users">
                     <li v-for="(user, index) in users" :key="index">
                         {{ user.firstname }} {{ user.lastname }} - {{ user.type }}
-                        <button v-if="user.type !== 'admin'" class="remove-user">Supprimer</button>
+                        <button v-if="user.type !== 'admin'" @click="removeUser(index)">Supprimer</button>
                     </li>
                 </ul>
 

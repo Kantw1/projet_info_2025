@@ -1,7 +1,7 @@
 // Application Vue pour gérer l'affichage du profil utilisateur
 const usersApp = new Vue({
 
-    el  : "#users",
+    el  : "#show_users",
 
     data: {
         users: [] // tableau d'objets {lastname, firstname, type}

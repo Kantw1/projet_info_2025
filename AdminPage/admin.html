@@ -55,12 +55,14 @@
 
             <section id="users" class="tab-content">
                 <h2>Gestion des utilisateurs</h2>
-                <ul id="users">
+                <div id="show_users">
+                    <ul>
                     <li v-for="(user, index) in users" :key="index">
                         {{ user.firstname }} {{ user.lastname }} - {{ user.type }}
                         <button v-if="user.type !== 'admin'" @click="removeUser(index)">Supprimer</button>
                     </li>
-                </ul>
+                    </ul>
+                </div>
 
                 <a href="../Inscription_connection/ajouter_utilisateur.html">
                     <button id="add-user" class="add-user">Ajouter un utilisateur</button>

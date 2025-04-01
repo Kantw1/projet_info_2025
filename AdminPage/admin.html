@@ -26,10 +26,13 @@
             <section id="devices" class="tab-content">
                 <h2>Objets connectés</h2>
                 <div id="device-list">
-                    <button class="device-button">Thermostat</button>
-                    <button class="device-button">Caméra</button>
-                    <button class="device-button">Lumière du salon</button>
-                    <button class="device-button">Détecteur de mouvement</button>
+                    <button 
+                        v-for="(device, index) in devices" 
+                        :key="index" 
+                        class="device-button"
+                        @click="selectDevice(device)">
+                        {{ device.name }}
+                    </button>
                 </div>
             </section>
 
@@ -69,6 +72,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="objet_connected.js"></script>
     <script src="admin.js"></script>
     <script src="adminProfile.js"></script>
     <script src="userHouse.js"></script>

@@ -36,6 +36,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['id'] = $id;
             $_SESSION['id_house'] = $id_house;
 
+            // ➕ Incrémenter les points
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 1 WHERE id = ?");
+            $updateStmt->bind_param("i", $id);
+            $updateStmt->execute();
+            $updateStmt->close();
+
+            require("../Points/check_user_type.php");
+
             // Rediriger l'utilisateur selon son type
             if ($type == 'admin') {
                 header("Location: ../AdminPage/admin.html");

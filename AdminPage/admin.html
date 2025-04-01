@@ -73,6 +73,35 @@
         </main>
     </div>
 
+    <div id="thermostat-component" class="device-card" style="display: none;">
+        <h3>{{ thermostat.name }}</h3>
+        <div class="thermo-stats">
+            <div class="temp">
+                <span class="icon">🌡️</span>
+                <span class="value">{{ thermostat.temp }}°C</span>
+            </div>
+            <div class="target">
+                <span class="icon">🎯</span>
+                <span class="value">{{ thermostat.target }}°C (cible)</span>
+            </div>
+            <div class="humidity">
+                <span class="icon">💧</span>
+                <span class="value">{{ thermostat.humidity }}% humidité</span>
+            </div>
+            <div class="energy">
+                <span class="icon">⚡</span>
+                <span class="value">{{ thermostat.energy }}% énergie</span>
+            </div>
+        </div>
+        <div class="thermo-actions">
+            <button @click="thermostat.target++">⬆️ Augmenter</button>
+            <button @click="thermostat.target--">⬇️ Diminuer</button>
+        </div>
+    </div>
+    
+    
+    
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="../functionalities/objet_connected.js"></script>
     <script src="admin.js"></script>

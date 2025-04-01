@@ -1,16 +1,65 @@
 // Application Vue pour gérer l'affichage du profil utilisateur
 const usersApp = new Vue({
-    el: "#users",
+
+    el  : "#users",
+
     data: {
         users: [] // tableau d'objets {lastname, firstname, type}
     },
+
+    // Declaration des methodes utiliser dans l'application
     methods: {
-        displayUsersInfo(){
+
+        displayUsersInfo() {
+
             // Méthode pour afficher les données sur l'interface
-            console.log(this.lastname, this.firstname, this.type);
+            console.log(this.users);
+
+        },
+        
+        // Méthode pour supprimer un utilisateur
+        removeUser(index) {
+
+            const userToDelete = this.users[index];
+        
+            if (!confirm(`Supprimer ${userToDelete.firstname} ${userToDelete.lastname} ?`)) return;
+            
+            // Création d'un objet FormData pour envoyer les données à PHP pour la suppression
+            const formData = new FormData();
+
+            formData.append("nom", userToDelete.lastname);
+            formData.append("prenom", userToDelete.firstname);
+            formData.append("type", userToDelete.type);
+
+
+            fetch('../Inscription_connection/deleteUser.php', {
+                method: 'POST',
+                body: formData
+            })
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                if (data.success) {
+                    // Supprimer visuellement l'utilisateur
+                    this.users.splice(index, 1);
+                }
+
+                else {
+                    alert(data.message || "Erreur lors de la suppression");
+                }
+            })
+
+            .catch(error => {
+                console.error('Erreur réseau ou serveur :', error);
+                alert("Erreur réseau ou serveur");
+            });
+
         }
     }
 });
+
 
 // Fonction qui récupère
 function getUsersData(){

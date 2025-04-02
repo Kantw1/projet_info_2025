@@ -236,3 +236,103 @@ form button {
     color: red;
 }
 
+
+.device-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* par-dessus tout */
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90vw;
+    display: none;
+    font-family: 'Segoe UI', sans-serif;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.device-card h3 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+    color: #2c3e50;
+}
+
+.thermo-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.thermo-stats .icon {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.thermo-stats .temp,
+.thermo-stats .target,
+.thermo-stats .humidity,
+.thermo-stats .energy {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    background-color: #f1f1f1;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+}
+
+.thermo-actions {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+}
+
+.thermo-actions button {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #3498db;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.thermo-actions button:hover {
+    background-color: #2980b9;
+}
+
+/* Animation légère d’apparition */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+#backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 9998;
+}
+
+
+.thermo-circle {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 1em;
+    user-select: none;
+    cursor: pointer;
+}

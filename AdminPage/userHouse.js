@@ -56,6 +56,9 @@ const usersApp = new Vue({
                 alert("Erreur réseau ou serveur");
             });
 
+        },
+        goToAddUser() {
+            window.location.href = "../Inscription_connection/ajouter_utilisateur.html";
         }
     }
 });

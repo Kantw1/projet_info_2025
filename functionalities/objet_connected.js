@@ -7,29 +7,48 @@ new Vue({
             { name: 'LumièreSalon', script: 'LumièreSalon.js' },
             { name: 'DétecteurMouvement', script: 'DétecteurMouvement.js' },
             { name: 'VoletRoulant', script: 'VoletRoulant.js' }
-        ],
-        selectedDevice: null,
-        selectedScript: null
+        ]
+    },
+    mounted() {
+        this.devices.forEach(device => {
+            const script = document.createElement('script');
+            script.src = `../functionalities/devices/${device.script}`;
+            script.onload = () => console.log(`${device.script} chargé`);
+            script.onerror = () => console.warn(`Erreur chargement ${device.script}`);
+            document.head.appendChild(script);
+        });
     },
     methods: {
-        selectDevice(device) {
-            this.selectedDevice = device;
-            fetch(`../functionalities/devices/${device.script}`)
-                .then(response => {
-                    if (!response.ok) throw new Error('Erreur de chargement du script');
-                    return response.text();
-                })
-                .then(scriptContent => {
-                    this.selectedScript = scriptContent;
-                })
-                .catch(error => {
-                    console.error(error);
-                    alert(`Impossible de charger le script pour ${device.name}`);
-                });
+        normalize(name) {
+            return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         },
-        closeOverlay() {
-            this.selectedScript = null;
-            this.selectedDevice = null;
+        selectDevice(device) {
+            const normalizedId = this.normalize(device.name) + '-component';
+
+            // Cacher tous les composants
+            this.devices.forEach(d => {
+                const id = this.normalize(d.name) + '-component';
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+
+            // Afficher le composant sélectionné
+            const selectedEl = document.getElementById(normalizedId);
+            if (selectedEl) {
+                selectedEl.style.display = 'block';
+                document.getElementById('backdrop').style.display = 'block';
+            } else {
+                alert(`Composant HTML manquant pour ${device.name}`);
+            }
+        },
+        closeDevice() {
+            // Cacher tous les composants + backdrop
+            this.devices.forEach(d => {
+                const id = this.normalize(d.name) + '-component';
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+            document.getElementById('backdrop').style.display = 'none';
         }
     }
 });

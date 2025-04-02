@@ -33,6 +33,7 @@
                         @click="selectDevice(device)">
                         {{ device.name }}
                     </button>
+                    <div id="backdrop" @click="closeDevice" style="display: none;"></div>
                 </div>
             </section>
 
@@ -62,44 +63,64 @@
                         <button v-if="user.type !== 'admin'" @click="removeUser(index)">Supprimer</button>
                     </li>
                     </ul>
+                    <button id="add-user" class="add-user" @click="goToAddUser">Ajouter un utilisateur</button>
                 </div>
 
-                <a href="../Inscription_connection/ajouter_utilisateur.html">
-                    <button id="add-user" class="add-user">Ajouter un utilisateur</button>
             </section>
 
             <!-- 📌 Conteneur pour afficher dynamiquement les nouveaux onglets -->
             <div id="dynamic-tabs"></div>
+
+            <div id="thermostat-component" class="device-card" style="display: none;">
+                <h3>{{ thermostat.name }}</h3>
+                
+                <div class="thermo-circle">
+                    <svg viewBox="0 0 200 200" 
+                         @mousedown="startDrag" 
+                         @mousemove="onDrag" 
+                         @mouseup="endDrag" 
+                         @mouseleave="endDrag">
+                        <!-- Cercle de base -->
+                        <circle cx="100" cy="100" r="80" stroke="#ccc" stroke-width="10" fill="none" />
+                        
+                        <!-- Indicateur de température -->
+                        <circle
+                            cx="100"
+                            cy="100"
+                            r="80"
+                            stroke="#f90"
+                            stroke-width="10"
+                            fill="none"
+                            :stroke-dasharray="circumference"
+                            :stroke-dashoffset="dashOffset"
+                            transform="rotate(-90 100 100)"
+                        />
+                        
+                        <!-- Température affichée -->
+                        <text x="100" y="110" text-anchor="middle" font-size="24">{{ thermostat.target }}°C</text>
+                    </svg>
+                </div>
+            
+                <div class="thermo-stats">
+                    <div class="temp">
+                        <span class="icon">🌡️</span>
+                        <span class="value">{{ thermostat.temp }}°C</span>
+                    </div>
+                    <div class="humidity">
+                        <span class="icon">💧</span>
+                        <span class="value">{{ thermostat.humidity }}% humidité</span>
+                    </div>
+                    <div class="energy">
+                        <span class="icon">⚡</span>
+                        <span class="value">{{ thermostat.energy }}% énergie</span>
+                    </div>
+                </div>
+            </div>
+            
+            
         </main>
     </div>
 
-    <div id="thermostat-component" class="device-card" style="display: none;">
-        <h3>{{ thermostat.name }}</h3>
-        <div class="thermo-stats">
-            <div class="temp">
-                <span class="icon">🌡️</span>
-                <span class="value">{{ thermostat.temp }}°C</span>
-            </div>
-            <div class="target">
-                <span class="icon">🎯</span>
-                <span class="value">{{ thermostat.target }}°C (cible)</span>
-            </div>
-            <div class="humidity">
-                <span class="icon">💧</span>
-                <span class="value">{{ thermostat.humidity }}% humidité</span>
-            </div>
-            <div class="energy">
-                <span class="icon">⚡</span>
-                <span class="value">{{ thermostat.energy }}% énergie</span>
-            </div>
-        </div>
-        <div class="thermo-actions">
-            <button @click="thermostat.target++">⬆️ Augmenter</button>
-            <button @click="thermostat.target--">⬇️ Diminuer</button>
-        </div>
-    </div>
-    
-    
     
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>

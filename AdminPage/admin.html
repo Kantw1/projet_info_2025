@@ -71,51 +71,57 @@
             <!-- 📌 Conteneur pour afficher dynamiquement les nouveaux onglets -->
             <div id="dynamic-tabs"></div>
 
-            <div id="thermostat-component" class="device-card" style="display: none;">
+            <div id="thermostat-component" class="device-card" v-show="visible">
                 <h3>{{ thermostat.name }}</h3>
                 
                 <div class="thermo-circle">
-                    <svg viewBox="0 0 200 200" 
-                         @mousedown="startDrag" 
-                         @mousemove="onDrag" 
-                         @mouseup="endDrag" 
-                         @mouseleave="endDrag">
-                        <!-- Cercle de base -->
-                        <circle cx="100" cy="100" r="80" stroke="#ccc" stroke-width="10" fill="none" />
-                        
-                        <!-- Indicateur de température -->
-                        <circle
-                            cx="100"
-                            cy="100"
-                            r="80"
-                            stroke="#f90"
-                            stroke-width="10"
-                            fill="none"
-                            :stroke-dasharray="circumference"
-                            :stroke-dashoffset="dashOffset"
-                            transform="rotate(-90 100 100)"
-                        />
-                        
-                        <!-- Température affichée -->
-                        <text x="100" y="110" text-anchor="middle" font-size="24">{{ thermostat.target }}°C</text>
-                    </svg>
+                  <svg viewBox="0 0 200 200"
+                       @click="clickToUpdateTemperature"
+                       @mousedown="startDrag"
+                       @mousemove="onDrag"
+                       @mouseup="endDrag"
+                       @mouseleave="endDrag">
+                    <circle cx="100" cy="100" r="80" stroke="#ccc" stroke-width="10" fill="none" />
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="80"
+                      stroke="#f90"
+                      stroke-width="10"
+                      fill="none"
+                      :stroke-dasharray="circumference"
+                      :stroke-dashoffset="dashOffset"
+                      transform="rotate(-90 100 100)"
+                    />
+                    <text x="100" y="110" text-anchor="middle" font-size="24">{{ displayTemp }}°C</text>
+                    <text x="100" y="125" text-anchor="middle" font-size="14">Cible : {{ thermostat.target }}°C</text>
+                  </svg>
                 </div>
-            
-                <div class="thermo-stats">
-                    <div class="temp">
-                        <span class="icon">🌡️</span>
-                        <span class="value">{{ thermostat.temp }}°C</span>
+
+                <div class="humidity-control">
+                    <div class="arrow-up" @click="adjustHumidity(+1)">▲</div>
+                    
+                    <div class="fan-icon">
+                      <svg viewBox="0 0 50 50" width="40" height="40">
+                        <path d="M25,15a10,10 0 0,1 0,20a10,10 0 0,1 0,-20Z" fill="#00aaff" />
+                      </svg>
                     </div>
-                    <div class="humidity">
-                        <span class="icon">💧</span>
-                        <span class="value">{{ thermostat.humidity }}% humidité</span>
-                    </div>
+                    
+                    <div class="arrow-down" @click="adjustHumidity(-1)">▼</div>
+                  
                     <div class="energy">
                         <span class="icon">⚡</span>
-                        <span class="value">{{ thermostat.energy }}% énergie</span>
-                    </div>
+                        <span class="value">{{ calculatedEnergy }} kWh</span>
+                      </div>
                 </div>
-            </div>
+
+                  <div class="energy">
+                    <span class="icon">⚡</span>
+                    <span class="value">{{ thermostat.energy }}% énergie</span>
+                  </div>
+                </div>
+              </div>
+              
             
             
         </main>

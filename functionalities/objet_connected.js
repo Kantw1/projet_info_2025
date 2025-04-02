@@ -20,35 +20,18 @@ new Vue({
     },
     methods: {
         normalize(name) {
-            return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+          return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         },
         selectDevice(device) {
-            const normalizedId = this.normalize(device.name) + '-component';
-
-            // Cacher tous les composants
-            this.devices.forEach(d => {
-                const id = this.normalize(d.name) + '-component';
-                const el = document.getElementById(id);
-                if (el) el.style.display = 'none';
-            });
-
-            // Afficher le composant sélectionné
-            const selectedEl = document.getElementById(normalizedId);
-            if (selectedEl) {
-                selectedEl.style.display = 'block';
-                document.getElementById('backdrop').style.display = 'block';
-            } else {
-                alert(`Composant HTML manquant pour ${device.name}`);
-            }
+          const event = new CustomEvent('device-selected', { detail: device.name });
+          window.dispatchEvent(event);
+          document.getElementById('backdrop').style.display = 'block';
         },
         closeDevice() {
-            // Cacher tous les composants + backdrop
-            this.devices.forEach(d => {
-                const id = this.normalize(d.name) + '-component';
-                const el = document.getElementById(id);
-                if (el) el.style.display = 'none';
-            });
-            document.getElementById('backdrop').style.display = 'none';
+          const event = new CustomEvent('device-selected', { detail: null });
+          window.dispatchEvent(event);
+          document.getElementById('backdrop').style.display = 'none';
         }
-    }
+      }
+      
 });

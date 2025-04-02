@@ -34,10 +34,10 @@ new Vue({
         return this.currentDisplayedTemp.toFixed(1);
       },
       calculatedEnergy() {
-        const tempImpact = Math.max(0, this.thermostat.target - this.baseTemp) * 1.5;
-        const humidityImpact = Math.max(0, this.targetHumidity - this.baseHumidity) * 0.5;
+        const tempImpact = Math.max(0, this.currentDisplayedTemp - this.baseTemp) * 1.5;
+        const humidityImpact = Math.max(0, this.humidityDisplayed - this.baseHumidity) * 0.5;
         return (tempImpact + humidityImpact).toFixed(1);
-      }
+      }      
     },
     mounted() {
       console.log('Thermostat component monté');

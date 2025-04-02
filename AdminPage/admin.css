@@ -237,21 +237,29 @@ form button {
 }
 
 
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap');
+
 .device-card {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 9999; /* par-dessus tout */
+    z-index: 9999;
     background-color: #fff;
     border-radius: 16px;
     padding: 2rem;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    width: 400px;
-    max-width: 90vw;
-
+    width: 500px; /* un peu plus large */
+    max-width: 95vw;
     font-family: 'Segoe UI', sans-serif;
     animation: fadeIn 0.3s ease-in-out;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    color: #333;
 }
 
 .device-card h3 {
@@ -259,6 +267,7 @@ form button {
     font-size: 1.8rem;
     margin-bottom: 1.2rem;
     color: #2c3e50;
+    grid-column: span 2;
 }
 
 .thermo-stats {
@@ -266,11 +275,8 @@ form button {
     flex-direction: column;
     gap: 0.8rem;
     margin-bottom: 1.5rem;
-}
-
-.thermo-stats .icon {
-    margin-right: 0.5rem;
-    font-size: 1.2rem;
+    grid-column: span 2;
+    width: 100%;
 }
 
 .thermo-stats .temp,
@@ -279,16 +285,23 @@ form button {
 .thermo-stats .energy {
     display: flex;
     align-items: center;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     background-color: #f1f1f1;
     padding: 0.6rem 1rem;
     border-radius: 8px;
+}
+
+.thermo-stats .icon {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+    color: #3498db;
 }
 
 .thermo-actions {
     display: flex;
     justify-content: space-around;
     gap: 1rem;
+    grid-column: span 2;
 }
 
 .thermo-actions button {
@@ -306,16 +319,85 @@ form button {
     background-color: #2980b9;
 }
 
-/* Animation légère d’apparition */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
+.thermo-circle {
+    grid-column: 1;
+    width: 200px;
+    height: 200px;
+    margin: 0;
+    user-select: none;
+    cursor: pointer;
+}
+
+.humidity-control.side {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    gap: 12px;
+}
+
+.humidity-circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background-color: #f1f1f1;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.humidity-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.humidity-label {
+    font-size: 1rem;
+    color: #777;
+    margin-top: 4px;
+}
+
+.arrow-up,
+.arrow-down {
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
+    color: #3498db;
+    transition: transform 0.1s;
+}
+
+.arrow-up:hover,
+.arrow-down:hover {
+    transform: scale(1.2);
+}
+
+
+.humidity-display {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #555;
+}
+
+.energy {
+    grid-column: span 2;
+    text-align: center;
+    font-size: 18px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.energy .icon {
+    font-size: 20px;
+    margin-right: 5px;
+    color: #f90;
 }
 
 #backdrop {
@@ -328,39 +410,13 @@ form button {
     z-index: 9998;
 }
 
-
-.thermo-circle {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 1em;
-    user-select: none;
-    cursor: pointer;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
 }
-
-.humidity-control {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .arrow-up,
-  .arrow-down {
-    font-size: 24px;
-    cursor: pointer;
-    user-select: none;
-    color: #00aaff;
-    transition: transform 0.1s;
-  }
-  
-  .arrow-up:hover,
-  .arrow-down:hover {
-    transform: scale(1.2);
-  }
-  
-  .humidity-display {
-    margin-top: 10px;
-    font-size: 16px;
-    color: #555;
-  }
-  

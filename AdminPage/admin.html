@@ -98,27 +98,24 @@
                   </svg>
                 </div>
 
-                <div class="humidity-control">
+                <div class="humidity-control side">
                     <div class="arrow-up" @click="adjustHumidity(+1)">▲</div>
-                    
-                    <div class="fan-icon">
-                      <svg viewBox="0 0 50 50" width="40" height="40">
-                        <path d="M25,15a10,10 0 0,1 0,20a10,10 0 0,1 0,-20Z" fill="#00aaff" />
-                      </svg>
+                
+                    <div class="humidity-circle">
+                        <div class="humidity-value">
+                            {{ humidityDisplayed.toFixed(1) }}%
+                        </div>
+                        <div class="humidity-label">Humidité</div>
                     </div>
-                    
+                
                     <div class="arrow-down" @click="adjustHumidity(-1)">▼</div>
-                  
-                    <div class="energy">
-                        <span class="icon">⚡</span>
-                        <span class="value">{{ calculatedEnergy }} kWh</span>
-                      </div>
                 </div>
+                
 
-                  <div class="energy">
+                <div class="energy">
                     <span class="icon">⚡</span>
-                    <span class="value">{{ thermostat.energy }}% énergie</span>
-                  </div>
+                    <span class="value">{{ calculatedEnergy }} kWh</span>
+                  </div>                  
                 </div>
               </div>
               

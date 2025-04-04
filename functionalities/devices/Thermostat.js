@@ -49,7 +49,7 @@ new Vue({
     },
     methods: {
       clickToUpdateTemperature(e) {
-        this.updateTemperature(e);
+        //this.updateTemperature(e);
       },
       startDrag(e) {
         this.dragging = true;

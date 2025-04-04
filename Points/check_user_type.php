@@ -17,20 +17,34 @@ if ($conn->connect_error) {
 if (isset($_SESSION['id'])) {
     $userId = $_SESSION['id'];
 
-    // Récupération des infos de l'utilisateur
-    $stmt = $conn->prepare("SELECT type, point FROM USERS WHERE id = ?");
+    // Récupération des infos de l'utilisateur (type, points, autorisation)
+    $stmt = $conn->prepare("SELECT type, point, autorisationAdmin FROM USERS WHERE id = ?");
     $stmt->bind_param("i", $userId);
     $stmt->execute();
-    $stmt->bind_result($type, $points);
+    $stmt->bind_result($type, $points, $autorisationAdmin);
     $stmt->fetch();
     $stmt->close();
 
-    // Vérifie conditions
+    // ✅ Passage de Simple → Complexe
     if ($type === "Simple utilisateur" && $points >= 10) {
-        $updateStmt = $conn->prepare("UPDATE USERS SET type = 'Complexe utilisateur' WHERE id = ?");
-        $updateStmt->bind_param("i", $userId);
+        $newType = 'Complexe utilisateur';
+        $updateStmt = $conn->prepare("UPDATE USERS SET type = ? WHERE id = ?");
+        $updateStmt->bind_param("si", $newType, $userId);
         $updateStmt->execute();
         $updateStmt->close();
+
+        $_SESSION['type'] = $newType; // 🔄 Mise à jour de la session
+    }
+
+    // ✅ Passage de Complexe → Admin (avec autorisation)
+    elseif ($type === "Complexe utilisateur" && $points >= 20 && $autorisationAdmin === "OUI") {
+        $newType = 'admin';
+        $updateStmt = $conn->prepare("UPDATE USERS SET type = ? WHERE id = ?");
+        $updateStmt->bind_param("si", $newType, $userId);
+        $updateStmt->execute();
+        $updateStmt->close();
+
+        $_SESSION['type'] = $newType; // 🔄 Mise à jour de la session
     }
 }
 

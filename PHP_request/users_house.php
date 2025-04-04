@@ -18,8 +18,8 @@ if ($conn->connect_error) {
 if (isset($_SESSION['id_house'])) {
     $id_house = $_SESSION['id_house'];
 
-    // Préparation de la requête pour récupérer les utilisateurs ayant le même id_house
-    $stmt = $conn->prepare("SELECT lastname, firstname, type FROM USERS WHERE id_house = ?");
+    // Préparation de la requête avec la nouvelle colonne
+    $stmt = $conn->prepare("SELECT lastname, firstname, type, point, autorisationAdmin FROM USERS WHERE id_house = ?");
     $stmt->bind_param("i", $id_house);
 
     $stmt->execute();
@@ -31,7 +31,9 @@ if (isset($_SESSION['id_house'])) {
         $users[] = array(
             'lastname' => $row['lastname'],
             'firstname' => $row['firstname'],
-            'type' => $row['type']
+            'type' => $row['type'],
+            'point' => $row['point'],
+            'autorisationAdmin' => $row['autorisationAdmin']
         );
     }
 

@@ -16,6 +16,43 @@ const usersApp = new Vue({
             console.log(this.users);
 
         },
+
+        getNextType(currentType) {
+            const order = ['Simple utilisateur', 'Complexe utilisateur', 'admin'];
+            const currentIndex = order.indexOf(currentType);
+            return order[currentIndex + 1] || ''; // Si admin, on renvoie vide
+        },
+        toggleAutorisation(index) {
+            const user = this.users[index];
+            const nouvelleValeur = user.autorisationAdmin === 'OUI' ? 'NON' : 'OUI';
+        
+            // Mettre à jour côté client
+            this.users[index].autorisationAdmin = nouvelleValeur;
+        
+            const formData = new FormData();
+            formData.append("nom", user.lastname);
+            formData.append("prenom", user.firstname);
+            formData.append("autorisationAdmin", nouvelleValeur);
+        
+            fetch("../PHP_request/updateAutorisation.php", {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    alert("Erreur lors de la mise à jour : " + (data.message || ""));
+                } else {
+                    getUsersData(); // ✅ Recharge les données après succès
+                }
+            })
+            .catch(err => {
+                console.error("Erreur réseau :", err);
+                alert("Erreur réseau ou serveur");
+            });
+        },        
+        
+        
         
         // Méthode pour supprimer un utilisateur
         removeUser(index) {
@@ -98,3 +135,5 @@ function getUsersData(){
 
 // Lancement automatique dès que le DOM est prêt
 document.addEventListener("DOMContentLoaded", getUsersData);
+
+

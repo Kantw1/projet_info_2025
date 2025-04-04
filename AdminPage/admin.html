@@ -58,15 +58,33 @@
                 <h2>Gestion des utilisateurs</h2>
                 <div id="show_users">
                     <ul>
-                    <li v-for="(user, index) in users" :key="index">
-                        {{ user.firstname }} {{ user.lastname }} - {{ user.type }}
-                        <button v-if="user.type !== 'admin'" @click="removeUser(index)">Supprimer</button>
-                    </li>
+                        <li v-for="(user, index) in users" :key="index">
+                            <template v-if="user.type !== 'admin'">
+                                {{ user.firstname }} {{ user.lastname }} -
+                                <span class="type-label">{{ user.type }}</span>
+                                <progress :value="user.point" max="20"></progress>
+                                <span class="type-label">{{ getNextType(user.type) }}</span>
+            
+                                <!-- ✅ Case à cocher pour autorisationAdmin -->
+                                <label>
+                                    <input type="checkbox"
+                                           :checked="user.autorisationAdmin === 'OUI'"
+                                           @change="toggleAutorisation(index)">
+                                    Autorisation pour passer admin
+                                </label>
+            
+                                <button @click="removeUser(index)">Supprimer</button>
+                            </template>
+                            <template v-else>
+                                {{ user.firstname }} {{ user.lastname }} - {{ user.type }}
+                            </template>
+                        </li>
                     </ul>
                     <button id="add-user" class="add-user" @click="goToAddUser">Ajouter un utilisateur</button>
                 </div>
-
             </section>
+            
+            
 
             <!-- 📌 Conteneur pour afficher dynamiquement les nouveaux onglets -->
             <div id="dynamic-tabs"></div>

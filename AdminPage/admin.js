@@ -17,6 +17,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // Déconnexion
     logoutButton.addEventListener("click", function() {
         alert("Déconnexion réussie");
-        window.location.href = "login.html";
+        window.location.href = "../Inscription_connection/logout.php";
     });
 })

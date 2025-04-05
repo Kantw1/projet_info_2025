@@ -89,6 +89,8 @@
             <!-- 📌 Conteneur pour afficher dynamiquement les nouveaux onglets -->
             <div id="dynamic-tabs"></div>
 
+            <!-- component thermostat -->
+
             <div id="thermostat-component" class="device-card" v-show="visible">
                 <div v-for="(t, index) in thermostats" :key="index" class="thermostat-card">
                   <h3>{{ t.name }} <span style="font-weight: normal; font-size: 0.9em;">– {{ t.position }}</span></h3>
@@ -149,7 +151,7 @@
                 </div>
               </div>
               
-              
+              <!-- component volet roulant -->
 
               <div id="volet-roulant-component" class="device-card" v-show="visible">
                 <h3>Volets roulants</h3>
@@ -209,10 +211,10 @@
                   <p v-if="messageErreur" class="error-message">{{ messageErreur }}</p>                  
               </div>
               
+              <!-- component alarm -->
+            
             <div id="alarm-component" class="device-card" v-show="visible">
                 <h3>Alarme</h3>
-
-                <!-- Ajoute cette div -->
                 <div class="alarm-content">
                   <div class="alarm-section">
                     <h4>Historique des activations</h4>
@@ -254,8 +256,7 @@
                             </tbody>
                             </table>
                         </div>
-              
-                </div>
+              </div>
 
                 <div class="status-bar">
                     <div class="connectivity">
@@ -285,9 +286,79 @@
                     </div>
                     </div>
                 </div>
-  
+                </div>
             </div>
-            
+
+
+            <!-- component lumiere -->
+            <div id="lumiere-component" class="device-card" v-show="visible">
+              <div class="lumiere-content" style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
+                
+                <!-- Titre amélioré -->
+                <h3 class="lumiere-title">Lumières connectées</h3>
+
+                <div class="table-container" style="overflow-x: auto; flex: 1; min-height: 0;">
+                  <table class="lumiere-table">
+                    <thead>
+                      <tr>
+                        <th>Nom</th>
+                        <th>Pièce</th>
+                        <th>État</th>
+                        <th>Intensité</th>
+                        <th>Couleur</th>
+                        <th>Connectivité</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(lum, index) in lumieres" :key="lum.nom">
+                        <td>{{ lum.nom }}</td>
+                        <td>{{ lum.piece }}</td>
+                        <td>{{ lum.etat ? 'Allumée' : 'Éteinte' }}</td>
+                        <td>
+                          <input 
+                            type="range" min="0" max="100" v-model.number="lum.intensite"
+                            @change="ajusterIntensite(index, lum.intensite)" />
+                          {{ lum.intensite }}%
+                        </td>
+                        <td>
+                          <select v-model="lum.couleur" @change="changerCouleur(index, lum.couleur)">
+                            <option v-for="couleur in couleursOptions" :value="couleur">{{ couleur }}</option>
+                          </select>
+                          <span class="couleur-preview" :style="{ backgroundColor: getCssColor(lum.couleur) }"></span>
+                        </td>
+                        <td>{{ lum.connectee ? 'Connectée' : 'Déconnectée' }}</td>
+                        <td>
+                          <button @click="allumerLumiere(index)">Allumer</button>
+                          <button @click="eteindreLumiere(index)">Éteindre</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Boutons déplacés en bas -->
+                <div class="lumiere-controls-bottom">
+                  <button @click="allumerToutes">Allumer toutes</button>
+                  <button @click="eteindreToutes">Éteindre toutes</button>
+                </div>
+
+                <!-- Footer modernisé -->
+                <div class="lumiere-footer">
+                  <div class="info-bloc">
+                    ⚡ <strong>Consommation :</strong>
+                    {{ totalConsommation.toFixed(2) }} kWh
+                  </div>
+                  <div class="info-bloc">
+                    <strong>Dernière action :</strong>
+                    {{ lastAction }}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
         </main>
     </div>
 

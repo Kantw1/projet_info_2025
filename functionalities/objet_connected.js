@@ -4,7 +4,7 @@ new Vue({
         devices: [
             { name: 'Thermostat', script: 'Thermostat.js' },
             { name: 'Caméra', script: 'Caméra.js' },
-            { name: 'LumièreSalon', script: 'LumièreSalon.js' },
+            { name: 'Lumiere', script: 'Lumiere.js' },
             { name: 'Alarme', script: 'Alarm.js' },
             { name: 'VoletRoulant', script: 'VoletRoulant.js' }
         ]

@@ -24,5 +24,21 @@ CREATE TABLE objet_connecte(
     FOREIGN KEY (id_house) REFERENCES house(id)  
 );
 
+CREATE TABLE thermostat (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_objet_connecte INT,
+    nom_objet VARCHAR(255),
+    position VARCHAR(100), -- pièce ou emplacement (ex. Salon, Chambre, Cuisine)
+    temperature_actuelle FLOAT,
+    temperature_cible FLOAT,
+    humidite_cible FLOAT,
+    humidite_affichee FLOAT,
+    connectivite VARCHAR(50),
+    consommation_electricite FLOAT,
+    energie_actuelle FLOAT,
+    derniere_interaction DATETIME,
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
 
 

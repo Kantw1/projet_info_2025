@@ -356,8 +356,8 @@ form button {
 
 .thermo-circle {
     grid-column: 1;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     margin: 0;
     user-select: none;
     cursor: pointer;

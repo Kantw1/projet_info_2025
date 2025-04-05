@@ -78,8 +78,9 @@ new Vue({
           return;
         }
   
-        volet.position = Math.max(0, Math.min(100, value));
-        volet.status = (value === 0) ? 'fermé' : (value === 100) ? 'ouvert' : 'partiellement ouvert';
+        const val = parseInt(value);
+volet.position = Math.max(0, Math.min(100, val));
+volet.status = (val === 0) ? 'fermé' : (val === 100) ? 'ouvert' : 'partiellement ouvert';
         this.consommationTotale += 0.15;
         this.logInteraction(`Réglage de ${volet.name}`);
       },

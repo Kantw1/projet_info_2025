@@ -37,6 +37,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['id_house'] = $id_house;
             $_SESSION['type'] = $type;
 
+            // Préparer la structure des objets connectés par type
+            $liste_objets = [];
+
+            $query = "SELECT id, type FROM objet_connecte WHERE id_house = ?";
+            $obj_stmt = $conn->prepare($query);
+            $obj_stmt->bind_param("i", $id_house);
+            $obj_stmt->execute();
+            $result = $obj_stmt->get_result();
+
+            while ($row = $result->fetch_assoc()) {
+                $type = $row['type'];
+                $id_obj = $row['id'];
+
+                if (!isset($liste_objets[$type])) {
+                    $liste_objets[$type] = [];
+                }
+                $liste_objets[$type][] = $id_obj;
+            }
+
+            $_SESSION['objets_connectes'] = $liste_objets;
 
             // ➕ Incrémenter les points
             $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 1 WHERE id = ?");

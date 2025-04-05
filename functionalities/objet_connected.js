@@ -5,7 +5,7 @@ new Vue({
             { name: 'Thermostat', script: 'Thermostat.js' },
             { name: 'Caméra', script: 'Caméra.js' },
             { name: 'LumièreSalon', script: 'LumièreSalon.js' },
-            { name: 'Alarme', script: 'Alarm.js' }
+            { name: 'Alarme', script: 'Alarm.js' },
             { name: 'VoletRoulant', script: 'VoletRoulant.js' }
         ]
     },

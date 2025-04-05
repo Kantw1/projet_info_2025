@@ -209,13 +209,88 @@
                   <p v-if="messageErreur" class="error-message">{{ messageErreur }}</p>                  
               </div>
               
+            <div id="alarm-component" class="device-card" v-show="visible">
+                <h3>Alarme</h3>
+
+                <!-- Ajoute cette div -->
+                <div class="alarm-content">
+                  <div class="alarm-section">
+                    <h4>Historique des activations</h4>
+                    <div class="table-container">
+                      <table>
+                        <thead>
+                          <tr><th>Date</th><th>Statut</th><th>Utilisateur</th></tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(entry, index) in historique" :key="'h' + index">
+                            <td>{{ entry.date }}</td>
+                            <td>{{ entry.status }}</td>
+                            <td>{{ entry.user }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
               
-            
+                  <div class="alarm-section">
+                    <h4>Alertes d'intrusion</h4>
+                        <div class="table-container">
+                            <table>
+                            <thead>
+                                <tr>
+                                <th>Date</th>
+                                <th>Statut</th>
+                                <th>Capteur</th>
+                                <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(alert, index) in alertes" :key="'a' + index">
+                                <td>{{ alert.date }}</td>
+                                <td>{{ alert.status }}</td>
+                                <td>{{ alert.capteur }}</td>
+                                <td>{{ alert.message }}</td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+              
+                </div>
+
+                <div class="status-bar">
+                    <div class="connectivity">
+                        <span class="label">Signal :</span>
+                        <span :class="['signal', signalStrength]">{{ signalStrengthLabel }}</span>
+                    </div>
+                    <div class="energy">
+                        ⚡ <span>{{ energyUsed.toFixed(2) }} kWh</span>
+                    </div>
+                </div>
+
+                <div class="alarm-controls-bottom">
+                    <button @click="askCode('activer')" :disabled="isActive">Activer l'alarme</button>
+                    <button @click="askCode('desactiver')" :disabled="!isActive">Désactiver l'alarme</button>
+                    <button @click="askCode('partielle')" :disabled="isActive">Activer partiellement</button>
+                    <button @click="simulerIntrusion" :disabled="!isActive">Simuler intrusion</button>
+                </div>
+
+                <!-- MODALE DE CODE -->
+                <div v-if="askCodeFor" class="modal-code">
+                    <div class="modal-content">
+                    <h4>Code de sécurité</h4>
+                    <input type="password" v-model="codeSaisi" placeholder="Entrez le code..." />
+                    <div class="modal-actions">
+                        <button @click="validerCode">Valider</button>
+                        <button @click="cancelCode">Annuler</button>
+                    </div>
+                    </div>
+                </div>
+  
+            </div>
             
         </main>
     </div>
 
-    
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="../functionalities/objet_connected.js"></script>

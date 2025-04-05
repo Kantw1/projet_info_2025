@@ -91,7 +91,7 @@
 
             <div id="thermostat-component" class="device-card" v-show="visible">
                 <h3>{{ thermostat.name }}</h3>
-                
+              
                 <div class="thermo-circle">
                   <svg viewBox="0 0 200 200"
                        @click="clickToUpdateTemperature"
@@ -115,27 +115,99 @@
                     <text x="100" y="125" text-anchor="middle" font-size="14">Cible : {{ thermostat.target }}°C</text>
                   </svg>
                 </div>
-
-                <div class="humidity-control side">
-                    <div class="arrow-up" @click="adjustHumidity(+1)">▲</div>
-                
-                    <div class="humidity-circle">
-                        <div class="humidity-value">
-                            {{ humidityDisplayed.toFixed(1) }}%
-                        </div>
-                        <div class="humidity-label">Humidité</div>
+              
+                <div class="humidity-control side" :class="{ disabled: thermostat.connectivity === 'Déconnecté' }">
+                  <div class="arrow-up" @click="adjustHumidity(+1)">▲</div>
+              
+                  <div class="humidity-circle">
+                    <div class="humidity-value">
+                      {{ humidityDisplayed.toFixed(1) }}%
                     </div>
-                
-                    <div class="arrow-down" @click="adjustHumidity(-1)">▼</div>
+                    <div class="humidity-label">Humidité</div>
+                  </div>
+              
+                  <div class="arrow-down" @click="adjustHumidity(-1)">▼</div>
                 </div>
-                
-
-                <div class="energy">
+              
+                <div class="info-footer">
+                  <div class="energy">
                     <span class="icon">⚡</span>
                     <span class="value">{{ calculatedEnergy }} kWh</span>
-                  </div>                  
+                  </div>
+                  <div class="connectivity">
+                    <span class="icon">📶</span>
+                    <span class="value">{{ thermostat.connectivity }}</span>
+                  </div>
                 </div>
+
+                <p class="last-interaction">
+                    Dernière action : {{ derniereInteraction }}
+                  </p>
+              
+                <p v-if="thermostat.connectivity === 'Déconnecté'" class="offline-warning">
+                  Appareil hors ligne – connectivité perdue.
+                </p>
               </div>
+              
+
+              <div id="volet-roulant-component" class="device-card" v-show="visible">
+                <h3>Volets roulants</h3>
+              
+                <table class="volet-table">
+                  <thead>
+                    <tr>
+                      <th>Nom</th>
+                      <th>Pièce</th>
+                      <th>Position</th>
+                      <th>Statut</th>
+                      <th>Connectivité</th>
+                      <th>Actions</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="volet in volets" :key="volet.id">
+                      <td>{{ volet.name }}</td>
+                      <td>{{ volet.location }}</td>
+                      <td>
+                        <input type="range" min="0" max="100" v-model="volet.position" @input="ajusterVolet(volet.id, volet.position)" :disabled="volet.connectivity === 'Déconnecté'">
+                        {{ volet.position }}%
+                      </td>
+                      <td>{{ volet.status }}</td>
+                      <td>{{ volet.connectivity }}</td>
+                      <td>
+                        <button @click="ouvrirVolet(volet.id)" :disabled="!peutOuvrir(volet)">Ouvrir</button>
+                        <button @click="fermerVolet(volet.id)" :disabled="!peutFermer(volet)">Fermer</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              
+                <div class="global-actions">
+                  <button @click="ouvrirTous">Tout ouvrir</button>
+                  <button @click="fermerTous">Tout fermer</button>
+                  <button @click="toggleModeSecurite">
+                    {{ modeSecurite ? 'Désactiver' : 'Activer' }} mode sécurité
+                  </button>
+                </div>
+
+                <div class="volet-footer">
+                    <div class="info-bloc">
+                      <strong>Consommation :</strong>
+                      {{ consommationTotale.toFixed(2) }} kWh
+                    </div>
+                    <div class="info-bloc">
+                      <strong>Connectivité :</strong>
+                      Signal Wi-Fi fort
+                    </div>
+                    <div class="info-bloc">
+                      <strong>Dernière action :</strong>
+                      {{ derniereInteraction }}
+                    </div>
+                  </div>
+                  <p v-if="messageErreur" class="error-message">{{ messageErreur }}</p>                  
+              </div>
+              
               
             
             

@@ -47,11 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             require("../Points/check_user_type.php");
 
             // Rediriger l'utilisateur selon son type
-            if ($_SESSION['type'] == 'admin') {
-                header("Location: ../AdminPage/admin.html");
-            } else {
-                header("Location: ../UserPage/user.html");
-            }
+            header("Location: ../AdminPage/admin.html");
             exit();
         } else {
             header("Location: connection.html?error=Mot de passe incorrect !");

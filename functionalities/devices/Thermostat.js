@@ -7,7 +7,8 @@ new Vue({
         name: 'Thermostat',
         temp: 22.3,
         target: 23.0,
-        energy: 66
+        energy: 66,
+        connectivity: 'Signal fort'
       },
       targetHumidity: 54,
       humidityDisplayed: 54,
@@ -19,8 +20,8 @@ new Vue({
       tempPreview: null,
       baseTemp: 20,
     baseHumidity: 50,
-    electricityConsumption: 0
-
+    electricityConsumption: 0,
+    derniereInteraction: 'Aucune',
     },
     computed: {
       circumference() {
@@ -48,6 +49,10 @@ new Vue({
       });
     },
     methods: {
+      logInteraction(action) {
+        const maintenant = new Date();
+        this.derniereInteraction = `${action} - ${maintenant.toLocaleString()}`;
+      },      
       clickToUpdateTemperature(e) {
         //this.updateTemperature(e);
       },
@@ -94,6 +99,8 @@ new Vue({
         return this.minTemp + (angle / 360) * (this.maxTemp - this.minTemp);
       },
       updateTargetFromEvent(e) {
+        
+        if (this.thermostat.connectivity === 'Déconnecté') return;
         const svg = e.currentTarget;
         const rect = svg.getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
@@ -103,12 +110,15 @@ new Vue({
         let angle = Math.atan2(dy, dx) * (180 / Math.PI);
         angle = (angle + 360 + 90) % 360;
         const newTarget = Math.round(this.minTemp + (angle / 360) * (this.maxTemp - this.minTemp));
-        this.thermostat.target = newTarget; // met à jour en direct
+        this.thermostat.target = newTarget; // met à jour en direct;
+        this.logInteraction(`Changement de température à ${newTarget}°C`);
       },
       adjustHumidity(delta) {
+        if (this.thermostat.connectivity === 'Déconnecté') return;
         const newTarget = Math.max(0, Math.min(100, this.targetHumidity + delta));
         this.targetHumidity = newTarget;
         this.animateHumidity();
+        this.logInteraction(`Réglage de l'humidité à ${this.targetHumidity}%`);
       },
       animateHumidity() {
         const step = () => {

@@ -9,44 +9,7 @@ new Vue({
     baseTemp: 20,
     baseHumidity: 50,
     radius: 80,
-    thermostats: [
-      {
-        name: 'Thermostat salon',
-        position: 'Salon',
-        temp: 22.3,
-        target: 23.0,
-        currentDisplayedTemp: 22.3,
-        connectivity: 'Signal fort',
-        targetHumidity: 54,
-        humidityDisplayed: 54,
-        electricityConsumption: 0,
-        derniereInteraction: 'Aucune'
-      },
-      {
-        name: 'Thermostat salon',
-        position: 'Salon',
-        temp: 22.3,
-        target: 23.0,
-        currentDisplayedTemp: 22.3,
-        connectivity: 'Signal fort',
-        targetHumidity: 54,
-        humidityDisplayed: 54,
-        electricityConsumption: 0,
-        derniereInteraction: 'Aucune'
-      },
-      {
-        name: 'Thermostat chambre',
-        position: 'Chambre',
-        temp: 20.0,
-        target: 21.5,
-        currentDisplayedTemp: 22.3,
-        connectivity: 'Signal moyen',
-        targetHumidity: 48,
-        humidityDisplayed: 48,
-        electricityConsumption: 0,
-        derniereInteraction: 'Aucune'
-      }
-    ]    
+    thermostats: []    
   },
   computed: {
     circumference() {
@@ -61,6 +24,30 @@ new Vue({
     }    
   },
   methods: {
+    sendUpdate(index) {
+      const t = this.thermostats[index];
+      const payload = {
+        id_objet_connecte: t.id, // tu dois inclure `id` dans les données chargées
+        temperature_cible: t.target,
+        humidite_cible: t.targetHumidity,
+        temperature_actuelle: t.temp, // ✅ ajout de la température réelle
+        humidite_affichee: t.humidity,  // ✅ ici l'humidité actuelle affichée
+        consommation_electricite: t.electricityConsumption
+      };
+    
+      fetch('../PHP_request/update_thermostat.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (!response.success) {
+          console.warn("Échec de la mise à jour :", response.message);
+        }
+      })
+      .catch(err => console.error("Erreur réseau :", err));
+    },    
     dashOffset(target) {
       const ratio = (target - this.minTemp) / (this.maxTemp - this.minTemp);
       return this.circumference * (1 - ratio);
@@ -68,8 +55,8 @@ new Vue({
     calculatedEnergy(t) {
       const tempImpact = Math.max(0, t.currentDisplayedTemp - this.baseTemp) * 1.5;
       const humidityImpact = Math.max(0, t.humidityDisplayed - this.baseHumidity) * 0.5;
-      return (tempImpact + humidityImpact).toFixed(1);
-    },
+      return parseFloat((tempImpact + humidityImpact).toFixed(1));
+    },        
     logInteraction(index, action) {
       const maintenant = new Date();
       this.thermostats[index].derniereInteraction = `${action} - ${maintenant.toLocaleString()}`;
@@ -92,21 +79,6 @@ new Vue({
         this.dragging = false;
         this.animateTemperature(index);
       }
-    },
-    animateTemperature(index) {
-      const t = this.thermostats[index];
-      const step = () => {
-        const diff = t.target - t.currentDisplayedTemp;
-        const distance = Math.abs(diff);
-        if (distance < 0.01) {
-          t.currentDisplayedTemp = t.target;
-          return;
-        }
-        const easing = 0.0002 + 0.005 / (distance + 1);
-        t.currentDisplayedTemp += diff * easing;
-        requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
     },
     computeTemperatureFromEvent(e) {
       const svg = e.currentTarget;
@@ -134,26 +106,122 @@ new Vue({
       this.animateHumidity(index);
       this.logInteraction(index, `Réglage de l'humidité à ${newTarget}%`);
     },
+    animateTemperature(index) {
+      const t = this.thermostats[index];
+      let lastUpdateTime = Date.now(); // ✅ Début du timer
+    
+      const step = () => {
+        const diff = t.target - t.currentDisplayedTemp;
+        const distance = Math.abs(diff);
+    
+        if (distance < 0.01) {
+          t.currentDisplayedTemp = t.target;
+          t.temp = t.target;
+          this.sendUpdate(index); // ✅ Dernière MAJ finale
+          return;
+        }
+    
+        const easing = 0.0002 + 0.005 / (distance + 1);
+        t.currentDisplayedTemp += diff * easing;
+        t.temp += diff * easing * 0.8;
+    
+        const now = Date.now();
+        if (now - lastUpdateTime >= 5000) {
+          this.sendUpdate(index);
+          lastUpdateTime = now;
+        }
+    
+        requestAnimationFrame(step);
+      };
+    
+      requestAnimationFrame(step);
+    },
     animateHumidity(index) {
       const t = this.thermostats[index];
+      let lastUpdateTime = Date.now(); // ✅ Timer pour MAJ toutes les 5s
+    
       const step = () => {
         const diff = t.targetHumidity - t.humidityDisplayed;
         const distance = Math.abs(diff);
+    
         if (distance < 0.05) {
           t.humidityDisplayed = t.targetHumidity;
+          t.humidity = t.targetHumidity;
+          this.sendUpdate(index); // ✅ Dernière MAJ finale
           return;
         }
+    
         const easing = 0.002 + 0.01 / (distance + 1);
         t.humidityDisplayed += diff * easing;
+        t.humidity = t.humidityDisplayed;
+    
+        const now = Date.now();
+        if (now - lastUpdateTime >= 5000) {
+          this.sendUpdate(index);
+          lastUpdateTime = now;
+        }
+    
         requestAnimationFrame(step);
       };
+    
       requestAnimationFrame(step);
-    }
+    },
+    fetchThermostats() {
+      fetch('../PHP_request/get_thermostat.php')
+        .then(res => res.json())
+        .then(data => {
+          this.thermostats = data.map(t => ({
+            id: t.id_objet_connecte,
+            name: t.nom_objet,
+            position: t.position,
+            target: parseFloat(t.temperature_cible),
+            currentDisplayedTemp: parseFloat(t.temperature_actuelle),
+            temp: parseFloat(t.temperature_actuelle),
+            targetHumidity: parseFloat(t.humidite_cible),
+            humidityDisplayed: parseFloat(t.humidite_affichee),
+            humidity: parseFloat(t.humidite_affichee),
+            connectivity: t.connectivite,
+            electricityConsumption: parseFloat(t.consommation_electricite),
+            derniereInteraction: t.derniere_interaction || 'Aucune',
+            lastEnergyUpdate: Date.now(),
+          }));
+          
+          // 🔁 Lancer l’animation si besoin
+          this.thermostats.forEach((t, i) => {
+            if (Math.abs(t.temp - t.target) > 0.1) {
+              this.animateTemperature(i);
+            }
+            if (Math.abs(t.humidity - t.targetHumidity) > 0.1) {
+              this.animateHumidity(i);
+            }
+          });
+        })
+        .catch(err => {
+          console.error("Erreur lors du chargement des thermostats :", err);
+        });
+    }        
   },
   mounted() {
     console.log('Thermostat component monté');
+    
     window.addEventListener('device-selected', (e) => {
       this.visible = e.detail?.toLowerCase() === 'thermostat';
+      if (this.visible) {
+        this.fetchThermostats();
+      }
     });
-  }
+  
+    // ✅ Mise à jour conso toutes les 5s uniquement si visible
+    setInterval(() => {
+      if (!this.visible) return;
+  
+      this.thermostats.forEach((t, i) => {
+        const newCons = this.calculatedEnergy(t);
+        if (Math.abs(newCons - t.electricityConsumption) > 0.1) {
+          t.electricityConsumption = newCons;
+          this.sendUpdate(i);
+        }
+      });
+    }, 5000);
+  },  
 });

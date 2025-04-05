@@ -37,8 +37,15 @@ CREATE TABLE thermostat (
     humidite_affichee FLOAT,
     connectivite VARCHAR(50),
     consommation_electricite FLOAT,
-    energie_actuelle FLOAT,
     derniere_interaction DATETIME,
+    type_interaction VARCHAR(100),
     FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
 );
 
+CREATE TABLE historique_thermostat (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_objet_connecte INT,
+    date_heure DATETIME DEFAULT CURRENT_TIMESTAMP,
+    consommation_electricite FLOAT,
+    FOREIGN KEY (id_objet_connecte) REFERENCES thermostat(id_objet_connecte)
+);

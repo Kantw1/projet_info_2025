@@ -916,8 +916,7 @@ Parie pour la Lumiere css
     overflow-x: auto;
     display: flex;
     flex-direction: column;
-    /* 🔧 Correction ici : on enlève max-height: 180px */
-    max-height: 100%; /* ✅ Pour permettre au tableau de prendre l'espace nécessaire */
+    max-height: 100%;
 }
 
 #lumiere-component h3 {
@@ -927,14 +926,12 @@ Parie pour la Lumiere css
     margin-bottom: 10px;
 }
 
-/* (cette déclaration était en double, mais je la garde comme demandé) */
+/* (cette déclaration était en double, mais je la garde au cas ou) 
 .table-container {
     overflow-x: auto;
     width: 100%;
     margin: 0 auto;
-    /* 🔧 Correction ici : ligne supprimée => max-height: 180px */
-    /* overflow-y: auto; déjà présent plus haut */
-}
+}*/
 
 .lumiere-table {
     width: 100%;
@@ -1056,7 +1053,7 @@ Parie pour la Lumiere css
     border: 1px solid #999;
 }
 
-/* ✅ Titre amélioré */
+/* Titre amélioré */
 .lumiere-title {
     font-size: 1.7rem;
     text-align: center;
@@ -1066,7 +1063,7 @@ Parie pour la Lumiere css
     letter-spacing: 0.5px;
 }
 
-/* ✅ Boutons Allumer/Éteindre déplacés en bas */
+/* Boutons Allumer/Éteindre */
 .lumiere-controls-bottom {
     display: flex;
     justify-content: center;
@@ -1101,7 +1098,7 @@ Parie pour la Lumiere css
     box-shadow: none;
 }
 
-/* ✅ Footer inspiré de l’alarme */
+/* Footer du panneau */
 .lumiere-footer {
     display: flex;
     justify-content: space-between;
@@ -1121,4 +1118,138 @@ Parie pour la Lumiere css
     gap: 8px;
     font-weight: 500;
     color: #333;
+}
+
+
+/* 
+Panneau solaire component
+*/
+
+/* Composant Panneau Solaire */
+#panneau-solaire-component {
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+}
+
+/* Titre */
+.solar-title {
+    text-align: center;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 5px;
+}
+
+/* Grille responsive */
+.solar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 🔥 3 colonnes fixes pour desktop */
+    gap: 20px;
+}
+
+@media (max-width: 900px) {
+    .solar-grid {
+    grid-template-columns: repeat(2, 1fr); /* 📱 2 colonnes pour tablettes */
+    }
+}
+
+@media (max-width: 600px) {
+    .solar-grid {
+    grid-template-columns: 1fr; /* 📱 1 colonne pour mobile */
+    }
+}
+
+/* Cartes */
+.solar-card {
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Éléments dans les cartes */
+.solar-card .label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 1rem;
+}
+
+.solar-card .value {
+    font-size: 1.4rem;
+    color: #2563eb;
+    font-weight: bold;
+}
+
+/* Progression production */
+.progress-bar {
+    background-color: #e5e7eb;
+    height: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-bar .progress {
+    height: 100%;
+    background: linear-gradient(90deg, #4f46e5, #3b82f6);
+    width: 0%;
+    transition: width 0.3s ease-in-out;
+}
+
+/* Mini boutons */
+.mini-btn {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.mini-btn:hover {
+    background: linear-gradient(135deg, #4338ca, #2563eb);
+    transform: translateY(-1px);
+}
+
+/* Footer */
+.solar-footer {
+    padding-top: 10px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #555;
+    font-weight: 500;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    #panneau-solaire-component {
+    padding: 15px;
+    }
+
+    .solar-card .value {
+    font-size: 1.2rem;
+    }
+
+    .solar-title {
+    font-size: 1.5rem;
+    }
 }

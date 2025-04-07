@@ -358,6 +358,88 @@
               </div>
             </div>
 
+            <!-- component panneau solaire -->
+            <div id="panneau-solaire-component" class="device-card" v-show="visible">
+              <h3 class="solar-title">Panneau Solaire</h3>
+
+              <div class="solar-grid">
+                <!-- Bloc production -->
+                <div class="solar-card highlight">
+                  <div class="icon">☀️</div>
+                  <div class="label">Production actuelle</div>
+                  <div class="value">{{ production }} kW</div>
+                  <div class="progress-bar">
+                    <div class="progress" :style="{ width: (production / capacite * 100) + '%' }"></div>
+                  </div>
+                </div>
+
+                <!-- Capacité + Bouton modifier -->
+                <div class="solar-card">
+                  <div class="label">Capacité maximale</div>
+                  <div class="value">{{ capacite }} kWc</div>
+                  <button class="mini-btn" @click="changerCapacite">Modifier</button>
+                </div>
+
+                <!-- État + bouton toggle -->
+                <div class="solar-card">
+                  <div class="label">État</div>
+                  <div class="value" :style="{ color: getStatutColor() }">{{ etat }}</div>
+                  <button class="mini-btn" @click="toggleEtat">
+                    {{ etat === 'Actif' ? 'Désactiver' : 'Activer' }}
+                  </button>
+                </div>
+
+                <!-- Température -->
+                <div class="solar-card">
+                  <div class="label">Température</div>
+                  <div class="value">{{ temperature }} °C</div>
+                </div>
+
+                <!-- Tension -->
+                <div class="solar-card">
+                  <div class="label">Tension</div>
+                  <div class="value">{{ tension }} V</div>
+                </div>
+
+                <!-- Consommation -->
+                <div class="solar-card">
+                  <div class="label">Consommation énergétique</div>
+                  <div
+                    class="value"
+                    :style="etat !== 'Actif' ? 'color: #999; font-style: italic;' : ''">
+                  {{ etat === 'Actif' ? consommationAffichee + ' kW' : 'Aucune consommation' }}
+                  </div>
+                </div>
+
+                <!-- Économie avec switch -->
+                <div class="solar-card">
+                  <div class="label">Économie réalisée</div>
+                  <div class="value">
+                    <span v-if="!afficherEconomieEnKwh">+ {{ economieEuro }} €</span>
+                    <span v-else>≈ {{ economieKWh }} kWh</span>
+                  </div>
+                  <button class="mini-btn" @click="toggleAffichageEconomie">
+                    {{ afficherEconomieEnKwh ? 'Afficher €' : 'Afficher kWh' }}
+                  </button>
+                </div>
+
+                <!-- CO2 -->
+                <div class="solar-card">
+                  <div class="label">CO₂ évité</div>
+                  <div class="value">{{ co2 }} kg</div>
+                </div>
+
+                <!-- MAJ -->
+                <div class="solar-card">
+                  <div class="label">Dernière mise à jour</div>
+                  <div class="value">{{ derniereMiseAJour }}</div>
+                </div>
+              </div>
+
+              <div class="solar-footer">
+                ⚡ Données stables et prêtes pour exploitation
+              </div>
+            </div>
 
         </main>
     </div>

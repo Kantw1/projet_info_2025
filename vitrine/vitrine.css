@@ -1,58 +1,151 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: #f8f9fa;
+    color: #333;
+  }
+  
+  header {
+    background-color: #003366;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+  }
+  
+  header a {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background-color: #0055a5;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  
+  nav ul {
+    display: flex;
+    justify-content: center;
+    background-color: #4a90e2;
+    list-style: none;
     margin: 0;
     padding: 0;
-    background-color: #eef7fb;
-}
-
-header {
-    background-color: #003366;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    text-align: center;
-}
-
-nav ul li {
-    display: inline;
+  }
+  
+  nav ul li {
     margin: 0 15px;
-}
-
-nav ul li a {
+  }
+  
+  nav ul li a {
     color: white;
     text-decoration: none;
-    font-weight: bold;
-    font-size: 1.1em;
-}
-
-section {
-    padding: 20px;
-    margin: 20px auto;
-    width: 80%;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(0, 51, 102, 0.2);
+    padding: 15px 0;
+    display: block;
+    transition: color 0.3s;
+  }
+  
+  nav ul li a:hover {
+    color: #FFA500;
+  }
+  
+  .hero {
+    background: url('maison connectée.jpg') center/cover no-repeat;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    margin: 50px auto;
+    max-width: 90%;
+    border-radius: 30px;
+  }
+  
+  .hero-container {
     text-align: center;
-}
-
-footer {
-    text-align: center;
-    padding: 15px;
-    background-color: #003366;
     color: white;
-    margin-top: 20px;
-}
-
-h1, h2 {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 20px 40px;
+    border-radius: 15px;
+  }
+  
+  section {
+    max-width: 90%;
+    margin: 40px auto;
+    padding: 20px;
+  }
+  
+  h2 {
     color: #003366;
-}
-
-p {
-    font-size: 1.1em;
-    color: #333;
-}
+    margin-bottom: 20px;
+  }
+  
+  ul {
+    padding-left: 20px;
+  }
+  
+  img {
+    max-width: 100%;
+    border-radius: 20px;
+    display: block;
+    margin: 20px auto;
+  }
+  
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #2979ff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+  }
+  
+  .card-content {
+    padding: 15px;
+  }
+  
+  .card-content h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #222;
+  }
+  
+  .card-content p {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 20px;
+    background: #003366;
+    color: white;
+  }
+  

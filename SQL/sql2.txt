@@ -1,0 +1,165 @@
+CREATE TABLE eau (
+    id INT PRIMARY KEY,
+    consommation FLOAT,
+    date_releve DATE
+);
+
+CREATE TABLE electricite (
+    id INT PRIMARY KEY,
+    consommation FLOAT,
+    production FLOAT,
+    date_releve DATE
+);
+
+CREATE TABLE house (
+    id INT PRIMARY KEY,
+    id_eau INT,
+    id_electricite INT,
+    FOREIGN KEY (id_eau) REFERENCES eau(id),
+    FOREIGN KEY (id_electricite) REFERENCES electricite(id)
+);
+
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    lastname VARCHAR(255), 
+    firstname VARCHAR(255),
+    mail VARCHAR(255),  
+    adresse VARCHAR(255),
+    type INT,
+    id_house INT,
+    FOREIGN KEY (id_house) REFERENCES house(id)
+);
+
+CREATE TABLE objet_connecte (
+    id INT PRIMARY KEY,
+    date_installation DATE,
+    statut VARCHAR(50),
+    localisation VARCHAR(255),
+    type VARCHAR(255),
+    consommation_elec FLOAT,
+    id_house INT,
+    FOREIGN KEY (id_house) REFERENCES house(id)  
+);
+
+CREATE TABLE panneau_solaire (
+    id_objet_connecte INT PRIMARY KEY,
+    nom_objet VARCHAR(255),
+    production DECIMAL(5,2) DEFAULT 0.00,         
+    capacite DECIMAL(5,2) DEFAULT 0.00,  
+    connectivite VARCHAR(50),
+    consommation_elec FLOAT,
+    temperature INT DEFAULT 0,                 
+    tension INT DEFAULT 230,                      
+    economie_euro DECIMAL(6,2) DEFAULT 0.00,   
+    economie_kwh DECIMAL(6,2) DEFAULT 0.00,   
+    co2 DECIMAL(6,2) DEFAULT 0.00,                
+    taux_utilisation DECIMAL(3,2) DEFAULT 0.00,   
+    derniere_mise_a_jour DATETIME DEFAULT CURRENT_TIMESTAMP,
+    etat ENUM('Actif', 'Inactif') DEFAULT 'Actif',
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+CREATE TABLE radiateur (
+    id_objet_connecte INT PRIMARY KEY,
+    nom_objet VARCHAR(255),
+    puissance FLOAT,
+    temperature_actuelle FLOAT,
+    temperature_cible FLOAT,
+    mode VARCHAR(50),
+    connectivite VARCHAR(50),
+    consommation_elec FLOAT,
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+CREATE TABLE television (
+    id_objet_connecte INT PRIMARY KEY,
+    nom_objet VARCHAR(255),
+    marque VARCHAR(100),
+    modele VARCHAR(100),
+    resolution VARCHAR(50),
+    connectivite VARCHAR(50),
+    consommation_elec FLOAT,
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+CREATE TABLE thermostat (
+    id_objet_connecte INT PRIMARY KEY,
+    nom_objet VARCHAR(255),
+    temperature_cible FLOAT,
+    temperature_actuelle FLOAT,
+    humidite_cible DECIMAL(5,1) DEFAULT 50.0,
+    humidite_affichee DECIMAL(5,1) DEFAULT 50.0,
+    mode VARCHAR(50),
+    connectivite VARCHAR(50),
+    etat_batterie FLOAT,
+    consommation_elec FLOAT,
+    derniere_interaction DATETIME DEFAULT CURRENT_TIMESTAMP
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+CREATE TABLE camera (
+    id_objet_connecte INT PRIMARY KEY,
+    nom_objet VARCHAR(255),
+    resolution VARCHAR(50),
+    angle_de_vue FLOAT,
+    stockage VARCHAR(100),
+    connectivite VARCHAR(50),
+    consommation_elec FLOAT,
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+CREATE TABLE alarme (
+    id_objet_connecte INT PRIMARY KEY,
+    nom_objet VARCHAR(255),
+    date_enclenchement DATE,
+    utilisateur VARCHAR(255),
+    statut VARCHAR(100),
+    connectivite VARCHAR(50),
+    consommation_elec FLOAT,
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+CREATE TABLE alertes_intrusion (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    alarme_id INT,
+    date DATETIME NOT NULL,
+    status VARCHAR(50),
+    capteur VARCHAR(100),
+    message TEXT,
+    FOREIGN KEY (alarme_id) REFERENCES alarme(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE voletRoulant (
+    id_objet_connecte INT PRIMARY KEY,
+    name VARCHAR(100),
+    location VARCHAR(100),
+    position INT CHECK (position BETWEEN 0 AND 100),
+    statut VARCHAR(50),
+    connectivite VARCHAR(50),
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+CREATE TABLE lumiere (
+    id_objet_connecte INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(100) NOT NULL,
+    piece VARCHAR(100),
+    etat BOOLEAN NOT NULL DEFAULT FALSE,
+    intensite TINYINT CHECK (intensite BETWEEN 0 AND 100) DEFAULT 0,
+    couleur VARCHAR(50) DEFAULT 'Blanc',
+    connectee BOOLEAN DEFAULT TRUE,
+    connectivite VARCHAR(50),
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+
+CREATE TABLE historique_conso (
+    id_objet_connecte INT,
+    nom_objet VARCHAR(255),
+    consommation_elec FLOAT,
+    date DATE,
+    PRIMARY KEY (id_objet_connecte, date),
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+

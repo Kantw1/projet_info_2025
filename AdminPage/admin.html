@@ -441,6 +441,71 @@
               </div>
             </div>
 
+
+            <!-- Component arrosage automat -->
+
+
+
+            <div id="arrosage-automatique-component" class="device-card" v-show="visible">
+              <h3 class="arrosage-title">Arrosage Automatique</h3>
+
+              <div class="arrosage-grid">
+                
+                <!-- Statut système -->
+                <div class="arrosage-card">
+                  <div class="label">Statut</div>
+                  <div class="value" :style="{ color: actif ? 'limegreen' : 'gray' }">
+                    {{ actif ? 'Actif' : 'Inactif' }}
+                  </div>
+                  <button class="mini-btn" @click="toggleArrosage">
+                    {{ actif ? 'Désactiver' : 'Activer' }}
+                  </button>
+                </div>
+
+                <!-- Humidité du sol -->
+                <div class="arrosage-card">
+                  <div class="label">Humidité du sol</div>
+                  <div class="value" :style="{ color: humiditeColor }">{{ humiditeSol }}%</div>
+                  <div class="etat-sol">{{ messageEtatSol }}</div>
+                </div>
+
+                <!-- Prochaine irrigation -->
+                <div class="arrosage-card">
+                  <div class="label">Prochaine irrigation</div>
+                  <div class="value">{{ prochaineIrrigation }}</div>
+                </div>
+
+                <!-- Planning -->
+                <div class="arrosage-card">
+                  <div class="label">Planning d’irrigation</div>
+                  <ul class="planning-list">
+                    <li v-for="(heure, index) in planning" :key="index">
+                      🕒 {{ heure }}
+                      <button class="remove-btn" @click="supprimerHeure(index)">✖</button>
+                    </li>
+                  </ul>
+                  <input v-model="nouvelleHeure" type="time" class="planning-input" />
+                  <button class="mini-btn" @click="ajouterHeure">Ajouter</button>
+                </div>
+
+                <!-- Historique -->
+                <div class="arrosage-card">
+                  <div class="label">Historique</div>
+                  <ul class="historique-list">
+                    <li v-for="(entry, index) in historique" :key="index">
+                      📅 {{ entry.date }} – 💧 {{ entry.duree }}
+                    </li>
+                  </ul>
+                </div>
+                
+              </div>
+
+              <div class="arrosage-footer">
+                🌿 Le système d’arrosage optimise votre consommation d’eau.
+              </div>
+            </div>
+
+
         </main>
     </div>
 

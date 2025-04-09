@@ -1253,3 +1253,151 @@ Panneau solaire component
     font-size: 1.5rem;
     }
 }
+
+
+
+
+/*
+Composant Arrosage Automatique
+*/
+
+
+
+#arrosage-automatique-component {
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+}
+
+.arrosage-title {
+    text-align: center;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 5px;
+}
+
+/* Grille responsive */
+.arrosage-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Cartes */
+.arrosage-card {
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.arrosage-card .label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 1rem;
+}
+
+.arrosage-card .value {
+    font-size: 1.4rem;
+    color: #2563eb;
+    font-weight: bold;
+}
+
+.etat-sol {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: #555;
+}
+
+/* Planning */
+.planning-list,
+.historique-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.planning-list li,
+.historique-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    font-size: 0.95rem;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: #dc2626;
+    cursor: pointer;
+}
+
+.planning-input {
+    margin-top: 6px;
+    padding: 8px;
+    font-size: 0.95rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Boutons harmonisés */
+.mini-btn {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.mini-btn:hover {
+    background: linear-gradient(135deg, #4338ca, #2563eb);
+    transform: translateY(-1px);
+}
+
+/* Footer */
+.arrosage-footer {
+    padding-top: 10px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #555;
+    font-weight: 500;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    #arrosage-automatique-component {
+        padding: 15px;
+    }
+
+    .arrosage-card .value {
+        font-size: 1.2rem;
+    }
+
+    .arrosage-title {
+        font-size: 1.5rem;
+    }
+}
+

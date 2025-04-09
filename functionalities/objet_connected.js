@@ -6,6 +6,7 @@ new Vue({
             { name: 'Panneau Solaire', script: 'PanneauSolaire.js' },
             { name: 'Lumiere', script: 'Lumiere.js' },
             { name: 'Alarme', script: 'Alarm.js' },
+            { name: 'Arrosage', script: 'Arrosage.js' },
             { name: 'VoletRoulant', script: 'VoletRoulant.js' }
         ]
     },

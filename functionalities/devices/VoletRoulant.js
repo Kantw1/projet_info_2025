@@ -3,16 +3,21 @@ new Vue({
     data: {
       visible: false,
       modeSecurite: false,
-      volets: [
-        { id: 1, name: 'Volet salon', location: 'Salon', position: 100, status: 'ouvert', connectivity: 'Signal fort' },
-        { id: 2, name: 'Volet cuisine', location: 'Cuisine', position: 0, status: 'fermé', connectivity: 'Signal moyen' },
-        { id: 3, name: 'Volet chambre parentale', location: 'Chambre parents', position: 50, status: 'partiellement ouvert', connectivity: 'Signal fort' },
-        { id: 4, name: 'Volet chambre enfant', location: 'Chambre enfant', position: 80, status: 'partiellement ouvert', connectivity: 'Signal faible' },
-        { id: 5, name: 'Volet salle de bain', location: 'Salle de bain', position: 0, status: 'fermé', connectivity: 'Déconnecté' }
-      ],
+      volets: [],
       consommationTotale: 0,
       derniereInteraction: 'Aucune',
-      messageErreur: null
+      messageErreur: null,
+      heuresDisponibles: [
+        '00:00','00:30','01:00','01:30','02:00','02:30','03:00','03:30','04:00','04:30',
+        '05:00','05:30','06:00','06:30','07:00','07:30','08:00','08:30','09:00','09:30',
+        '10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30',
+        '15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30',
+        '20:00','20:30','21:00','21:30','22:00','22:30','23:00','23:30'
+      ],
+      heureGlobaleOuverture: '07:00',
+      heureGlobaleFermeture: '21:00',
+      derniereInteraction: 'Chargement en cours...',
+      
     },
     mounted() {
       console.log('Volet roulant component monté');
@@ -21,10 +26,118 @@ new Vue({
         this.visible = (e.detail && e.detail.toLowerCase() === 'voletroulant');
         console.log('→ volet-roulant visible =', this.visible);
       });
-  
+    
       this.lancerProgrammationHoraire();
+      this.chargerVoletsDepuisServeur(); // <-- chargement dynamique ici
+      this.chargerConsoMensuelle();
+      this.chargerDerniereInteraction();
     },
     methods: {
+      chargerDerniereInteraction() {
+        fetch('../PHP_request/get_last_action_volet.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && data.action && data.date_heure && data.user) {
+              const date = new Date(data.date_heure);
+              const dateStr = date.toLocaleDateString();
+              const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              this.derniereInteraction = `${data.action} par ${data.user} le ${dateStr} à ${timeStr}`;
+            } else {
+              this.derniereInteraction = "Aucune action enregistrée";
+            }
+          })
+          .catch(err => {
+            console.error("Erreur chargement dernière interaction :", err);
+            this.derniereInteraction = "Erreur lors du chargement";
+          });
+      },      
+      connectiviteMoyenne() {
+        const valeurs = {
+          'Déconnecté': 0,
+          'Signal faible': 1,
+          'Signal moyen': 2,
+          'Signal fort': 3
+        };
+      
+        const valToLabel = {
+          0: 'Déconnecté',
+          1: 'Signal faible',
+          2: 'Signal moyen',
+          3: 'Signal fort'
+        };
+      
+        const voletsConnectés = this.volets.filter(v => v.connectivity in valeurs);
+        if (voletsConnectés.length === 0) return 'Aucune donnée';
+      
+        const somme = voletsConnectés.reduce((acc, v) => acc + valeurs[v.connectivity], 0);
+        const moyenne = Math.round(somme / voletsConnectés.length);
+      
+        return valToLabel[moyenne];
+      },      
+      chargerConsoMensuelle() {
+      fetch('../PHP_request/get_conso_volet_mois.php')
+        .then(res => res.json())
+        .then(data => {
+          if (typeof data.total !== 'undefined') {
+            this.consommationTotale = parseFloat(data.total);
+            console.log("Conso mensuelle chargée :", data.total);
+          } else {
+            console.warn("Réponse conso invalide :", data);
+          }
+        })
+        .catch(err => console.error("Erreur conso mensuelle :", err));
+    },    
+      appliquerProgrammationGlobale() {
+        this.volets.forEach(v => {
+          if (v.connectivity !== 'Déconnecté') {
+            v.heure_ouverture = this.heureGlobaleOuverture;
+            v.heure_fermeture = this.heureGlobaleFermeture;
+            this.enregistrerProgrammation(v);
+          }
+        });
+        this.logInteraction("Programmation appliquée à tous les volets");
+      },      
+      enregistrerProgrammation(volet) {
+        fetch('../PHP_request/set_programmation_volet.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: volet.id,
+            ouverture: volet.heure_ouverture,
+            fermeture: volet.heure_fermeture
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.logInteraction(`Programmation mise à jour pour ${volet.name}`);
+          } else {
+            this.afficherErreur("Erreur lors de l'enregistrement.");
+          }
+        });
+      },      
+      sauvegarderVolet(volet, action) {
+        fetch('../PHP_request/update_volet_roulant.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: volet.id,
+            position: volet.position,
+            statut: volet.status,
+            consommation: 0.15,
+            action: action
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (!data.success) {
+            console.error("Erreur sauvegarde volet :", data.error);
+          }
+        })
+        .catch(error => {
+          console.error("Erreur réseau :", error);
+        });
+      },      
       logInteraction(action) {
         const maintenant = new Date();
         this.derniereInteraction = `${action} - ${maintenant.toLocaleString()}`;
@@ -54,6 +167,7 @@ new Vue({
         volet.status = 'ouvert';
         this.consommationTotale += 0.15;
         this.logInteraction(`Ouverture de ${volet.name}`);
+        this.sauvegarderVolet(volet, `Ouverture de ${volet.name}`);
       },
       fermerVolet(id) {
         const volet = this.volets.find(v => v.id === id);
@@ -68,6 +182,7 @@ new Vue({
         volet.status = 'fermé';
         this.consommationTotale += 0.15;
         this.logInteraction(`Fermeture de ${volet.name}`);
+        this.sauvegarderVolet(volet, `Fermeture de ${volet.name}`);
       },
       ajusterVolet(id, value) {
         const volet = this.volets.find(v => v.id === id);
@@ -79,10 +194,11 @@ new Vue({
         }
   
         const val = parseInt(value);
-volet.position = Math.max(0, Math.min(100, val));
-volet.status = (val === 0) ? 'fermé' : (val === 100) ? 'ouvert' : 'partiellement ouvert';
+        volet.position = Math.max(0, Math.min(100, val));
+        volet.status = (val === 0) ? 'fermé' : (val === 100) ? 'ouvert' : 'partiellement ouvert';
         this.consommationTotale += 0.15;
         this.logInteraction(`Réglage de ${volet.name}`);
+        this.sauvegarderVolet(volet, `Règlage de ${volet.name}`);
       },
       ouvrirTous() {
         this.volets.forEach(v => {
@@ -91,6 +207,7 @@ volet.status = (val === 0) ? 'fermé' : (val === 100) ? 'ouvert' : 'partiellemen
             v.status = 'ouvert';
             this.consommationTotale += 0.15;
             this.logInteraction(`Ouverture de ${v.name}`);
+            this.sauvegarderVolet(v, `Ouverture de ${v.name}`);
           } else {
             this.afficherErreur(`${v.name} est déconnecté. Action ignorée.`);
           }
@@ -103,6 +220,7 @@ volet.status = (val === 0) ? 'fermé' : (val === 100) ? 'ouvert' : 'partiellemen
             v.status = 'fermé';
             this.consommationTotale += 0.15;
             this.logInteraction(`Fermeture de ${v.name}`);
+            this.sauvegarderVolet(v, `Fermeture de ${v.name}`);
           } else {
             this.afficherErreur(`${v.name} est déconnecté. Action ignorée.`);
           }
@@ -110,24 +228,86 @@ volet.status = (val === 0) ? 'fermé' : (val === 100) ? 'ouvert' : 'partiellemen
       },
       toggleModeSecurite() {
         this.modeSecurite = !this.modeSecurite;
+      
         if (this.modeSecurite) {
-          this.fermerTous();
+          // Côté BDD : activer le mode sécurité
+          fetch('../PHP_request/activer_mode_securite.php')
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                console.log(`Mode sécurité activé dans la BDD (${data.updated} volets mis à jour)`);
+              } else {
+                console.warn("Aucune mise à jour côté BDD :", data.message || data.error);
+              }
+            })
+            .catch(err => {
+              console.error("Erreur réseau lors de l'activation du mode sécurité :", err);
+            });
+      
+          // Côté UI : fermeture locale
+          //this.fermerTous();
           alert("Mode sécurité activé : tous les volets connectés sont fermés.");
         }
       },
+      formatHeure(timeString) {
+        if (!timeString) return '';
+        const [h, m] = timeString.split(':');
+        return `${h.padStart(2, '0')}:${m.padStart(2, '0')}`;
+      },      
       lancerProgrammationHoraire() {
         setInterval(() => {
           const maintenant = new Date();
-          if (
-            maintenant.getHours() === 21 &&
-            maintenant.getMinutes() === 0 &&
-            maintenant.getSeconds() === 0
-          ) {
-            this.fermerTous();
-            console.log("Fermeture automatique à 21h");
-          }
-        }, 1000);
-      }
+          const heureActuelle = maintenant.toTimeString().slice(0, 5); // "HH:MM"
+      
+          this.volets.forEach(v => {
+            if (v.connectivity !== 'Déconnecté') {
+              // Fermeture toujours autorisée
+              if (v.heure_fermeture === heureActuelle) {
+                this.fermerVolet(v.id);
+              }
+      
+              // Ouverture : vérifie mode sécurité
+              if (v.heure_ouverture === heureActuelle) {
+                if (!this.modeSecurite) {
+                  this.ouvrirVolet(v.id);
+                } else {
+                  console.warn(`Ouverture bloquée par le mode sécurité pour ${v.name}`);
+                  // 🔜 Ici tu pourras ajouter : if (alarmeDesactivee) { ... }
+                }
+              }
+            }
+          });
+        }, 30000);
+      },
+      chargerVoletsDepuisServeur() {
+        fetch('../PHP_request/get_volet_roulant.php')
+          .then(response => response.json())
+          .then(data => {
+            if (Array.isArray(data)) {
+              this.volets = data.map(volet => ({
+                id: volet.id_objet_connecte,
+                name: volet.nom_objet,
+                location: volet.position,
+                position: parseInt(volet.ouverture),
+                status: volet.statut,
+                connectivity: volet.connectivite,
+                heure_ouverture: this.formatHeure(volet.heure_ouverture),
+                heure_fermeture: this.formatHeure(volet.heure_fermeture)
+              }));
+                    
+              // Initialise mode sécurité à partir du premier volet
+              if (data.length > 0 && 'mode_securite' in data[0]) {
+                this.modeSecurite = data[0].mode_securite === 1 || data[0].mode_securite === true;
+              }
+      
+            } else {
+              console.error("Format inattendu :", data);
+            }
+          })
+          .catch(error => {
+            console.error("Erreur lors du chargement des volets :", error);
+          });
+      }          
     }
   });
   

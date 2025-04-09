@@ -156,6 +156,7 @@
               <div id="volet-roulant-component" class="device-card" v-show="visible">
                 <h3>Volets roulants</h3>
               
+                <div class="volet-table-wrapper">
                 <table class="volet-table">
                   <thead>
                     <tr>
@@ -165,6 +166,8 @@
                       <th>Statut</th>
                       <th>Connectivité</th>
                       <th>Actions</th>
+                      <th>Heure ouverture</th>
+                      <th>Heure fermeture</th>
                       
                     </tr>
                   </thead>
@@ -182,27 +185,52 @@
                         <button @click="ouvrirVolet(volet.id)" :disabled="!peutOuvrir(volet)">Ouvrir</button>
                         <button @click="fermerVolet(volet.id)" :disabled="!peutFermer(volet)">Fermer</button>
                       </td>
+                      <td>
+                        <select v-model="volet.heure_ouverture" @change="enregistrerProgrammation(volet)">
+                          <option v-for="heure in heuresDisponibles" :value="heure">{{ heure }}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select v-model="volet.heure_fermeture" @change="enregistrerProgrammation(volet)">
+                          <option v-for="heure in heuresDisponibles" :value="heure">{{ heure }}</option>
+                        </select>
+                      </td>                                           
                     </tr>
                   </tbody>
                 </table>
+              </div>
               
                 <div class="global-actions">
                   <button @click="ouvrirTous">Tout ouvrir</button>
                   <button @click="fermerTous">Tout fermer</button>
-                  <button @click="toggleModeSecurite">
+                  <button @click="toggleModeSecurite" :disabled="modeSecuriteEnCours">
                     {{ modeSecurite ? 'Désactiver' : 'Activer' }} mode sécurité
-                  </button>
+                  </button>                  
+                  <div class="programmation-global">
+                    <label>Heure ouverture globale :
+                      <select v-model="heureGlobaleOuverture">
+                        <option v-for="heure in heuresDisponibles" :value="heure">{{ heure }}</option>
+                      </select>
+                    </label>
+                    <label>Heure fermeture globale :
+                      <select v-model="heureGlobaleFermeture">
+                        <option v-for="heure in heuresDisponibles" :value="heure">{{ heure }}</option>
+                      </select>
+                    </label>
+                    <button @click="appliquerProgrammationGlobale">Appliquer à tous</button>
+                  </div>
+                  
                 </div>
 
                 <div class="volet-footer">
                     <div class="info-bloc">
-                      <strong>Consommation :</strong>
+                      <strong>Consommation (mois actuel):</strong>
                       {{ consommationTotale.toFixed(2) }} kWh
                     </div>
                     <div class="info-bloc">
-                      <strong>Connectivité :</strong>
-                      Signal Wi-Fi fort
-                    </div>
+                      <strong>Connectivité (moyenne):</strong>
+                      {{ connectiviteMoyenne() }}
+                    </div>                    
                     <div class="info-bloc">
                       <strong>Dernière action :</strong>
                       {{ derniereInteraction }}

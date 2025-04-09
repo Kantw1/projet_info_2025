@@ -47,26 +47,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $result = $obj_stmt->get_result();
 
             while ($row = $result->fetch_assoc()) {
-                $type = $row['type'];
+                // Normalisation du type : "volet_roulant" → "VoletRoulant"
+                $type_normalise = str_replace('_', '', ucwords(strtolower($row['type']), '_'));
                 $id_obj = $row['id'];
 
-                if (!isset($liste_objets[$type])) {
-                    $liste_objets[$type] = [];
+                if (!isset($liste_objets[$type_normalise])) {
+                    $liste_objets[$type_normalise] = [];
                 }
-                $liste_objets[$type][] = $id_obj;
+                $liste_objets[$type_normalise][] = $id_obj;
             }
 
             $_SESSION['objets_connectes'] = $liste_objets;
 
-            // ➕ Incrémenter les points
+            // Incrémenter les points
             $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 1 WHERE id = ?");
             $updateStmt->bind_param("i", $id);
             $updateStmt->execute();
             $updateStmt->close();
 
+            // Vérifie le type d’utilisateur (admin ou user)
             require("../Points/check_user_type.php");
 
-            // Rediriger l'utilisateur selon son type
+            // Redirection vers l'interface principale
             header("Location: ../AdminPage/admin.html");
             exit();
         } else {

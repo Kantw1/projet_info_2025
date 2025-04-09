@@ -515,6 +515,14 @@ form button {
     font-size: 1.5rem;
     color: #333;
   }
+
+  .volet-table-wrapper {
+    max-height: 300px; /* ou 400px si tu veux plus grand */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
   
   .volet-table {
     width: 100%;
@@ -628,6 +636,35 @@ form button {
     cursor: not-allowed;
   }
 
+  select {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    transition: border-color 0.2s ease-in-out;
+  }
+  
+  select:focus {
+    border-color: #4a90e2;
+    outline: none;
+  }
+  .programmation-global {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+  }
+  
+  .programmation-global label {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .programmation-global select {
+    margin-left: 5px;
+  }
+    
 
 
 /*

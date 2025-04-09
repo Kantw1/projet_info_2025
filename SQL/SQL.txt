@@ -49,3 +49,34 @@ CREATE TABLE historique_thermostat (
     consommation_electricite FLOAT,
     FOREIGN KEY (id_objet_connecte) REFERENCES thermostat(id_objet_connecte)
 );
+
+CREATE TABLE volet_roulant (
+    id_objet_connecte INT PRIMARY KEY,  -- identifiant unique lié à objet_connecte
+    nom_objet VARCHAR(255),             -- nom complet du volet (ex : "Volet salon")
+    position VARCHAR(100),              -- emplacement dans la maison (ex : "Salon")
+    ouverture INT CHECK (ouverture BETWEEN 0 AND 100), -- 0 à 100%
+    statut VARCHAR(50) CHECK (
+        statut IN ('ouvert', 'fermé', 'partiellement ouvert')
+    ),
+    connectivite VARCHAR(50) CHECK (
+        connectivite IN ('Signal fort', 'Signal moyen', 'Signal faible', 'Déconnecté')
+    ),
+    consommation_electricite FLOAT,
+    derniere_interaction DATETIME,
+    type_interaction VARCHAR(100),
+    mode_securite BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+CREATE TABLE historique_volet_roulant (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_objet_connecte INT,
+    id_user INT,
+    date_heure DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ouverture INT,
+    consommation_electricite FLOAT,
+    action VARCHAR(255),
+    FOREIGN KEY (id_objet_connecte) REFERENCES volet_roulant(id_objet_connecte),
+    FOREIGN KEY (id_user) REFERENCES USERS(id)
+);
+

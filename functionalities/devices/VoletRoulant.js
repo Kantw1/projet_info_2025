@@ -25,7 +25,9 @@ new Vue({
         console.log('Événement reçu :', e.detail);
         this.visible = (e.detail && e.detail.toLowerCase() === 'voletroulant');
         console.log('→ volet-roulant visible =', this.visible);
+        this.chargerVoletsDepuisServeur();
       });
+      
     
       this.lancerProgrammationHoraire();
       this.chargerVoletsDepuisServeur(); // <-- chargement dynamique ici
@@ -227,7 +229,7 @@ new Vue({
         });
       },
       toggleModeSecurite() {
-        // On commence par vérifier l’état de l’alarme
+        // Vérifie l’état de l’alarme avant de basculer le mode sécurité
         fetch('../PHP_request/get_alarme.php')
           .then(res => res.json())
           .then(data => {
@@ -241,15 +243,29 @@ new Vue({
               return;
             }
       
-            // Si alarme activée, on continue :
+            // Si alarme activée, on bascule le mode sécurité
             this.modeSecurite = !this.modeSecurite;
       
             if (this.modeSecurite) {
-              fetch('../PHP_request/activer_mode_securite.php')
+              // Appelle la BDD pour activer le mode sécurité
+              fetch('../PHP_request/check_alarme_active.php')
                 .then(res => res.json())
                 .then(data => {
                   if (data.success) {
                     console.log(`Mode sécurité activé dans la BDD (${data.updated} volets mis à jour)`);
+      
+                    // Fermer tous les volets connectés
+                    this.volets.forEach(v => {
+                      if (v.connectivity !== 'Déconnecté') {
+                        v.position = 0;
+                        v.status = 'fermé';
+                        this.consommationTotale += 0.15;
+                        this.logInteraction(`Fermeture de ${v.name}`);
+                        this.sauvegarderVolet(v, `Fermeture automatique (mode sécurité)`);
+                      }
+                    });
+      
+                    alert("Mode sécurité activé : tous les volets connectés ont été fermés.");
                   } else {
                     console.warn("Aucune mise à jour côté BDD :", data.message || data.error);
                   }
@@ -257,14 +273,14 @@ new Vue({
                 .catch(err => {
                   console.error("Erreur réseau lors de l'activation du mode sécurité :", err);
                 });
-      
-              alert("Mode sécurité activé : tous les volets connectés sont fermés.");
+            } else {
+              alert("Mode sécurité désactivé.");
             }
           })
           .catch(err => {
             console.error("Erreur lors de la vérification de l'état de l'alarme :", err);
           });
-      },      
+      },            
       formatHeure(timeString) {
         if (!timeString) return '';
         const [h, m] = timeString.split(':');

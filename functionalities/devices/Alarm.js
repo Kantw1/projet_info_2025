@@ -33,6 +33,7 @@ new Vue({
       }
     });
     this.chargerHistorique();
+    this.chargerCapteurs();
   },
 
   computed: {
@@ -97,33 +98,6 @@ new Vue({
       .catch(err => console.error("Erreur réseau alarme :", err));
     },
 
-    desactiverAlarme() {
-      if (this.isActive) {
-        this.isActive = false;
-        this.isPartial = false;
-        this.chargerHistorique();
-        this.stopEnergyConsumption();
-        this.energyUsed = 0;
-        this.sauvegarderEtatAlarme();
-      }
-    },
-
-    activerAlarme() {
-      const code = prompt("Entrez le code de sécurité pour activer l'alarme :");
-      if (code !== this.alarmPassword) {
-        alert("Code incorrect. Activation annulée.");
-        return;
-      }
-
-      if (!this.isActive) {
-        this.isActive = true;
-        this.isPartial = false;
-        this.chargerHistorique();
-        this.activationTime = new Date().toISOString();
-        this.sauvegarderEtatAlarme();
-      }
-    },
-
     askCode(action) {
       this.askCodeFor = action;
       this.codeSaisi = '';
@@ -146,7 +120,10 @@ new Vue({
         this.isPartial = false;
         this.chargerHistorique();
         this.activationTime = new Date().toISOString();
-        
+         // 🔒 Vérifie si le mode sécurité volet est actif
+         fetch('../PHP_request/fermer_tous_les_volets.php')
+        .catch(err => {});
+
       } else if (this.askCodeFor === 'partielle') {
         this.isActive = true;
         this.isPartial = true;
@@ -198,6 +175,20 @@ new Vue({
         })
         .catch(err => {
           console.error("Erreur réseau alertes :", err);
+        });
+    },
+    chargerCapteurs() {
+      fetch('../PHP_request/get_capteurs.php')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.capteurs = data.capteurs; // Mets à jour les capteurs dans le data
+          } else {
+            console.error("Erreur lors du chargement des capteurs :", data.error);
+          }
+        })
+        .catch(err => {
+          console.error("Erreur réseau lors du chargement des capteurs :", err);
         });
     }        
   }

@@ -1,13 +1,13 @@
 // Electricite.js
 
 new Vue({
-    el: '#electricite-component',
+    el: '#consommation-electricite',
     data: {
     visible: false,
-    total: 82.4, // kWh
-    moisActuel: new Date().toLocaleString('fr-FR', { month: 'long', year: 'numeric' }),
+    total: 82.4,
     afficherDetails: false,
     afficherHistorique: false,
+    moisActuel: new Date().toLocaleString('fr-FR', { month: 'long', year: 'numeric' }),
     objets: [
         { nom: 'Thermostat', conso: '42.1 kWh' },
         { nom: 'Lumières', conso: '29.5 kWh' },
@@ -15,10 +15,11 @@ new Vue({
     ]
     },
     mounted() {
-        console.log("→ Composant Électricité monté");
-        window.addEventListener('device-selected', (e) => {
-            const selection = e.detail && e.detail.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-            this.visible = selection === 'électricité' || selection === 'electricite';
-        });
+    console.log("→ Composant Électricité monté");
+    window.addEventListener('device-selected', (e) => {
+        const selection = e.detail && e.detail.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+        this.visible = selection === 'electricite';
+    });
     }
 });
+  

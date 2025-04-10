@@ -40,8 +40,14 @@
             <section id="conso" class="tab-content">
               <h2>Consommation énergétique</h2>
               <div id="energy-list">
-              <button class="energy-button" :class="{ 'active-tab': activeTab === 'eau' }" @click="activeTab = 'eau'"> Eau </button>
-              <button class="energy-button" :class="{ 'active-tab': activeTab === 'elec' }" @click="activeTab = 'elec'"> Électricité </button>
+                <button 
+                  v-for="(tab, index) in tabs" 
+                  :key="index"
+                  class="energy-button"
+                  @click="selectTab(tab)">
+                  {{ tab.name }}
+                </button>
+                <div id="backdrop-consommation" @click="closeTab" style="display: none;"></div>
               </div>
             
               <!-- Composant Eau -->

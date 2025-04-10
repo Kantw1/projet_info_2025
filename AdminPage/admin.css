@@ -1450,21 +1450,22 @@ consommation component
 #energy-list {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
-    flex-wrap: wrap;
 }
 
 /* Boutons onglets Eau / Électricité */
 .energy-button {
-    padding: 10px 20px;
-    font-size: 1rem;
+    background-color: #007bff;
     border: none;
-    border-radius: 30px;
-    background: #e5e7eb;
-    color: #333;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
 }
 
 .energy-button.active {
@@ -1473,6 +1474,19 @@ consommation component
     font-weight: bold;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
+.energy-button:hover {
+    background-color: #0056b3;
+}
+
+#backdrop-consommation {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 99;
+  }
+  
 
 /* Titre */
 .consumption-title {
@@ -1589,3 +1603,4 @@ canvas {
     font-size: 1.4rem;
     }
 }
+

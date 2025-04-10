@@ -1,4 +1,4 @@
-// fichier : functionalities/consumption_loader.js
+// fichier consumtion loader.js
 
 new Vue({
   el: '#energy-list',
@@ -6,7 +6,8 @@ new Vue({
     tabs: [
       { name: 'Eau', script: 'Eau.js', id: 'consommation-eau' },
       { name: 'Électricité', script: 'Electricite.js', id: 'consommation-electricite' }
-    ]
+    ],
+    selectedTab: null
   },
   mounted() {
     this.tabs.forEach(tab => {
@@ -16,20 +17,25 @@ new Vue({
       script.onerror = () => console.warn(`Erreur chargement ${tab.script}`);
       document.head.appendChild(script);
     });
+
+    window.addEventListener('device-selected', (e) => {
+      this.selectedTab = e.detail;
+    });
   },
   methods: {
-    normalize(name) {
-      return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-    },
     selectTab(tab) {
       const event = new CustomEvent('device-selected', { detail: tab.name });
       window.dispatchEvent(event);
-      document.getElementById('backdrop').style.display = 'block';
+      document.getElementById('backdrop-consommation').style.display = 'block';
     },
     closeTab() {
       const event = new CustomEvent('device-selected', { detail: null });
       window.dispatchEvent(event);
-      document.getElementById('backdrop').style.display = 'none';
+      document.getElementById('backdrop-consommation').style.display = 'none';
+    },
+    normalize(name) {
+      return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
     }
   }
 });
+

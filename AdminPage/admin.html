@@ -327,6 +327,13 @@
             
             <div id="alarm-component" class="device-card" v-show="visible">
                 <h3>Alarme</h3>
+
+                <div class="alarm-controls-bottom">
+                  <button @click="askCode('activer')" :disabled="isActive">Activer l'alarme</button>
+                  <button @click="askCode('desactiver')" :disabled="!isActive">Désactiver l'alarme</button>
+                  <button @click="askCode('partielle')" :disabled="isActive">Activer partiellement</button>
+                </div>
+
                 <div class="alarm-content">
                   <div class="alarm-section">
                     <h4>Historique des activations</h4>
@@ -401,12 +408,6 @@
                     <div class="energy">
                         ⚡ <span>{{ energyFormatted }} kWh</span>
                     </div>
-                </div>
-
-                <div class="alarm-controls-bottom">
-                    <button @click="askCode('activer')" :disabled="isActive">Activer l'alarme</button>
-                    <button @click="askCode('desactiver')" :disabled="!isActive">Désactiver l'alarme</button>
-                    <button @click="askCode('partielle')" :disabled="isActive">Activer partiellement</button>
                 </div>
 
                 <!-- MODALE DE CODE -->

@@ -1438,3 +1438,154 @@ Composant Arrosage Automatique
     }
 }
 
+
+
+/* 
+consommation component 
+*/
+
+
+
+/* Conteneur principal des boutons */
+#energy-list {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+/* Boutons onglets Eau / Électricité */
+.energy-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 30px;
+    background: #e5e7eb;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.energy-button.active {
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Titre */
+.consumption-title {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 20px;
+}
+
+/* Carte de résumé total */
+.consumption-summary {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.consumption-card {
+    background: #f3f4f6;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.consumption-card .label {
+    font-size: 1rem;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+.consumption-card .value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+/* Détails des objets */
+.details-toggle,
+.history-toggle {
+    text-align: center;
+    font-size: 1rem;
+    color: #2563eb;
+    font-weight: 500;
+    cursor: pointer;
+    margin: 10px 0;
+    user-select: none;
+}
+
+.details-toggle .arrow,
+.history-toggle .arrow {
+    margin-left: 6px;
+}
+
+/* Liste des objets */
+.consumption-details {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.object-usage {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 6px 0;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.object-usage .conso {
+    font-weight: bold;
+    color: #4b5563;
+}
+
+/* Graphique historique */
+.history-chart {
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* Footer */
+.consumption-footer {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #555;
+    font-weight: 500;
+    margin-top: 20px;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .consumption-card {
+    padding: 15px 20px;
+    }
+
+    .consumption-card .value {
+    font-size: 1.5rem;
+    }
+
+    .object-usage {
+    font-size: 0.9rem;
+    }
+
+    .consumption-title {
+    font-size: 1.4rem;
+    }
+}

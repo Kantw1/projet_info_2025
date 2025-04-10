@@ -40,8 +40,8 @@
             <section id="conso" class="tab-content">
                 <h2>Consommation énergétique</h2>
                 <div id="energy-list">
-                    <button class="energy-button">Eau</button>
-                    <button class="energy-button">Électricité</button>
+                  <button class="energy-button" :class="{ active: activeTab === 'eau' }" @click="activeTab = 'eau'">Eau</button>
+                  <button class="energy-button" :class="{ active: activeTab === 'elec' }" @click="activeTab = 'elec'">Électricité</button>
                 </div>
             </section>
 
@@ -82,11 +82,12 @@
                     </ul>
                     <button id="add-user" class="add-user" @click="goToAddUser">Ajouter un utilisateur</button>
                 </div>
+                
             </section>
             
             
 
-            <!-- 📌 Conteneur pour afficher dynamiquement les nouveaux onglets -->
+            <!-- Conteneur pour afficher dynamiquement les nouveaux onglets -->
             <div id="dynamic-tabs"></div>
 
             <!-- component thermostat -->
@@ -300,7 +301,6 @@
                     <button @click="askCode('activer')" :disabled="isActive">Activer l'alarme</button>
                     <button @click="askCode('desactiver')" :disabled="!isActive">Désactiver l'alarme</button>
                     <button @click="askCode('partielle')" :disabled="isActive">Activer partiellement</button>
-                    <button @click="simulerIntrusion" :disabled="!isActive">Simuler intrusion</button>
                 </div>
 
                 <!-- MODALE DE CODE -->
@@ -533,13 +533,13 @@
               </div>
             </div>
 
-
         </main>
     </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="../functionalities/objet_connected.js"></script>
+    <script src="../functionalities/consumption_loader.js"></script>
     <script src="admin.js"></script>
     <script src="adminProfile.js"></script>
     <script src="userHouse.js"></script>

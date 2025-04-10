@@ -754,6 +754,29 @@ Bouton de lalarme dans objets connectes
     transition: background 0.2s ease-in-out;
 }
 
+/* Corps du tableau scrollable */
+.scrollable-body {
+    display: block;
+    max-height: 150px;      /* ajuste la hauteur max visible */
+    overflow-y: auto;
+}
+
+/* Pour que chaque ligne prenne toute la largeur du tableau */
+.scrollable-body tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* Garder les entêtes fixes et alignées */
+table thead,
+table tbody tr {
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+}
+
+
 /* Bords */
 #alarm-component th:first-child,
 #alarm-component td:first-child {

@@ -335,7 +335,7 @@
                         <thead>
                           <tr><th>Date</th><th>Statut</th><th>Utilisateur</th></tr>
                         </thead>
-                        <tbody>
+                        <tbody class="scrollable-body">
                           <tr v-for="(entry, index) in historique" :key="'h' + index">
                             <td>{{ entry.date }}</td>
                             <td>{{ entry.status }}</td>
@@ -358,7 +358,7 @@
                                 <th>Message</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="scrollable-body">
                                 <tr v-for="(alert, index) in alertes" :key="'a' + index">
                                 <td>{{ alert.date }}</td>
                                 <td>{{ alert.status }}</td>
@@ -381,7 +381,7 @@
                                   <th>Statut</th>
                                 </tr>
                               </thead>
-                              <tbody>
+                              <tbody class="scrollable-body">
                                 <tr v-for="(capteur, index) in capteurs" :key="index">
                                   <td>{{ index + 1 }}</td>
                                   <td>{{ capteur }}</td>

@@ -80,3 +80,44 @@ CREATE TABLE historique_volet_roulant (
     FOREIGN KEY (id_user) REFERENCES USERS(id)
 );
 
+CREATE TABLE alarme (
+    id INT PRIMARY KEY,
+    est_active BOOLEAN DEFAULT FALSE,
+    est_partielle BOOLEAN DEFAULT FALSE,
+    niveau_signal VARCHAR(20) CHECK (niveau_signal IN ('faible', 'moyen', 'fort')),
+    consommation FLOAT DEFAULT 0,
+    mot_de_passe VARCHAR(10) NOT NULL, -- uniquement des chiffres (ex: '4321')
+    derniere_maj DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id) REFERENCES objet_connecte(id)
+);
+
+
+CREATE TABLE historique_alarme (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_alarme INT,
+    id_user INT,
+    date_action DATETIME DEFAULT CURRENT_TIMESTAMP,
+    action VARCHAR(100), -- ex: "Activée", "Désactivée", "Activée (partielle)"
+    FOREIGN KEY (id_alarme) REFERENCES alarme(id),
+    FOREIGN KEY (id_user) REFERENCES utilisateur(id)
+);
+
+CREATE TABLE alerte_intrusion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_alarme INT,
+    id_capteur INT,
+    date_alerte DATETIME DEFAULT CURRENT_TIMESTAMP,
+    message TEXT,
+    criticite VARCHAR(50) DEFAULT 'Critique',
+    FOREIGN KEY (id_alarme) REFERENCES alarme(id),
+    FOREIGN KEY (id_capteur) REFERENCES capteur(id)
+);
+
+CREATE TABLE capteur (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_objet_connecte INT NOT NULL,
+    lieu VARCHAR(255),
+    etat_signal VARCHAR(20) CHECK (etat_signal IN ('faible', 'moyen', 'fort')),
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+

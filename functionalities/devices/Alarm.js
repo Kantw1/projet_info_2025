@@ -2,163 +2,203 @@ new Vue({
   el: '#alarm-component',
   data: {
     visible: false,
-    isActive: false,
+    isActive: null,
+    isPartial: null,
+    signalStrength: null,
+    energyUsed: 0,
     historique: [],
     alertes: [],
-    currentUser: "Ahmed l'Admin", // pour le moment c'est un admin en attente pour lajout de la bdd
-    askCodeFor: null, // soit 'activer', soit 'desactiver'
+    currentUser: "Ahmed l'Admin",
+    askCodeFor: null,
     codeSaisi: '',
-    signalStrength: 'strong', // ou 'medium', 'weak' fixe pour le moment pour php apres
-    energyUsed: 0, // en kWh
-    energyInterval: null, // pour la consommation d'énergie
-    isPartial: false, // pour la consommation partielle
-    capteurs: ["Détecteur salon", "Porte d'entrée", "Fenêtre chambre", "Garage", "Cuisine", "Jardin"], // liste des capteurs
+    energyInterval: null,
+    capteurs: ["Détecteur salon", "Porte d'entrée", "Fenêtre chambre", "Garage", "Cuisine", "Jardin"],
+    alarmPassword: null,
+    activationTime: null,
   },
 
-  // Pour le backdrop
   mounted() {
-    // Forcer visible à false au démarrage
     this.visible = false;
-
-    console.log("Alarm component monté (visible = false)");
-
-    // Écoute de la sélection d'un device
-    window.addEventListener('device-selected', (e) => {
-      const selection = e.detail && e.detail.toLowerCase();
-      console.log("Device selected:", selection);
-      this.visible = selection === 'alarme';
-
-      // Affiche ou masque le backdrop
-      const backdrop = document.getElementById('backdrop');
-      if (backdrop) {
-        backdrop.style.display = (selection === 'alarme') ? 'block' : 'none';
-      }
-    });
-
-    // Simuler un niveau de signal à l'ouverture
-    const niveaux = ['strong', 'medium', 'weak'];
-
     window.addEventListener('device-selected', (e) => {
       const selection = e.detail && e.detail.toLowerCase();
       this.visible = selection === 'alarme';
 
       const backdrop = document.getElementById('backdrop');
       if (backdrop) {
-        backdrop.style.display = (selection === 'alarme') ? 'block' : 'none';
+        backdrop.style.display = this.visible ? 'block' : 'none';
+      }
+
+      if (this.visible) {
+        this.chargerAlarme();
       }
     });
+    this.chargerHistorique();
   },
 
   computed: {
     signalStrengthLabel() {
       switch (this.signalStrength) {
-        case 'strong': return 'Forte';
-        case 'medium': return 'Moyenne';
-        case 'weak': return 'Faible';
+        case 'fort': return 'Forte';
+        case 'moyen': return 'Moyenne';
+        case 'faible': return 'Faible';
         default: return 'Inconnue';
       }
     },
     energyFormatted() {
-      return this.energyUsed.toFixed(2) + ' kWh';
+      if (this.energyUsed == null || isNaN(this.energyUsed)) return '0.00 kWh';
+      return this.energyUsed.toFixed(2) ;
     }
   },
 
-
-  // les méthodes sont appelées par le template
   methods: {
-    activerAlarme() {
-      if (!this.isActive) {
-        this.isActive = true;
-        this.ajouterHistorique("Activée");
-      }
+    chargerAlarme() {
+      fetch('../PHP_request/get_alarme.php')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.isActive = data.isActive;
+            this.isPartial = data.isPartial;
+            this.signalStrength = data.signalStrength;
+            this.energyUsed = this.isActive ? data.energyUsed : 0;
+            this.historique = data.historique || [];
+            this.alertes = data.alertes || [];
+            this.alarmPassword = data.password;
+            this.activationTime = data.lastUpdate;
+
+            this.chargerHistorique();
+            this.chargerAlertes();
+          } else {
+            console.warn("Erreur chargement alarme :", data.error);
+          }
+        })
+        .catch(err => console.error("Erreur réseau alarme :", err));
     },
+
+    sauvegarderEtatAlarme() {
+      const payload = {
+        isActive: this.isActive,
+        isPartial: this.isPartial,
+        energyUsed: this.energyUsed
+      };
+
+      fetch('../PHP_request/update_alarme.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (!data.success) {
+          console.error("Échec mise à jour alarme :", data.error);
+        } else {
+          console.log("Alarme mise à jour avec succès");
+        }
+      })
+      .catch(err => console.error("Erreur réseau alarme :", err));
+    },
+
     desactiverAlarme() {
       if (this.isActive) {
         this.isActive = false;
-        this.ajouterHistorique("Désactivée");
-        this.stopEnergyConsumption(); // arrête la consommation d'énergie
-        this.energyUsed = 0; // réinitialise la consommation d'énergie
+        this.isPartial = false;
+        this.chargerHistorique();
+        this.stopEnergyConsumption();
+        this.energyUsed = 0;
+        this.sauvegarderEtatAlarme();
       }
     },
-    ajouterHistorique(stat) {
-      this.historique.push({
-        date: new Date().toLocaleString(),
-        status: stat,
-        user: this.currentUser
-      });
-    },
+
     activerAlarme() {
       const code = prompt("Entrez le code de sécurité pour activer l'alarme :");
-      if (code !== "4321") {
+      if (code !== this.alarmPassword) {
         alert("Code incorrect. Activation annulée.");
         return;
       }
-    
+
       if (!this.isActive) {
         this.isActive = true;
-        this.ajouterHistorique("Activée");
-        this.startEnergyConsumption(); // démarre la consommation d'énergie
+        this.isPartial = false;
+        this.chargerHistorique();
+        this.activationTime = new Date().toISOString();
+        this.sauvegarderEtatAlarme();
       }
     },
+
     askCode(action) {
       this.askCodeFor = action;
       this.codeSaisi = '';
     },
-    
+
     cancelCode() {
       this.askCodeFor = null;
       this.codeSaisi = '';
     },
-    
+
     validerCode() {
-      if (this.codeSaisi !== '4321') {
+      if (this.codeSaisi !== this.alarmPassword) {
         alert("Code incorrect.");
         this.codeSaisi = '';
         return;
       }
-    
+
       if (this.askCodeFor === 'activer') {
         this.isActive = true;
-        this.ajouterHistorique("Activée");
-        this.startEnergyConsumption(); // démarre la consommation d'énergie
+        this.isPartial = false;
+        this.chargerHistorique();
+        this.activationTime = new Date().toISOString();
+        
       } else if (this.askCodeFor === 'partielle') {
         this.isActive = true;
         this.isPartial = true;
-        this.ajouterHistorique("Activée (partielle)");
-        this.startEnergyConsumption(0.005); // consommation partielle
+        this.chargerHistorique();
+        this.activationTime = new Date().toISOString();
+        
       } else if (this.askCodeFor === 'desactiver') {
         this.isActive = false;
         this.isPartial = false;
-        this.ajouterHistorique("Désactivée");
-        this.stopEnergyConsumption(); // arrête la consommation d'énergie
-        this.energyUsed = 0; // réinitialise la consommation d'énergie
+        this.chargerHistorique();
+        this.stopEnergyConsumption();
+        this.energyUsed = 0;
       }
-    
+
       this.askCodeFor = null;
       this.codeSaisi = '';
-    },
+      this.sauvegarderEtatAlarme();
+      this.chargerHistorique();
+    },   
 
-    startEnergyConsumption(taux = 0.01) {
-      if (this.energyInterval) return; // Si déjà en cours
-      this.energyInterval = setInterval(() => {
-        this.energyUsed += taux; // Consommation d'énergie
-      }, 1000); // toutes les secondes
-    },
-    
     stopEnergyConsumption() {
       clearInterval(this.energyInterval);
       this.energyInterval = null;
     },
 
-    simulerIntrusion() {
-      if (this.isActive) {
-        this.alertes.push({
-          date: new Date().toLocaleString(),
-          status: "Critique",
-          capteur: this.capteurs[0],
-          message: "Intrusion!"
+    chargerHistorique() {
+      fetch('../PHP_request/get_historique_alarme.php')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.historique = data.historique;
+          } else {
+            console.warn("Erreur chargement historique :", data.error);
+          }
+        })
+        .catch(err => {
+          console.error("Erreur réseau historique :", err);
         });
-      }
-    }
+    },
+    chargerAlertes() {
+      fetch('../PHP_request/get_alertes_alarme.php')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.alertes = data.alertes;
+          } else {
+            console.warn("Erreur chargement alertes :", data.error);
+          }
+        })
+        .catch(err => {
+          console.error("Erreur réseau alertes :", err);
+        });
+    }        
   }
 });

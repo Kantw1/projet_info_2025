@@ -227,28 +227,44 @@ new Vue({
         });
       },
       toggleModeSecurite() {
-        this.modeSecurite = !this.modeSecurite;
+        // On commence par vérifier l’état de l’alarme
+        fetch('../PHP_request/get_alarme.php')
+          .then(res => res.json())
+          .then(data => {
+            if (!data.success) {
+              console.warn("Impossible de vérifier l'état de l'alarme :", data.error);
+              return;
+            }
       
-        if (this.modeSecurite) {
-          // Côté BDD : activer le mode sécurité
-          fetch('../PHP_request/activer_mode_securite.php')
-            .then(res => res.json())
-            .then(data => {
-              if (data.success) {
-                console.log(`Mode sécurité activé dans la BDD (${data.updated} volets mis à jour)`);
-              } else {
-                console.warn("Aucune mise à jour côté BDD :", data.message || data.error);
-              }
-            })
-            .catch(err => {
-              console.error("Erreur réseau lors de l'activation du mode sécurité :", err);
-            });
+            if (!data.isActive) {
+              alert("Vous devez d'abord activer l'alarme avant d'activer le mode sécurité.");
+              return;
+            }
       
-          // Côté UI : fermeture locale
-          //this.fermerTous();
-          alert("Mode sécurité activé : tous les volets connectés sont fermés.");
-        }
-      },
+            // Si alarme activée, on continue :
+            this.modeSecurite = !this.modeSecurite;
+      
+            if (this.modeSecurite) {
+              fetch('../PHP_request/activer_mode_securite.php')
+                .then(res => res.json())
+                .then(data => {
+                  if (data.success) {
+                    console.log(`Mode sécurité activé dans la BDD (${data.updated} volets mis à jour)`);
+                  } else {
+                    console.warn("Aucune mise à jour côté BDD :", data.message || data.error);
+                  }
+                })
+                .catch(err => {
+                  console.error("Erreur réseau lors de l'activation du mode sécurité :", err);
+                });
+      
+              alert("Mode sécurité activé : tous les volets connectés sont fermés.");
+            }
+          })
+          .catch(err => {
+            console.error("Erreur lors de la vérification de l'état de l'alarme :", err);
+          });
+      },      
       formatHeure(timeString) {
         if (!timeString) return '';
         const [h, m] = timeString.split(':');

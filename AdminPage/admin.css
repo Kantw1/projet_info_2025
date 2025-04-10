@@ -671,7 +671,6 @@ form button {
 Bouton de lalarme dans objets connectes
 */
 
-
 /* Bloc principal */
 #alarm-component {
     height: 80vh;
@@ -685,6 +684,8 @@ Bouton de lalarme dans objets connectes
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center; /* nouveau : centre tout le contenu horizontalement */
+    text-align: center;  /* nouveau : centre les titres, paragraphes, etc. */
 }
 
 /* Titres */
@@ -693,8 +694,9 @@ Bouton de lalarme dans objets connectes
     margin-bottom: 10px;
 }
 
+/* Sections d’alarmes */
 .alarm-section {
-    margin-top: 10px;
+    margin-top: 30px;
     width: 100%;
 }
 
@@ -704,12 +706,15 @@ Bouton de lalarme dans objets connectes
     margin-bottom: 10px;
 }
 
+/* Scroll vertical sur les tableaux */
 .table-container {
+    display: flex;                
+    justify-content: center;      
     overflow-x: auto;
-    width: 100%;
-    margin: 0 auto;
-    max-height: 180px;
     overflow-y: auto;
+    max-height: 180px;
+    margin: 0 auto;
+    padding: 0 10px;              
 }
 
 /* Table style */
@@ -724,35 +729,16 @@ Bouton de lalarme dans objets connectes
     background: #fff;
     display: block;
     overflow-y: auto;
+    margin: 0 auto;
 }
+
 #alarm-component thead {
     background-color: #f5f5f5;
     font-weight: bold;
 }
+
 #alarm-component th,
 #alarm-component td {
-    padding: 12px 16px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-    white-space: nowrap;
-}
-#alarm-component tr:last-child td {
-    border-bottom: none;
-}
-#alarm-component tbody tr:hover {
-    background-color: #f0f8ff;
-    transition: background 0.2s ease-in-out;
-}
-
-
-/* En-têtes */
-#alarm-component thead {
-    background-color: #f5f5f5;
-    font-weight: bold;
-}
-
-/* Cellules */
-#alarm-component th, #alarm-component td {
     padding: 12px 16px;
     text-align: left;
     border-bottom: 1px solid #eee;
@@ -783,17 +769,7 @@ Bouton de lalarme dans objets connectes
     flex: 1;
     overflow-y: auto;
     padding-right: 10px;
-}
-
-/* Sections d’alarmes */
-.alarm-section {
-    margin-top: 30px;
     width: 100%;
-}
-.alarm-section h4 {
-    text-align: center;
-    font-size: 16px;
-    margin-bottom: 10px;
 }
 
 /* Footer avec boutons */
@@ -1603,4 +1579,3 @@ canvas {
     font-size: 1.4rem;
     }
 }
-

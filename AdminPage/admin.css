@@ -945,16 +945,6 @@ Parie pour la Lumiere css
     padding: 20px;
 }
 
-.table-container {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    overflow-x: auto;
-    display: flex;
-    flex-direction: column;
-    max-height: 100%;
-}
-
 #lumiere-component h3 {
     text-align: center;
     font-size: 1.5rem;
@@ -962,37 +952,46 @@ Parie pour la Lumiere css
     margin-bottom: 10px;
 }
 
-/* (cette déclaration était en double, mais je la garde au cas ou) 
-.table-container {
+/* Conteneur scrollable propre */
+.table-wrapper-scroll {
+    max-height: 250px;
+    overflow-y: auto;
     overflow-x: auto;
     width: 100%;
-    margin: 0 auto;
-}*/
+    min-height: 0;
+}
 
+/* Table design */
 .lumiere-table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+    min-width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
     border-radius: 8px;
-    overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     font-size: 14px;
     background: #fff;
-    display: block;
-    overflow-y: auto;
 }
 
+.lumiere-table thead {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.lumiere-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: #f5f5f5;
+}
+
+/* Colonnes */
 .lumiere-table th,
 .lumiere-table td {
     padding: 12px 16px;
     text-align: center;
     border-bottom: 1px solid #eee;
     white-space: nowrap;
-}
-
-.lumiere-table thead {
-    background-color: #f5f5f5;
-    font-weight: bold;
 }
 
 .lumiere-table tbody tr:hover {
@@ -1004,6 +1003,7 @@ Parie pour la Lumiere css
     width: 100px;
 }
 
+/* Bouton action dans tableau */
 .lumiere-table button {
     margin: 2px;
     padding: 8px 16px;
@@ -1029,77 +1029,7 @@ Parie pour la Lumiere css
     box-shadow: none;
 }
 
-.global-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.global-actions button {
-    padding: 12px 24px;
-    font-size: 15px;
-    font-weight: 600;
-    color: white;
-    background: linear-gradient(135deg, #4f46e5, #3b82f6);
-    border: none;
-    border-radius: 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s ease, transform 0.2s ease;
-    cursor: pointer;
-}
-
-.global-actions button:hover:enabled {
-    background: linear-gradient(135deg, #4338ca, #2563eb);
-    transform: translateY(-2px);
-}
-
-.global-actions button:disabled {
-    background: #ddd;
-    color: #999;
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-.lumiere-footer {
-    flex-shrink: 0;
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
-    font-size: 0.9rem;
-    color: #444;
-    margin-top: 15px;
-    border-top: 1px solid #ccc;
-    padding-top: 10px;
-}
-
-.info-bloc {
-    flex: 1 1 45%;
-    min-width: 200px;
-}
-
-.couleur-preview {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    margin-left: 6px;
-    vertical-align: middle;
-    border: 1px solid #999;
-}
-
-/* Titre amélioré */
-.lumiere-title {
-    font-size: 1.7rem;
-    text-align: center;
-    margin: 0 auto 20px auto;
-    color: #1f2937;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-/* Boutons Allumer/Éteindre */
+/* Boutons Allumer / Éteindre en bas */
 .lumiere-controls-bottom {
     display: flex;
     justify-content: center;
@@ -1134,8 +1064,9 @@ Parie pour la Lumiere css
     box-shadow: none;
 }
 
-/* Footer du panneau */
+/* Footer info bas */
 .lumiere-footer {
+    flex-shrink: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1154,6 +1085,70 @@ Parie pour la Lumiere css
     gap: 8px;
     font-weight: 500;
     color: #333;
+}
+
+/* Couleur preview dans tableau */
+.couleur-preview {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-left: 6px;
+    vertical-align: middle;
+    border: 1px solid #999;
+}
+
+/* Titre stylisé */
+.lumiere-title {
+    font-size: 1.7rem;
+    text-align: center;
+    margin: 0 auto 20px auto;
+    color: #1f2937;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* État connectivité */
+.connecte {
+    color: green;
+    font-weight: bold;
+}
+.deconnecte {
+    color: red;
+    font-weight: bold;
+}
+
+/* Global actions si jamais utilisé */
+.global-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.global-actions button {
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.global-actions button:hover:enabled {
+    background: linear-gradient(135deg, #4338ca, #2563eb);
+    transform: translateY(-2px);
+}
+
+.global-actions button:disabled {
+    background: #ddd;
+    color: #999;
+    cursor: not-allowed;
+    box-shadow: none;
 }
 
 

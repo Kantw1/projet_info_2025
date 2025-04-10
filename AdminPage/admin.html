@@ -38,12 +38,89 @@
             </section>
 
             <section id="conso" class="tab-content">
-                <h2>Consommation énergétique</h2>
-                <div id="energy-list">
-                  <button class="energy-button" :class="{ active: activeTab === 'eau' }" @click="activeTab = 'eau'">Eau</button>
-                  <button class="energy-button" :class="{ active: activeTab === 'elec' }" @click="activeTab = 'elec'">Électricité</button>
+              <h2>Consommation énergétique</h2>
+              <div id="energy-list">
+              <button class="energy-button" :class="{ 'active-tab': activeTab === 'eau' }" @click="activeTab = 'eau'"> Eau </button>
+              <button class="energy-button" :class="{ 'active-tab': activeTab === 'elec' }" @click="activeTab = 'elec'"> Électricité </button>
+              </div>
+            
+              <!-- Composant Eau -->
+              <div id="consommation-eau" class="device-card" v-show="visible">
+                <h3 class="consumption-title">Consommation d’eau</h3>
+
+                <div class="consumption-summary">
+                  <div class="consumption-card">
+                    <div class="label">💧 Consommation totale</div>
+                    <div class="value">{{ totalEau }} L</div>
+                  </div>
                 </div>
+
+                <div class="details-toggle" @click="afficherDetails = !afficherDetails">
+                  <span>{{ afficherDetails ? 'Masquer' : 'Afficher' }} les détails par objet</span>
+                  <span class="arrow">{{ afficherDetails ? '▲' : '▼' }}</span>
+                </div>
+
+                <div v-if="afficherDetails" class="consumption-details">
+                  <div class="object-usage" v-for="objet in objetsEau" :key="objet.nom">
+                    <span>{{ objet.nom }}</span>
+                    <span class="conso">{{ objet.conso }}</span>
+                  </div>
+                </div>
+
+                <div class="history-toggle" @click="afficherHistorique = !afficherHistorique">
+                  <span>Historique mensuel</span>
+                  <span class="arrow">{{ afficherHistorique ? '▲' : '▼' }}</span>
+                </div>
+
+                <div v-if="afficherHistorique" class="history-chart">
+                  <canvas id="chart-eau"></canvas>
+                </div>
+
+                <div class="consumption-footer">
+                  📅 Données du mois en cours : {{ moisActuel }}
+                </div>
+              </div>
+
+            
+              <!-- Composant Consommation Électricité -->
+              <div id="consommation-electricite" class="device-card" v-show="visible">
+                <h3 class="consumption-title">Consommation d’électricité</h3>
+
+                <div class="consumption-summary">
+                  <div class="consumption-card">
+                    <div class="label">⚡ Consommation totale</div>
+                    <div class="value">{{ total }} kWh</div>
+                  </div>
+                </div>
+
+                <div class="details-toggle" @click="afficherDetails = !afficherDetails">
+                  <span>{{ afficherDetails ? 'Masquer' : 'Afficher' }} les détails par objet</span>
+                  <span class="arrow">{{ afficherDetails ? '▲' : '▼' }}</span>
+                </div>
+
+                <div v-if="afficherDetails" class="consumption-details">
+                  <div class="object-usage" v-for="objet in objets" :key="objet.nom">
+                    <span>{{ objet.nom }}</span>
+                    <span class="conso">{{ objet.conso }}</span>
+                  </div>
+                </div>
+
+                <div class="history-toggle" @click="afficherHistorique = !afficherHistorique">
+                  <span>Historique mensuel</span>
+                  <span class="arrow">{{ afficherHistorique ? '▲' : '▼' }}</span>
+                </div>
+
+                <div v-if="afficherHistorique" class="history-chart">
+                  <canvas id="chart-elec"></canvas>
+                </div>
+
+                <div class="consumption-footer">
+                  📅 Données du mois en cours : {{ moisActuel }}
+                </div>
+              </div>
+
             </section>
+            
 
             <section id="profile" class="tab-content">
                 <h2>Profil</h2>
@@ -293,7 +370,7 @@
                         <span :class="['signal', signalStrength]">{{ signalStrengthLabel }}</span>
                     </div>
                     <div class="energy">
-                        ⚡ <span>{{ energyUsed.toFixed(2) }} kWh</span>
+                        ⚡ <span>{{ energyFormatted }} kWh</span>
                     </div>
                 </div>
 

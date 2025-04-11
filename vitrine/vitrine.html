@@ -1,44 +1,158 @@
+<!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maison Connectée</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maison Connectée</title>
+  <link rel="stylesheet" href="vitrine.css" />
 </head>
+
 <body>
-    <header>
-        <header1 style="text-align: center;">
-        <h1>Bienvenue dans notre Maison Connectée</h1>
-        </header1>
-            <ul>
-                <li><a href="#about">À propos</a></li>
-                <li><a href="#solutions">Nos Solutions</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-    </header>
-    
-    <section id="about">
+  <!-- Menu latéral -->
+  <nav id="side-menu" class="side-menu">
+    <a href="javascript:void(0)" class="close-btn" onclick="closeMenu()">&times;</a>
+    <a href="#benefits">Pourquoi</a>
+    <a href="#solutions">Nos Solutions</a>
+    <a href="#offres">Nos Offres</a>
+  </nav>
+
+  <!-- En-tête -->
+  <header>
+    <span class="menu-icon" onclick="openMenu()">&#9776;</span>
+    <h1>Votre Maison Connectée</h1>
+    <a href="file:///C:/Users/Administrateur/projet_info_2025/Inscription_connection/connection.html" class="login-btn">Se connecter</a>
+    <a href="file:///C:/Users/Administrateur/projet_info_2025/Inscription_connection/Inscription.html" class="signup-btn">S'inscrire</a>
+  </header>
+
+  <!-- Section Héro -->
+  <section class="hero">
+    <div class="hero-container">
+      <h1>Découvrez notre Maison Connectée</h1>
+      <p>Une maison intelligente pour un confort optimal et une gestion simplifiée.</p>
+    </div>
+  </section>
+
+  <!-- Section Pourquoi -->
+  <section id="benefits">
+    <h2>Pourquoi choisir notre Maison Connectée ?</h2>
+    <p class="benefit-intro">
+      Piloter sa maison, c’est simple grâce aux objets connectés qui permettent de gérer son installation
+      et ses équipements électriques via son smartphone, sa tablette ou par la voix. Notre Maison Connectée innove pour vous
+      apporter plus de confort et de sécurité au quotidien. Commencez à connecter votre maison.
+    </p>
+  </section>
+
+  <!-- Section Solutions -->
+  <section id="solutions">
+    <h2>Nos Solutions</h2>
+    <div class="articles-grid">
+      <div class="card">
+        <div style="position: relative;">
+          <img src="automatisation.jpg" alt="Automatisation de l'éclairage">
+          <span class="badge">Automatisation</span>
+        </div>
+        <div class="card-content">
+          <h3>Automatisation de l'éclairage</h3>
+          <p>Éclairez votre maison selon vos préférences et économisez de l'énergie.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="position: relative;">
+          <img src="securite.jpg" alt="Sécurité intelligente">
+          <span class="badge" style="background-color: #c87500;">Sécurité</span>
+        </div>
+        <div class="card-content">
+          <h3>Systèmes de sécurité intelligents</h3>
+          <p>Gardez votre maison protégée avec des dispositifs intelligents et connectés.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="position: relative;">
+          <img src="chauffage.jpg" alt="Contrôle du chauffage">
+          <span class="badge" style="background-color: #FF5733;">Chauffage</span>
+        </div>
+        <div class="card-content">
+          <h3>Contrôle du chauffage et de la climatisation</h3>
+          <p>Adaptez la température de votre maison en fonction de vos besoins et de la météo.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="position: relative;">
+          <img src="energie.jpg" alt="Gestion de l'énergie">
+          <span class="badge" style="background-color: #00c853;">Énergie</span>
+        </div>
+        <div class="card-content">
+          <h3>Gestion de l'énergie</h3>
+          <p>Optimisez votre consommation énergétique pour un environnement plus durable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Offres -->
+  <section id="offres">
+    <h2>Nos Offres</h2>
+    <div class="offres-container">
+      <div class="offre">
+        <h3>Offre Confort</h3>
+        <ul>
+          <li>Contrôle à distance des lumières</li>
+          <li>Programmation automatique des volets</li>
+          <li>Gestion du chauffage via application</li>
+          <li>Ambiance personnalisée selon les moments de la journée</li>
+          <li>Interface intuitive sur smartphone ou tablette</li>
+        </ul>
+      </div>
+      <div class="offre">
+        <h3>Offre Sécurité</h3>
+        <ul>
+          <li>Caméras de surveillance connectées</li>
+          <li>Détecteurs de mouvement intelligents</li>
+          <li>Alertes en temps réel sur mobile</li>
+          <li>Alarme intégrée avec désactivation à distance</li>
+          <li>Surveillance 24h/24 et 7j/7</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pied de page -->
+  <footer>
+    <div class="footer-content">
+      <section id="about-footer">
         <h2>À propos</h2>
         <p>Découvrez comment notre maison connectée simplifie votre quotidien avec des technologies intelligentes.</p>
-    </section>
-    
-    <section id="solutions">
-        <h2>Nos Solutions</h2>
-        <ul>
-            <li>Automatisation de l'éclairage</li>
-            <li>Systèmes de sécurité intelligents</li>
-            <li>Contrôle du chauffage et de la climatisation</li>
-            <li>Gestion de l'énergie</li>
-        </ul>
-    </section>
-    
-    <section id="contact">
+      </section>
+      <section id="contact-footer">
         <h2>Contact</h2>
-        <p>Pour plus d'informations, contactez-nous à : <a href="mailto:contact@maisonconnectee.com">contact@maisonconnectee.com</a></p>
-    </section>
-    
-    <footer>
-        <p>&copy; 2025 Maison Connectée. Tous droits réservés.</p>
-    </footer>
+        <p>
+          Pour plus d'informations, contactez-nous à :
+          <a href="mailto:contact@maisonconnectee.com">contact@maisonconnectee.com</a>
+        </p>
+      </section>
+    </div>
+
+    <div style="font-size: 12px; color: #ffffff; text-align: left; margin: 10px 20px;">
+      Fait par : Ahmed Metwally, Capucine Lardiere, Clément Aouali, Quentin Fourrier et Vincent Poulain
+    </div>
+
+    <p class="footer-legal">&copy; 2025 Maison Connectée. Tous droits réservés.</p>
+  </footer>
+
+  <!-- Script JavaScript pour le menu latéral -->
+  <script>
+    function openMenu() {
+      document.getElementById("side-menu").style.width = "250px";
+    }
+
+    function closeMenu() {
+      document.getElementById("side-menu").style.width = "0";
+    }
+  </script>
 </body>
+
 </html>

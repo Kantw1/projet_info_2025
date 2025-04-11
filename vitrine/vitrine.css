@@ -1,151 +1,283 @@
 body {
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    background: #f8f9fa;
-    color: #333;
-  }
-  
-  header {
-    background-color: #003366;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    position: relative;
-  }
-  
-  header a {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    background-color: #0055a5;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9rem;
-  }
-  
-  nav ul {
-    display: flex;
-    justify-content: center;
-    background-color: #4a90e2;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  nav ul li {
-    margin: 0 15px;
-  }
-  
-  nav ul li a {
-    color: white;
-    text-decoration: none;
-    padding: 15px 0;
-    display: block;
-    transition: color 0.3s;
-  }
-  
-  nav ul li a:hover {
-    color: #FFA500;
-  }
-  
-  .hero {
-    background: url('maison connectée.jpg') center/cover no-repeat;
-    height: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 50px;
-    margin: 50px auto;
-    max-width: 90%;
-    border-radius: 30px;
-  }
-  
-  .hero-container {
-    text-align: center;
-    color: white;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 20px 40px;
-    border-radius: 15px;
-  }
-  
-  section {
-    max-width: 90%;
-    margin: 40px auto;
-    padding: 20px;
-  }
-  
-  h2 {
-    color: #003366;
-    margin-bottom: 20px;
-  }
-  
-  ul {
-    padding-left: 20px;
-  }
-  
-  img {
-    max-width: 100%;
-    border-radius: 20px;
-    display: block;
-    margin: 20px auto;
-  }
-  
-  .articles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-  }
-  
-  .card {
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-  
-  .badge {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    background-color: #2979ff;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-  }
-  
-  .card-content {
-    padding: 15px;
-  }
-  
-  .card-content h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    color: #222;
-  }
-  
-  .card-content p {
-    font-size: 0.9rem;
-    color: #666;
-  }
-  
-  footer {
-    text-align: center;
-    padding: 20px;
-    background: #003366;
-    color: white;
-  }
-  
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: #f8f9fa;
+  color: #333;
+}
+
+header {
+  background-color: #003366;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+header a {
+  position: absolute;
+  right: 20px;
+  background-color: #0055a5;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  width: 150px;
+  text-align: center;
+}
+
+header a:hover {
+  opacity: 0.8;
+}
+
+.login-btn {
+  top: 20px;
+}
+
+.signup-btn {
+  top: 65px;
+  background-color: #0055a5;
+}
+
+.menu-icon {
+  font-size: 1.8rem;
+  cursor: pointer;
+  position: absolute;
+  left: 20px;
+  top: 25px;
+  color: white;
+}
+
+header h1 {
+  margin-left: 50px;
+}
+
+.side-menu {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  left: 0;
+  background-color: #003366;
+  overflow-x: hidden;
+  transition: 0.4s;
+  padding-top: 60px;
+}
+
+.side-menu a {
+  padding: 15px 30px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+.side-menu a:hover {
+  background-color: #0055a5;
+}
+
+.side-menu .close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 2rem;
+  color: white;
+}
+
+.hero {
+  background: url('maison connectée.jpg') center/cover no-repeat;
+  height: 440px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+  margin: 10px auto;
+  max-width: 90%;
+  border-radius: 30px;
+}
+
+.hero-container {
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px 40px;
+  border-radius: 15px;
+}
+
+section {
+  max-width: 90%;
+  margin: 5px auto;
+  padding: 10px 0;
+}
+
+h2 {
+  color: #003366;
+  margin-bottom: 5px;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 20px;
+  display: block;
+  margin: 5px auto;
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: #2979ff;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.card-content {
+  padding: 15px;
+}
+
+.card-content h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #222;
+}
+
+.card-content p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+footer {
+  background: #003366;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+footer h2 {
+  font-size: 1.1rem;
+  color: white;
+}
+
+footer p {
+  font-size: 0.9rem;
+  color: white;
+  margin-bottom: 0;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #FF5733;
+}
+
+#about-footer,
+#contact-footer {
+  width: 48%;
+}
+
+.footer-legal {
+  font-size: 0.8rem;
+  color: white;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.hero + section,
+section + section,
+section + footer {
+  margin-top: 5px;
+}
+
+#benefits {
+  max-width: 90%;
+  margin: 30px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+#benefits h2 {
+  color: #003366;
+  margin-bottom: 15px;
+}
+
+.benefit-intro {
+  color: #555;
+  font-size: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+#offres {
+  max-width: 90%;
+  margin: 20px auto;
+  padding: 20px 0;
+}
+
+.offres-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.offre {
+  flex: 1 1 45%;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.offre h3 {
+  color: #003366;
+  margin-bottom: 10px;
+}
+
+.offre p {
+  color: #444;
+  font-size: 0.95rem;
+}

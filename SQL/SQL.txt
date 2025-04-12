@@ -146,3 +146,26 @@ CREATE TABLE historique_lumiere (
     FOREIGN KEY (id_objet_connecte) REFERENCES lumiere(id_objet_connecte),
     FOREIGN KEY (id_user) REFERENCES users(id)
 );
+
+CREATE TABLE arrosage (
+    id_objet_connecte INT PRIMARY KEY,  -- Clé étrangère + identifiant unique de l’arrosage
+    actif BOOLEAN DEFAULT TRUE,         -- L’arrosage est-il activé ?
+    humidite_sol INT CHECK (humidite_sol BETWEEN 0 AND 100),  -- % d’humidité
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+
+CREATE TABLE planning_arrosage (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_objet_connecte INT,
+    heure TIME,                         -- Heure programmée (ex: 07:30)
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+CREATE TABLE historique_arrosage (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_objet_connecte INT,
+    date_irrigation DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Date et heure de début
+    duree_minutes INT CHECK (duree_minutes BETWEEN 1 AND 120), -- Durée d’arrosage en minutes
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);

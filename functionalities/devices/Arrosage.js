@@ -1,53 +1,85 @@
-
 new Vue({
     el: '#arrosage-automatique-component',
     data: {
-    visible: false,
-    actif: true,
-    humiditeSol: 42, // en %
-    prochaineIrrigation: '07/04/2025 18:30',
-    historique: [
-        { date: '07/04/2025 07:00', duree: '15 min' },
-        { date: '06/04/2025 18:00', duree: '10 min' },
-        { date: '06/04/2025 07:00', duree: '12 min' }
-    ],
-    planning: ['07:30', '14:00', '18:00'],
-    nouvelleHeure: ''
+      visible: false,
+      actif: null,
+      humiditeSol: null,
+      prochaineIrrigation: '', // optionnel
+      historique: [],
+      planning: [],
+      nouvelleHeure: ''
     },
     computed: {
-    // 💧 Message dynamique selon humidité
-    messageEtatSol() {
+      messageEtatSol() {
+        if (this.humiditeSol === null) return 'Chargement...';
         if (this.humiditeSol >= 60) return '🌿 Sol bien hydraté';
         if (this.humiditeSol >= 30) return '🌱 Niveau d’humidité correct';
         return '⚠️ Arrosage nécessaire';
-    },
-    // 💧 Couleur selon humidité
-    humiditeColor() {
+      },
+      humiditeColor() {
+        if (this.humiditeSol === null) return 'gray';
         if (this.humiditeSol >= 60) return 'limegreen';
         if (this.humiditeSol >= 30) return 'orange';
         return 'crimson';
-    }
+      }
     },
     methods: {
-    toggleArrosage() {
+      toggleArrosage() {
         this.actif = !this.actif;
-    },
-    ajouterHeure() {
+        // 👉 tu peux ici appeler un fichier PHP (ex: toggle_arrosage.php)
+      },
+      ajouterHeure() {
         const heure = this.nouvelleHeure.trim();
         if (/^\d{2}:\d{2}$/.test(heure) && !this.planning.includes(heure)) {
-        this.planning.push(heure);
-        this.nouvelleHeure = '';
+          this.planning.push(heure);
+          this.nouvelleHeure = '';
+          // 👉 tu peux POST vers add_planning_arrosage.php ici
         }
-    },
-    supprimerHeure(index) {
+      },
+      supprimerHeure(index) {
+        const heureSupprimée = this.planning[index];
         this.planning.splice(index, 1);
-    }
+        // 👉 tu peux POST vers delete_planning_arrosage.php ici
+      },
+      chargerArrosage() {
+        // Général
+        fetch('../PHP_request/get_arrosage_general.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.actif = data.actif;
+              this.humiditeSol = data.humiditeSol;
+            }
+          });
+  
+        // Planning
+        fetch('../PHP_request/get_arrosage_planning.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.planning = data.planning;
+            }
+          });
+  
+        // Historique
+        fetch('../PHP_request/get_arrosage_historique.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.historique = data.historique;
+            }
+          });
+      }
     },
     mounted() {
-    console.log('→ Composant Arrosage Automatique monté');
-    window.addEventListener('device-selected', (e) => {
+      console.log('→ Composant Arrosage Automatique monté');
+      window.addEventListener('device-selected', (e) => {
         const selection = e.detail && e.detail.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
         this.visible = selection === 'arrosage';
-    });
+        if (this.visible) {
+          this.chargerArrosage();
+        }
+      });
     }
-});
+  });
+  

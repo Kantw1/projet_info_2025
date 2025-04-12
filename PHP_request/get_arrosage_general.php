@@ -11,7 +11,7 @@ if (!isset($_SESSION['objets_connectes']['Arrosage'])) {
 }
 
 // 🔄 Récupération de l'ID d'arrosage depuis la session
-$idArrosage = $_SESSION['objets_connectes']['Arrosage']; // si un seul objet
+$idArrosage = $_SESSION['objets_connectes']['Arrosage'][0]; // si un seul objet
 // Ou bien : $idArrosage = $_SESSION['objets_connectes']['Arrosage'][0]; si c'est un tableau
 
 // 📦 Requête sur la table arrosage

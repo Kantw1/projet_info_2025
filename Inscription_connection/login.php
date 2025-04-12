@@ -59,6 +59,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $_SESSION['objets_connectes'] = $liste_objets;
 
+            
+
             // Incrémenter les points
             $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 1 WHERE id = ?");
             $updateStmt->bind_param("i", $id);

@@ -4,7 +4,7 @@ new Vue({
       visible: false,
       actif: null,
       humiditeSol: null,
-      prochaineIrrigation: '', // optionnel
+      prochaineIrrigation: 'Aucune irrigation prévue', // optionnel
       historique: [],
       planning: [],
       nouvelleHeure: ''
@@ -69,6 +69,15 @@ new Vue({
               this.historique = data.historique;
             }
           });
+
+          // Prochaine irrigation
+        fetch('../PHP_request/get_prochaine_irrigation.php')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    this.prochaineIrrigation = data.prochaineIrrigation;
+                }
+        });
       }
     },
     mounted() {

@@ -11,7 +11,7 @@ if (!isset($_SESSION['objets_connectes']['Arrosage'])) {
     exit();
 }
 
-$idArrosage = $_SESSION['objets_connectes']['Arrosage']; // ou [0] si tableau
+$idArrosage = $_SESSION['objets_connectes']['Arrosage'][0]; // ou [0] si tableau
 
 // 📦 Récupération de l’historique
 $historique = [];

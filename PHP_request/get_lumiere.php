@@ -17,8 +17,9 @@ if (!isset($_SESSION['id_house'])) {
 
 $idHouse = $_SESSION['id_house'];
 
-// Récupération des lumières pour cette maison
-$sql = "SELECT l.id_objet_connecte, l.nom, l.piece, l.etat, l.intensite, l.couleur, l.connectivite 
+// Requête modifiée : ajout de consommation_electricite
+$sql = "SELECT l.id_objet_connecte, l.nom, l.piece, l.etat, l.intensite, l.couleur, 
+               l.connectivite, l.consommation_electricite
         FROM lumiere l
         JOIN objet_connecte o ON l.id_objet_connecte = o.id
         WHERE o.id_house = ?";
@@ -37,4 +38,3 @@ echo json_encode(["success" => true, "lumieres" => $lumieres]);
 
 $stmt->close();
 $conn->close();
-?>

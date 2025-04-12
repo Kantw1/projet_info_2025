@@ -142,7 +142,6 @@ CREATE TABLE historique_lumiere (
     etat BOOLEAN,  -- État de la lumière (true = allumée, false = éteinte)
     intensite INT CHECK (intensite BETWEEN 0 AND 100),  -- Intensité de la lumière (de 0 à 100%)
     couleur VARCHAR(50) CHECK (couleur IN ('Blanc', 'Jaune', 'Bleu', 'Rouge', 'Vert')),  -- Couleur de la lumière
-    consommation_electricite FLOAT,  -- Consommation d'électricité
     action VARCHAR(255),  -- Action réalisée (ex: "Allumée", "Éteinte", "Ajustée", etc.)
     FOREIGN KEY (id_objet_connecte) REFERENCES lumiere(id_objet_connecte),
     FOREIGN KEY (id_user) REFERENCES users(id)

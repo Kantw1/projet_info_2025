@@ -1,110 +1,58 @@
 <?php
 session_start();
-header('Content-Type: application/json');
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-// Connexion à la base de données
 $conn = new mysqli("localhost", "root", "", "smarthouse");
 $conn->set_charset("utf8mb4");
 
-if ($conn->connect_error) {
-    echo json_encode(["success" => false, "error" => "Erreur de connexion à la base de données"]);
+$idUser = $_SESSION['id'] ?? null;
+if (!$idUser) {
+    http_response_code(403);
+    echo json_encode(["success" => false, "error" => "Utilisateur non authentifié"]);
     exit();
 }
 
-// Vérifie si l'utilisateur est connecté
-if (!isset($_SESSION['id_house'])) {
-    echo json_encode(["success" => false, "error" => "Utilisateur non connecté"]);
-    exit();
-}
+$data = json_decode(file_get_contents("php://input"), true);
 
-$idHouse = $_SESSION['id_house']; // id de la maison récupéré de la session
-
-// Récupération des données envoyées via POST
-$data = json_decode(file_get_contents('php://input'), true);
-
-$idObjetConnecte = $data['id_objet_connecte'] ?? null;
-$etat = $data['etat'] ?? null;session_start();
-header('Content-Type: application/json');
-
-// Connexion à la base de données
-$conn = new mysqli("localhost", "root", "", "smarthouse");
-$conn->set_charset("utf8mb4");
-
-if ($conn->connect_error) {
-    echo json_encode(["success" => false, "error" => "Erreur de connexion à la base de données"]);
-    exit();
-}
-
-if (!isset($_SESSION['id_house'])) {
-    echo json_encode(["success" => false, "error" => "Utilisateur non connecté"]);
-    exit();
-}
-
-$idHouse = $_SESSION['id_house']; // id de la maison récupéré de la session
-
-// Récupération des données envoyées via POST
-$data = json_decode(file_get_contents('php://input'), true);
-
-$idObjetConnecte = $data['id_objet_connecte'] ?? null;
+$id = $data['id'] ?? null;
 $etat = $data['etat'] ?? null;
-$intensite = $data['intensite'] ?? null;
+$intensite = isset($data['intensite']) ? intval($data['intensite']) : null;
 $couleur = $data['couleur'] ?? null;
+$action = $data['action'] ?? null;
 
-if ($idObjetConnecte === null || $etat === null || $intensite === null || $couleur === null) {
-    echo json_encode(["success" => false, "error" => "Données manquantes"]);
+if (!$id || $etat === null || $intensite === null || !$couleur || !$action) {
+    echo json_encode(["success" => false, "error" => "Données incomplètes"]);
     exit();
 }
 
-// Debug: Voir les valeurs reçues
-error_log("id_objet_connecte: $idObjetConnecte, etat: $etat, intensite: $intensite, couleur: $couleur");
+if ($intensite < 0 || $intensite > 100) {
+    echo json_encode(["success" => false, "error" => "Intensité hors bornes"]);
+    exit();
+}
 
-$sql = "UPDATE lumiere 
-        SET etat = ?, intensite = ?, couleur = ?, derniere_interaction = CURRENT_TIMESTAMP
-        WHERE id_objet_connecte = ? AND EXISTS (SELECT 1 FROM objet_connecte WHERE id = ? AND id_house = ?)";
-
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("iiisi", $etat, $intensite, $couleur, $idObjetConnecte, $idObjetConnecte, $idHouse);
-
-if ($stmt->execute()) {
-    // Optionnellement, insère un historique dans la table historique_lumiere
-    $stmtHistorique = $conn->prepare("
-        INSERT INTO historique_lumiere (id_objet_connecte, id_user, etat, intensite, couleur, consommation_electricite, action)
-        VALUES (?, ?, ?, ?, ?, 0.06 * ? / 100, ?)
+try {
+    // ✅ Mise à jour dans la table lumière
+    $stmt = $conn->prepare("
+        UPDATE lumiere
+        SET etat = ?, intensite = ?, couleur = ?, derniere_interaction = NOW()
+        WHERE id_objet_connecte = ?
     ");
-    $action = $etat ? "Allumée" : "Éteinte";
-    $stmtHistorique->bind_param("iiisdis", $idObjetConnecte, $_SESSION['id_user'], $etat, $intensite, $couleur, $intensite, $action);
-    $stmtHistorique->execute();
+    $stmt->bind_param("iisi", $etat, $intensite, $couleur, $id);
+    $stmt->execute();
+    $stmt->close();
 
-    // Vérification si la mise à jour s'est bien effectuée
+    // ✅ Insertion dans l'historique (sans consommation)
+    $stmt = $conn->prepare("
+        INSERT INTO historique_lumiere (
+            id_objet_connecte, id_user, date_heure, etat, intensite, couleur, action
+        ) VALUES (?, ?, NOW(), ?, ?, ?, ?)
+    ");
+    $stmt->bind_param("iiiiss", $id, $idUser, $etat, $intensite, $couleur, $action);
+    $stmt->execute();
+    $stmt->close();
+
     echo json_encode(["success" => true]);
-} else {
-    // Si une erreur SQL se produit, afficher un message
-    echo json_encode(["success" => false, "error" => "Échec de la mise à jour de la lumière"]);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(["success" => false, "error" => $e->getMessage()]);
 }
-
-$stmt->close();
-$conn->close();
-
-$intensite = $data['intensite'] ?? null;
-$couleur = $data['couleur'] ?? null;
-
-if ($idObjetConnecte === null || $etat === null || $intensite === null || $couleur === null) {
-    echo json_encode(["success" => false, "error" => "Données manquantes"]);
-    exit();
-}
-
-// Met à jour les données de la lumière dans la base de données
-$sql = "UPDATE lumiere 
-        SET etat = ?, intensite = ?, couleur = ?, derniere_interaction = CURRENT_TIMESTAMP
-        WHERE id_objet_connecte = ? AND id_objet_connecte IN (SELECT id FROM objet_connecte WHERE id_house = ?)";
-
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("iiisi", $etat, $intensite, $couleur, $idObjetConnecte, $idHouse);
-
- else {
-    echo json_encode(["success" => false, "error" => "Échec de la mise à jour de la lumière"]);
-}
-
-$stmt->close();
-$conn->close();
-?>

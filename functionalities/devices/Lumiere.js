@@ -27,6 +27,8 @@ new Vue({
           .then(data => {
             if (data.success) {
               this.lumieres = data.lumieres; // Met à jour les lumières dans le data
+              this.calculerConsommation();
+              this.chargerDerniereAction();
             } else {
               console.error("Erreur lors du chargement des lumières :", data.error);
             }
@@ -34,44 +36,52 @@ new Vue({
           .catch(err => {
             console.error("Erreur réseau lors du chargement des lumières :", err);
           });
+      }, 
+      chargerDerniereAction() {
+        fetch('../PHP_request/get_last_lumiere_action.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.lastAction = `${data.action} (par ${data.utilisateur}, ${this.formatDate(data.horodatage)})`;
+            }
+          })
+          .catch(err => {
+            console.error("Erreur réseau lors de la récupération de la dernière action :", err);
+          });
+      },
+      
+      formatDate(datetime) {
+        const options = {
+          year: 'numeric', month: 'short', day: 'numeric',
+          hour: '2-digit', minute: '2-digit'
+        };
+        return new Date(datetime).toLocaleString('fr-FR', options);
       },
       updateLumiere(index) {
         const lum = this.lumieres[index];
-      
         const payload = {
-          id_objet_connecte: lum.id_objet_connecte,
-          etat: lum.etat ? 1 : 0,  // Convertir le booléen en 1 ou 0
-          intensite: lum.intensite,
-          couleur: lum.couleur
+          id: lum.id_objet_connecte,
+          etat: lum.etat ? 1 : 0,
+          intensite: Number.isFinite(lum.intensite) ? lum.intensite : 0,
+          couleur: lum.couleur,
+          action: this.lastAction
         };
-      
-        // Affichage de ce que vous envoyez pour débogage
-        console.log("Données envoyées :", payload);
       
         fetch('../PHP_request/update_lumiere.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         })
-        .then(res => {
-          console.log("Réponse brute:", res);  // Voir la réponse brute
-          return res.json(); // Essayer de convertir la réponse en JSON
-        })
+        .then(res => res.json())
         .then(data => {
-          console.log('Réponse JSON:', data);  // Afficher la réponse JSON
-          if (data.success) {
-            console.log("Lumière mise à jour avec succès");
-          } else {
-            console.error("Erreur lors de la mise à jour de la lumière :", data.error);
+          if (!data.success) {
+            console.error("Erreur lors de la mise à jour :", data.error);
           }
         })
         .catch(err => {
-          console.error("Erreur réseau lors de la mise à jour de la lumière :", err);
+          console.error("Erreur réseau :", err);
         });
-      },      
-      handleDeviceSelected(event) {
-        this.visible = event.detail === 'Lumiere';
-      },
+      },              
   
       allumerLumiere(index) {
         const lum = this.lumieres[index];
@@ -111,10 +121,12 @@ new Vue({
       },
   
       allumerToutes() {
-        this.lumieres.forEach(lum => {
+        this.lumieres.forEach((lum, index) => {
           if (!lum.etat) {
             lum.etat = true;
             if (lum.intensite === 0) lum.intensite = 100;
+            this.lastAction = `${lum.nom} allumée automatiquement`;
+            this.updateLumiere(index);
           }
         });
         this.lastAction = 'Toutes les lumières allumées';
@@ -122,7 +134,13 @@ new Vue({
       },
   
       eteindreToutes() {
-        this.lumieres.forEach(lum => lum.etat = false);
+        this.lumieres.forEach((lum, index) => {
+          if (lum.etat) {
+            lum.etat = false;
+            this.lastAction = `${lum.nom} éteinte automatiquement`;
+            this.updateLumiere(index);
+          }
+        });
         this.lastAction = 'Toutes les lumières éteintes';
         this.calculerConsommation();
       },
@@ -131,7 +149,7 @@ new Vue({
         let total = 0;
         const puissanceMax = 0.06;
         this.lumieres.forEach(lum => {
-          const consommation = lum.etat ? (puissanceMax * (lum.intensite / 100)) : 0;
+          const consommation = lum.etat ? (lum.consommation_electricite  * (lum.intensite / 100)) : 0;
           total += consommation;
         });
         this.totalConsommation = total;

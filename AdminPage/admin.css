@@ -1434,13 +1434,14 @@ Composant Arrosage Automatique
 
 
 
+
 /* 
-consommation component 
+component Consommation d’eau / d’électricité 
 */
 
 
 
-/* Conteneur principal des boutons */
+/* Conteneur des boutons Eau / Électricité */
 #energy-list {
     display: flex;
     justify-content: center;
@@ -1449,13 +1450,12 @@ consommation component
     margin-bottom: 20px;
 }
 
-/* Boutons onglets Eau / Électricité */
 .energy-button {
     background-color: #007bff;
     border: none;
     color: white;
     padding: 12px 24px;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 500;
@@ -1464,7 +1464,6 @@ consommation component
 
 .energy-button.active {
     background: linear-gradient(135deg, #4f46e5, #3b82f6);
-    color: white;
     font-weight: bold;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -1473,25 +1472,25 @@ consommation component
     background-color: #0056b3;
 }
 
+/* Backdrop */
 #backdrop-consommation {
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
     background: rgba(0, 0, 0, 0.3);
     z-index: 99;
-  }
-  
-
-/* Titre */
-.consumption-title {
-    text-align: center;
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #1f2937;
-    margin-bottom: 20px;
 }
 
-/* Carte de résumé total */
+/* Titre principal */
+.consumption-title {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 25px;
+}
+
+/* Résumé total */
 .consumption-summary {
     display: flex;
     justify-content: center;
@@ -1501,66 +1500,113 @@ consommation component
 .consumption-card {
     background: #f3f4f6;
     padding: 20px 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     text-align: center;
+    min-width: 240px;
 }
 
 .consumption-card .label {
-    font-size: 1rem;
+    font-size: 1.05rem;
     color: #374151;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .consumption-card .value {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: bold;
     color: #2563eb;
 }
 
-/* Détails des objets */
+/* Boutons toggle */
 .details-toggle,
 .history-toggle {
     text-align: center;
+    display: inline-block;
     font-size: 1rem;
     color: #2563eb;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    margin: 10px 0;
+    margin: 15px auto;
     user-select: none;
+    transition: color 0.3s ease;
+}
+
+.details-toggle:hover,
+.history-toggle:hover {
+    color: #1d4ed8;
 }
 
 .details-toggle .arrow,
 .history-toggle .arrow {
     margin-left: 6px;
+    font-size: 0.95rem;
 }
 
-/* Liste des objets */
+/* Liste objets */
 .consumption-details {
-    padding: 10px 20px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    align-items: center;
+    gap: 20px;
 }
 
 .object-usage {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid #e5e7eb;
     padding: 6px 0;
-    font-size: 0.95rem;
-    color: #333;
+    font-size: 1rem;
+    color: #374151;
 }
 
 .object-usage .conso {
-    font-weight: bold;
-    color: #4b5563;
+    font-weight: 600;
+    color: #1f2937;
 }
 
-/* Graphique historique */
+.device-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+    padding: 30px 20px; /* padding réduit à droite/gauche */
+    box-sizing: border-box;
+    margin: 5vh auto;
+    width: calc(100% - 40px); /* pour être sûr que le padding n’élargit pas trop */
+    max-width: 700px;
+}
+  
+
+.device-card > div {
+    max-height: 80vh;
+    overflow-y: auto;
+    width: 100%;
+    max-width: 700px;
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+  
+.device-card > * {
+    width: 100%;
+    max-width: 700px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+/* Graphique */
 .history-chart {
     max-width: 600px;
-    margin: 20px auto;
+    margin: 25px auto 10px auto;
 }
 
 canvas {
@@ -1574,19 +1620,20 @@ canvas {
     font-size: 0.95rem;
     color: #555;
     font-weight: 500;
-    margin-top: 20px;
+    margin-top: 25px;
     border-top: 1px solid #e5e7eb;
-    padding-top: 10px;
+    padding-top: 12px;
 }
 
 /* Responsive */
 @media (max-width: 600px) {
     .consumption-card {
     padding: 15px 20px;
+    min-width: 200px;
     }
 
     .consumption-card .value {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     }
 
     .object-usage {
@@ -1594,6 +1641,6 @@ canvas {
     }
 
     .consumption-title {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     }
 }

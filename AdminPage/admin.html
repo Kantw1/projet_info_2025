@@ -462,7 +462,7 @@
                           </select>
                           <span class="couleur-preview" :style="{ backgroundColor: getCssColor(lum.couleur) }"></span>
                         </td>
-                        <td>{{ lum.connectee ? 'Connectée' : 'Déconnectée' }}</td>
+                        <td>{{ lum.connectivite }}</td>
                         <td>
                           <button @click="allumerLumiere(index)">Allumer</button>
                           <button @click="eteindreLumiere(index)">Éteindre</button>

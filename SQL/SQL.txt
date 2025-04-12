@@ -121,3 +121,29 @@ CREATE TABLE capteur (
     FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
 );
 
+CREATE TABLE lumiere (
+    id_objet_connecte INT PRIMARY KEY,  -- Clé primaire et clé étrangère
+    nom VARCHAR(255) NOT NULL,
+    piece VARCHAR(255),
+    etat BOOLEAN DEFAULT FALSE,
+    intensite INT CHECK (intensite BETWEEN 0 AND 100),
+    couleur VARCHAR(50) CHECK (couleur IN ('Blanc', 'Jaune', 'Bleu', 'Rouge', 'Vert')),
+    connectivite VARCHAR(50) CHECK (connectivite IN ('Fort', 'Moyen', 'Faible')),
+    consommation_electricite FLOAT DEFAULT 0.0,
+    derniere_interaction DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+CREATE TABLE historique_lumiere (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_objet_connecte INT,
+    id_user INT,
+    date_heure DATETIME DEFAULT CURRENT_TIMESTAMP,
+    etat BOOLEAN,  -- État de la lumière (true = allumée, false = éteinte)
+    intensite INT CHECK (intensite BETWEEN 0 AND 100),  -- Intensité de la lumière (de 0 à 100%)
+    couleur VARCHAR(50) CHECK (couleur IN ('Blanc', 'Jaune', 'Bleu', 'Rouge', 'Vert')),  -- Couleur de la lumière
+    consommation_electricite FLOAT,  -- Consommation d'électricité
+    action VARCHAR(255),  -- Action réalisée (ex: "Allumée", "Éteinte", "Ajustée", etc.)
+    FOREIGN KEY (id_objet_connecte) REFERENCES lumiere(id_objet_connecte),
+    FOREIGN KEY (id_user) REFERENCES users(id)
+);

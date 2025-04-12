@@ -2,11 +2,7 @@ new Vue({
     el: '#lumiere-component',
     data: {
       visible: false,
-      lumieres: [
-        { nom: 'Lampe Salon', piece: 'Salon', etat: false, intensite: 0, couleur: 'Blanc', connectee: true },
-        { nom: 'Lampe Cuisine', piece: 'Cuisine', etat: true, intensite: 75, couleur: 'Jaune', connectee: true },
-        { nom: 'Lampe Chambre', piece: 'Chambre', etat: true, intensite: 50, couleur: 'Bleu', connectee: false }
-      ],
+      lumieres: [],
       couleursOptions: ['Blanc', 'Jaune', 'Bleu', 'Rouge', 'Vert'],
       totalConsommation: 0,
       lastAction: ''
@@ -18,10 +14,61 @@ new Vue({
         const selection = e.detail && e.detail.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         console.log("→ Event reçu dans Lumière :", selection);
         this.visible = selection === 'lumiere';
+        if (this.visible) {
+          this.chargerLumieres();  // Charger les lumières depuis la base de données
+        }
       });
     },
   
     methods: {
+      chargerLumieres() {
+        fetch('../PHP_request/get_lumiere.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.lumieres = data.lumieres; // Met à jour les lumières dans le data
+            } else {
+              console.error("Erreur lors du chargement des lumières :", data.error);
+            }
+          })
+          .catch(err => {
+            console.error("Erreur réseau lors du chargement des lumières :", err);
+          });
+      },
+      updateLumiere(index) {
+        const lum = this.lumieres[index];
+      
+        const payload = {
+          id_objet_connecte: lum.id_objet_connecte,
+          etat: lum.etat ? 1 : 0,  // Convertir le booléen en 1 ou 0
+          intensite: lum.intensite,
+          couleur: lum.couleur
+        };
+      
+        // Affichage de ce que vous envoyez pour débogage
+        console.log("Données envoyées :", payload);
+      
+        fetch('../PHP_request/update_lumiere.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+        .then(res => {
+          console.log("Réponse brute:", res);  // Voir la réponse brute
+          return res.json(); // Essayer de convertir la réponse en JSON
+        })
+        .then(data => {
+          console.log('Réponse JSON:', data);  // Afficher la réponse JSON
+          if (data.success) {
+            console.log("Lumière mise à jour avec succès");
+          } else {
+            console.error("Erreur lors de la mise à jour de la lumière :", data.error);
+          }
+        })
+        .catch(err => {
+          console.error("Erreur réseau lors de la mise à jour de la lumière :", err);
+        });
+      },      
       handleDeviceSelected(event) {
         this.visible = event.detail === 'Lumiere';
       },
@@ -33,6 +80,7 @@ new Vue({
           if (lum.intensite === 0) lum.intensite = 100;
           this.lastAction = `${lum.nom} allumée`;
           this.calculerConsommation();
+          this.updateLumiere(index);
         }
       },
   
@@ -42,6 +90,7 @@ new Vue({
           lum.etat = false;
           this.lastAction = `${lum.nom} éteinte`;
           this.calculerConsommation();
+          this.updateLumiere(index);
         }
       },
   
@@ -51,12 +100,14 @@ new Vue({
         lum.etat = valeur > 0;
         this.lastAction = `Intensité de ${lum.nom} ajustée à ${valeur}%`;
         this.calculerConsommation();
+        this.updateLumiere(index);
       },
   
       changerCouleur(index, nouvelleCouleur) {
         const lum = this.lumieres[index];
         lum.couleur = nouvelleCouleur;
         this.lastAction = `Couleur de ${lum.nom} changée en ${nouvelleCouleur}`;
+        this.updateLumiere(index);
       },
   
       allumerToutes() {

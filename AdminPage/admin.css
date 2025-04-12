@@ -287,12 +287,11 @@ form button {
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
     max-width: 95vw;
     margin: auto;
-  }
+    overflow: auto;
+}
   
   
-  
-  
-  .thermostat-card {
+.thermostat-card {
     background: #f9f9f9;
     border-radius: 12px;
     padding: 20px;

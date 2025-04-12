@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajouter un objet connecté</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="../functionalities/objet_connected.js"></script>
+  <script src="../Formulaire/ajout_objet.js" defer></script>
+</head>
+<body>
+  <div id="app">
+    <h1>Ajouter un objet connecté</h1>
+
+    <label for="objet-select">Choisissez un objet :</label>
+    <select id="objet-select" v-model="selected">
+      <option disabled value="">-- Sélectionnez un objet --</option>
+      <option v-for="objet in objetsDisponibles" :key="objet.nom" :value="objet.nom">
+        {{ objet.nom }}
+      </option>
+    </select>
+
+    <div v-if="objetSelectionne" style="margin-top: 20px;">
+      <h2>{{ objetSelectionne.nom }}</h2>
+      <p><strong>Type :</strong> {{ objetSelectionne.type }}</p>
+      <p><strong>Consommation :</strong> {{ objetSelectionne.conso }}</p>
+      <p v-if="objetSelectionne.description"><strong>Description :</strong> {{ objetSelectionne.description }}</p>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <button @click="ajouterObjet">Ajouter</button>
+      <button @click="annuler">Annuler</button>
+    </div>
+
+    <p v-if="message" style="margin-top: 15px;">{{ message }}</p>
+  </div>
+
+</body>
+
+</html>

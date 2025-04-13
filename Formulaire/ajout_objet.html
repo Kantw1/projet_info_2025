@@ -10,179 +10,181 @@
 </head>
 <body>
   <div id="app">
-    <h1>Ajouter un objet connecté</h1>
+    <div class="page-wrapper">
+      <div class="page-header">Ajouter un objet connecté</div>
 
-    <p class="subtitle">Choisissez un objet connecté à configurer dans votre système</p>
+      <p class="subtitle">Choisissez un objet connecté à configurer dans votre système</p>
 
-    <!-- Liste des objets disponibles -->
-    <div class="objets-container">
-      <div 
-        class="objet-card" 
-        v-for="objet in objetsDisponibles" 
-        :key="objet.nom"
-        @click="ouvrirOnglet(objet)">
-        {{ objet.nom }}
+      <!-- Liste des objets disponibles -->
+      <div class="objets-container">
+        <div 
+          class="objet-card" 
+          v-for="objet in objetsDisponibles" 
+          :key="objet.nom"
+          @click="ouvrirOnglet(objet)">
+          {{ objet.nom }}
+        </div>
       </div>
-    </div>
 
-    <!-- Onglet flottant de sélection -->
-    <div v-if="etape === 'selection' && objetSelectionne" class="floating-panel">
-      <div class="floating-content">
-        <h2>{{ objetSelectionne.nom }}</h2>
-        <p><strong>Type :</strong> {{ objetSelectionne.type }}</p>
-        <p><strong>Consommation réelle moyenne :</strong> {{ objetSelectionne.consoReelle }}</p>
-        <div>
-          <label for="lieu">Lieu d’installation :</label>
-          <input 
-            type="text" 
-            id="lieu"
-            v-model="objetSelectionne.lieu"
-            placeholder="Ex : Salon, Cuisine..."
-            list="lieux-suggestions"
-          >
-          <datalist id="lieux-suggestions">
-            <option v-for="lieu in lieuxDisponibles" :key="lieu" :value="lieu"></option>
-          </datalist>
+      <!-- Onglet flottant de sélection -->
+      <div v-if="etape === 'selection' && objetSelectionne" class="floating-panel">
+        <div class="floating-content">
+          <h2>{{ objetSelectionne.nom }}</h2>
+          <p><strong>Type :</strong> {{ objetSelectionne.type }}</p>
+          <p><strong>Consommation réelle moyenne :</strong> {{ objetSelectionne.consoReelle }}</p>
+          <div>
+            <label for="lieu"><strong>Lieu d’installation :</strong></label>
+            <input 
+              type="text" 
+              id="lieu"
+              v-model="objetSelectionne.lieu"
+              placeholder="Ex : Salon, Cuisine..."
+              list="lieux-suggestions"
+            >
+            <datalist id="lieux-suggestions">
+              <option v-for="lieu in lieuxDisponibles" :key="lieu" :value="lieu"></option>
+            </datalist>
+          </div>
+          <p><strong>Consommation :</strong> {{ objetSelectionne.conso }}</p>
+          <p v-if="objetSelectionne.description">
+            <strong>Description :</strong> {{ objetSelectionne.description }}
+          </p>
+
+          <div class="onglet-buttons">
+            <button @click="configurerObjet">Ajouter</button>
+            <button @click="fermerOnglet">Annuler</button>
+          </div>
+
+          <p class="source" v-if="objetSelectionne.source">
+            Source : {{ objetSelectionne.source }}
+          </p>
         </div>
-        <p><strong>Consommation :</strong> {{ objetSelectionne.conso }}</p>
-        <p v-if="objetSelectionne.description">
-          <strong>Description :</strong> {{ objetSelectionne.description }}
-        </p>
-
-        <div class="onglet-buttons">
-          <button @click="configurerObjet">Ajouter</button>
-          <button @click="fermerOnglet">Annuler</button>
-        </div>
-
-        <p class="source" v-if="objetSelectionne.source">
-          Source : {{ objetSelectionne.source }}
-        </p>
       </div>
-    </div>
 
-    <!-- Onglet flottant de configuration -->
-    <div v-if="etape === 'configuration' && objetSelectionne" class="floating-panel">
-      <div class="floating-content">
-        <h2>Configurer {{ objetSelectionne.nom }}</h2>
+      <!-- Onglet flottant de configuration -->
+      <div v-if="etape === 'configuration' && objetSelectionne" class="floating-panel">
+        <div class="floating-content">
+          <h2>Configurer {{ objetSelectionne.nom }}</h2>
 
-        <!-- Section pour tous les formulaires :  -->
+          <!-- Section pour tous les formulaires :  -->
 
-        <!-- Formulaire spécifique à Thermostat -->
-        <div v-if="objetSelectionne.type === 'thermostat'">
-          <label for="baseTemp">Température de base (°C) :</label>
-          <input type="number" id="baseTemp" v-model.number="configThermostat.baseTemp" min="5" max="40">
-        
-          <label for="nomUtilisateur">Nom personnalisé :</label>
-          <input type="text" id="nomUtilisateur" v-model="configThermostat.nomUtilisateur" placeholder="ex : Thermostat salon">
-        
-          <label for="position">Emplacement dans la maison :</label>
-          <input type="text" id="position" v-model="configThermostat.position" placeholder="ex : Salon, Chambre 1...">
-        </div>
+          <!-- Formulaire spécifique à Thermostat -->
+          <div v-if="objetSelectionne.type === 'thermostat'">
+            <label for="baseTemp">Température de base (°C) :</label>
+            <input type="number" id="baseTemp" v-model.number="configThermostat.baseTemp" min="5" max="40">
+          
+            <label for="nomUtilisateur">Nom personnalisé :</label>
+            <input type="text" id="nomUtilisateur" v-model="configThermostat.nomUtilisateur" placeholder="ex : Thermostat salon">
+          
+            <label for="position">Emplacement dans la maison :</label>
+            <input type="text" id="position" v-model="configThermostat.position" placeholder="ex : Salon, Chambre 1...">
+          </div>
 
-        <!-- Formulaire spécifique à Volet Roulant -->
-        <div v-if="objetSelectionne.type === 'voletroulant'">
-          <label for="heureOuverture">Heure d'ouverture :</label>
-          <select id="heureOuverture" v-model="configVolet.heureOuverture">
-            <option v-for="heure in heuresDisponibles" :key="heure" :value="heure">{{ heure }}</option>
-          </select>
+          <!-- Formulaire spécifique à Volet Roulant -->
+          <div v-if="objetSelectionne.type === 'voletroulant'">
+            <label for="heureOuverture">Heure d'ouverture :</label>
+            <select id="heureOuverture" v-model="configVolet.heureOuverture">
+              <option v-for="heure in heuresDisponibles" :key="heure" :value="heure">{{ heure }}</option>
+            </select>
 
-          <label for="heureFermeture">Heure de fermeture :</label>
-          <select id="heureFermeture" v-model="configVolet.heureFermeture">
-            <option v-for="heure in heuresDisponibles" :key="heure" :value="heure">{{ heure }}</option>
-          </select>
+            <label for="heureFermeture">Heure de fermeture :</label>
+            <select id="heureFermeture" v-model="configVolet.heureFermeture">
+              <option v-for="heure in heuresDisponibles" :key="heure" :value="heure">{{ heure }}</option>
+            </select>
 
-          <label for="positionInitiale">Position initiale (0–100%) :</label>
-          <input type="number" id="positionInitiale" v-model.number="configVolet.positionInitiale" min="0" max="100">
+            <label for="positionInitiale">Position initiale (0–100%) :</label>
+            <input type="number" id="positionInitiale" v-model.number="configVolet.positionInitiale" min="0" max="100">
 
-          <label for="nomUtilisateurVolet">Nom personnalisé :</label>
-          <input type="text" id="nomUtilisateurVolet" v-model="configVolet.nomUtilisateur" placeholder="ex : Volet cuisine">
+            <label for="nomUtilisateurVolet">Nom personnalisé :</label>
+            <input type="text" id="nomUtilisateurVolet" v-model="configVolet.nomUtilisateur" placeholder="ex : Volet cuisine">
 
-          <label for="emplacementVolet">Emplacement :</label>
-          <input type="text" id="emplacementVolet" v-model="configVolet.position" placeholder="ex : Cuisine, Chambre 2">
-        </div>
+            <label for="emplacementVolet">Emplacement :</label>
+            <input type="text" id="emplacementVolet" v-model="configVolet.position" placeholder="ex : Cuisine, Chambre 2">
+          </div>
 
-        <!-- Formulaire spécifique à Lumière -->
-        <div v-if="objetSelectionne.type === 'lumiere'">
-          <label for="nomLumiere">Nom personnalisé :</label>
-          <input type="text" id="nomLumiere" v-model="configLumiere.nomUtilisateur" placeholder="ex : Lampe Salon">
+          <!-- Formulaire spécifique à Lumière -->
+          <div v-if="objetSelectionne.type === 'lumiere'">
+            <label for="nomLumiere">Nom personnalisé :</label>
+            <input type="text" id="nomLumiere" v-model="configLumiere.nomUtilisateur" placeholder="ex : Lampe Salon">
 
-          <label for="emplacementLumiere">Emplacement :</label>
-          <input type="text" id="emplacementLumiere" v-model="configLumiere.emplacement" placeholder="ex : Salon, Chambre">
+            <label for="emplacementLumiere">Emplacement :</label>
+            <input type="text" id="emplacementLumiere" v-model="configLumiere.emplacement" placeholder="ex : Salon, Chambre">
 
-          <label for="intensiteLumiere">Intensité par défaut (%) :</label>
-          <input type="number" id="intensiteLumiere" v-model.number="configLumiere.intensite" min="0" max="100">
+            <label for="intensiteLumiere">Intensité par défaut (%) :</label>
+            <input type="number" id="intensiteLumiere" v-model.number="configLumiere.intensite" min="0" max="100">
 
-          <label for="couleurLumiere">Couleur par défaut :</label>
-          <select id="couleurLumiere" v-model="configLumiere.couleur">
-            <option v-for="couleur in couleursOptions" :value="couleur" :key="couleur">{{ couleur }}</option>
-          </select>
-        </div>
+            <label for="couleurLumiere">Couleur par défaut :</label>
+            <select id="couleurLumiere" v-model="configLumiere.couleur">
+              <option v-for="couleur in couleursOptions" :value="couleur" :key="couleur">{{ couleur }}</option>
+            </select>
+          </div>
 
-        <!-- Formulaire spécifique à Alarme -->
-        <div v-if="objetSelectionne.type === 'alarme'">
-          <label for="nomAlarme">Nom personnalisé :</label>
-          <input type="text" id="nomAlarme" v-model="configAlarme.nomUtilisateur" placeholder="ex : Alarme principale">
+          <!-- Formulaire spécifique à Alarme -->
+          <div v-if="objetSelectionne.type === 'alarme'">
+            <label for="nomAlarme">Nom personnalisé :</label>
+            <input type="text" id="nomAlarme" v-model="configAlarme.nomUtilisateur" placeholder="ex : Alarme principale">
 
-          <label for="emplacementAlarme">Emplacement :</label>
-          <input type="text" id="emplacementAlarme" v-model="configAlarme.emplacement" placeholder="ex : Hall d’entrée, RDC...">
+            <label for="emplacementAlarme">Emplacement :</label>
+            <input type="text" id="emplacementAlarme" v-model="configAlarme.emplacement" placeholder="ex : Hall d’entrée, RDC...">
 
-          <label for="modeInitial">Mode de démarrage :</label>
-          <select id="modeInitial" v-model="configAlarme.modeInitial">
-            <option value="desactive">Désactivée</option>
-            <option value="actif">Activée</option>
-            <option value="partiel">Partielle</option>
-          </select>
+            <label for="modeInitial">Mode de démarrage :</label>
+            <select id="modeInitial" v-model="configAlarme.modeInitial">
+              <option value="desactive">Désactivée</option>
+              <option value="actif">Activée</option>
+              <option value="partiel">Partielle</option>
+            </select>
 
-          <label for="motDePasse">Code de sécurité :</label>
-          <input type="password" id="motDePasse" v-model="configAlarme.motDePasse" placeholder="••••">
-        </div>
+            <label for="motDePasse">Code de sécurité :</label>
+            <input type="password" id="motDePasse" v-model="configAlarme.motDePasse" placeholder="••••">
+          </div>
 
-        <!-- Formulaire spécifique à Panneau Solaire -->
-        <div v-if="objetSelectionne.type === 'panneau solaire'">
-          <label for="nomSolaire">Nom personnalisé :</label>
-          <input type="text" id="nomSolaire" v-model="configSolaire.nomUtilisateur" placeholder="ex : Panneau Toiture Est">
+          <!-- Formulaire spécifique à Panneau Solaire -->
+          <div v-if="objetSelectionne.type === 'panneau solaire'">
+            <label for="nomSolaire">Nom personnalisé :</label>
+            <input type="text" id="nomSolaire" v-model="configSolaire.nomUtilisateur" placeholder="ex : Panneau Toiture Est">
 
-          <label for="emplacementSolaire">Emplacement :</label>
-          <input type="text" id="emplacementSolaire" v-model="configSolaire.emplacement" placeholder="ex : Toit, Jardin...">
+            <label for="emplacementSolaire">Emplacement :</label>
+            <input type="text" id="emplacementSolaire" v-model="configSolaire.emplacement" placeholder="ex : Toit, Jardin...">
 
-          <label for="capaciteSolaire">Capacité maximale (en kWc) :</label>
-          <input type="number" id="capaciteSolaire" v-model.number="configSolaire.capacite" min="0.5" step="0.1" placeholder="ex : 3.5">
-        </div>
+            <label for="capaciteSolaire">Capacité maximale (en kWc) :</label>
+            <input type="number" id="capaciteSolaire" v-model.number="configSolaire.capacite" min="0.5" step="0.1" placeholder="ex : 3.5">
+          </div>
 
-        <!-- Formulaire spécifique à Arrosage -->
-        <div v-if="objetSelectionne.type === 'arrosage'">
-          <label for="nomArrosage">Nom personnalisé :</label>
-          <input type="text" id="nomArrosage" v-model="configArrosage.nomUtilisateur" placeholder="ex : Arrosage Jardin">
+          <!-- Formulaire spécifique à Arrosage -->
+          <div v-if="objetSelectionne.type === 'arrosage'">
+            <label for="nomArrosage">Nom personnalisé :</label>
+            <input type="text" id="nomArrosage" v-model="configArrosage.nomUtilisateur" placeholder="ex : Arrosage Jardin">
 
-          <label for="emplacementArrosage">Emplacement :</label>
-          <input type="text" id="emplacementArrosage" v-model="configArrosage.emplacement" placeholder="ex : Jardin, Terrasse...">
+            <label for="emplacementArrosage">Emplacement :</label>
+            <input type="text" id="emplacementArrosage" v-model="configArrosage.emplacement" placeholder="ex : Jardin, Terrasse...">
 
-          <label>Heures d’irrigation :</label>
-          <div class="planning-list">
-            <ul>
-              <li v-for="(heure, index) in configArrosage.planning" :key="index">
-                🕒 {{ heure }}
-                <button class="remove-btn" @click="configArrosage.planning.splice(index, 1)">✖</button>
-              </li>
-            </ul>
-            <input type="time" v-model="configArrosage.nouvelleHeure" />
-            <button class="mini-btn" @click="ajouterHeureArrosage">Ajouter</button>
+            <label>Heures d’irrigation :</label>
+            <div class="planning-list">
+              <ul>
+                <li v-for="(heure, index) in configArrosage.planning" :key="index">
+                  🕒 {{ heure }}
+                  <button class="remove-btn" @click="configArrosage.planning.splice(index, 1)">✖</button>
+                </li>
+              </ul>
+              <input type="time" v-model="configArrosage.nouvelleHeure" />
+              <button class="mini-btn" @click="ajouterHeureArrosage">Ajouter</button>
+            </div>
+          </div>
+
+
+          <!-- Boutons -->
+          <div class="onglet-buttons">
+            <button @click="validerConfiguration">Valider</button>
+            <button @click="fermerOnglet">Annuler</button>
           </div>
         </div>
-
-
-        <!-- Boutons -->
-        <div class="onglet-buttons">
-          <button @click="validerConfiguration">Valider</button>
-          <button @click="fermerOnglet">Annuler</button>
-        </div>
       </div>
-    </div>
 
-    <div class="retour-container">
-      <button class="retour-button" @click="retourAccueil">⬅ Retour au tableau de bord</button>
+      <div class="retour-container">
+        <button class="retour-button" @click="retourAccueil">⬅ Retour au tableau de bord</button>
+      </div>
+      
     </div>
-    
   </div>
 </body>
 </html>

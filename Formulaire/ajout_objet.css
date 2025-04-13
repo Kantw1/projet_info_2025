@@ -95,6 +95,8 @@ body {
     transform: translate(-50%, -50%);
     width: 95vw;
     max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
     background: white;
     border-radius: 14px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
@@ -124,13 +126,16 @@ body {
 }
 
 .floating-content input {
-    width: 100%;
+    display: block;
+    width: calc(100% - 20px);
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 1rem;
-    margin-bottom: 15px;
+    margin: 0 auto 15px auto;
+    box-sizing: border-box;
 }
+
 
 .onglet-buttons {
     display: flex;
@@ -159,4 +164,25 @@ body {
     color: #666;
     font-style: italic;
     margin-top: 5px;
+}
+
+
+.page-wrapper {
+    max-width: 650px;
+    margin: 60px auto;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.page-header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: bold;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
 }

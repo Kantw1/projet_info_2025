@@ -50,3 +50,10 @@ try {
     http_response_code(500);
     echo json_encode(["success" => false, "error" => $e->getMessage()]);
 }
+
+ // Incrémenter les points
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 1 WHERE idUser = ?");
+            $updateStmt->bind_param("i", $id);
+            $updateStmt->execute();
+            $updateStmt->close();
+

@@ -115,6 +115,7 @@ new Vue({
         .catch(err => console.error("Erreur conso mensuelle :", err));
     },    
       appliquerProgrammationGlobale() {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Fermer volet')) return;
         this.volets.forEach(v => {
           if (v.connectivity !== 'Déconnecté') {
             v.heure_ouverture = this.heureGlobaleOuverture;
@@ -182,7 +183,7 @@ new Vue({
         return volet.connectivity !== 'Déconnecté' && volet.position > 0;
       },      
       ouvrirVolet(id) {
-        if (!this.estAutorise(['admin', 'Complexe Utilisateur', 'Simple Utilisateur'], 'Ouvrir volet')) return;
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Ouvrir volet')) return;
         const volet = this.volets.find(v => v.id === id);
         if (!volet) return;
   
@@ -198,7 +199,7 @@ new Vue({
         this.sauvegarderVolet(volet, `Ouverture de ${volet.name}`);
       },
       fermerVolet(id) {
-        if (!this.estAutorise(['admin', 'Complexe Utilisateur', 'Simple Utilisateur'], 'Fermer volet')) return;
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Fermer volet')) return;
         const volet = this.volets.find(v => v.id === id);
         if (!volet) return;
   
@@ -214,7 +215,7 @@ new Vue({
         this.sauvegarderVolet(volet, `Fermeture de ${volet.name}`);
       },
       ajusterVolet(id, value) {
-        if (!this.estAutorise(['admin', 'Complexe Utilisateur', 'Simple Utilisateur'], 'Ajuster volet')) return;
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Ajuster volet')) return;
         const volet = this.volets.find(v => v.id === id);
         if (!volet) return;
   
@@ -231,6 +232,7 @@ new Vue({
         this.sauvegarderVolet(volet, `Règlage de ${volet.name}`);
       },
       ouvrirTous() {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Ouvrir tous les volets')) return;
         this.volets.forEach(v => {
           if (v.connectivity !== 'Déconnecté') {
             v.position = 100;
@@ -244,6 +246,7 @@ new Vue({
         });
       },
       fermerTous() {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Fermer tous les volets')) return;
         this.volets.forEach(v => {
           if (v.connectivity !== 'Déconnecté') {
             v.position = 0;
@@ -257,6 +260,7 @@ new Vue({
         });
       },
       toggleModeSecurite() {
+        if (!this.estAutorise(['admin'], 'Activer/désactiver le mode sécurité')) return;
         // Vérifie l’état de l’alarme avant de basculer le mode sécurité
         fetch('../PHP_request/get_alarme.php')
           .then(res => res.json())

@@ -50,6 +50,7 @@ new Vue({
           });
       },      
         toggleArrosage() {
+          if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'Activer/désactiver arrosage')) return;
             fetch('../PHP_request/toggle_arrosage.php', {
               method: 'POST'
             })
@@ -73,6 +74,7 @@ new Vue({
             });
           },
       ajouterHeure() {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'Ajouter dans le planning')) return;
         const heure = this.nouvelleHeure.trim();
         if (/^\d{2}:\d{2}$/.test(heure) && !this.planning.includes(heure)) {
           // Ajout local
@@ -100,6 +102,7 @@ new Vue({
         }
       },
       supprimerHeure(index) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'Supprimer une heure du planning')) return;
         const heureSupprimee = this.planning[index];
         this.planning.splice(index, 1);
       

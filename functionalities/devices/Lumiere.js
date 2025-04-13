@@ -110,6 +110,7 @@ new Vue({
       },              
   
       allumerLumiere(index) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Allumer lumière')) return;
         const lum = this.lumieres[index];
         if (!lum.etat) {
           lum.etat = true;
@@ -121,6 +122,7 @@ new Vue({
       },
   
       eteindreLumiere(index) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Eteindre lumière')) return;
         const lum = this.lumieres[index];
         if (lum.etat) {
           lum.etat = false;
@@ -131,6 +133,7 @@ new Vue({
       },
   
       ajusterIntensite(index, valeur) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Régler intensité lumière')) return;
         const lum = this.lumieres[index];
         lum.intensite = valeur;
         lum.etat = valeur > 0;
@@ -140,6 +143,7 @@ new Vue({
       },
   
       changerCouleur(index, nouvelleCouleur) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Chanager lumière')) return;
         const lum = this.lumieres[index];
         lum.couleur = nouvelleCouleur;
         this.lastAction = `Couleur de ${lum.nom} changée en ${nouvelleCouleur}`;
@@ -147,6 +151,7 @@ new Vue({
       },
   
       allumerToutes() {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Allumer toutes les lumières')) return;
         this.lumieres.forEach((lum, index) => {
           if (!lum.etat) {
             lum.etat = true;
@@ -160,6 +165,7 @@ new Vue({
       },
   
       eteindreToutes() {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Eteindre toutes les lumières')) return;
         this.lumieres.forEach((lum, index) => {
           if (lum.etat) {
             lum.etat = false;

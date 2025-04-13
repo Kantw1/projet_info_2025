@@ -135,6 +135,7 @@ new Vue({
     },
 
     validerCode() {
+      if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'activer/Désactiver alarme')) return;
       if (this.codeSaisi !== this.alarmPassword) {
         alert("Code incorrect.");
         this.codeSaisi = '';

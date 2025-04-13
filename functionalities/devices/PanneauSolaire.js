@@ -91,6 +91,7 @@ new Vue({
 
     // Activation/désactivation
     toggleEtat() {
+      if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'Activer/désactiver panneau solaire')) return;
         fetch('../PHP_request/toggle_panneau_solaire.php', {
           method: 'POST'
         })
@@ -111,6 +112,7 @@ new Vue({
     
     //met a jour les modifs effectues
     changerCapacite() {
+      if (!this.estAutorise(['admin'], 'Changer la capcité max')) return;
         const nouvelle = parseFloat(prompt("Nouvelle capacité max (kWc) :", this.capacite));
         if (!isNaN(nouvelle) && nouvelle > 0) {
           fetch('../PHP_request/update_capacite_panneau.php', {

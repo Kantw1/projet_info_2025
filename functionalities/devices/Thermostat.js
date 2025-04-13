@@ -117,6 +117,7 @@ new Vue({
       return this.minTemp + (angle / 360) * (this.maxTemp - this.minTemp);
     },
     updateTargetFromEvent(e, index) {
+      if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'Ajuster température')) return;
       const t = this.thermostats[index];
       if (t.connectivity === 'Déconnecté') return;
       const newTarget = Math.round(this.computeTemperatureFromEvent(e));
@@ -124,6 +125,7 @@ new Vue({
       this.logInteraction(index, `Changement de température à ${newTarget}°C`);
     },
     adjustHumidity(delta, index) {
+      if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'Ajuster humididé')) return;
       const t = this.thermostats[index];
       if (t.connectivity === 'Déconnecté') return;
       const newTarget = Math.max(0, Math.min(100, t.targetHumidity + delta));

@@ -23,7 +23,7 @@ new Vue({
       console.log('Volet roulant component monté');
       window.addEventListener('device-selected', (e) => {
         console.log('Événement reçu :', e.detail);
-        this.visible = (e.detail && e.detail.toLowerCase() === 'voletroulant');
+        this.visible = (e.detail && e.detail.toLowerCase() === 'volet roulant');
         console.log('→ volet-roulant visible =', this.visible);
         this.chargerVoletsDepuisServeur();
       });

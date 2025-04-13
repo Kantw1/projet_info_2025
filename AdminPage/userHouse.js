@@ -4,11 +4,39 @@ const usersApp = new Vue({
     el  : "#show_users",
 
     data: {
+        erreurAutorisation: '',
+        userType: '',
         users: [] // tableau d'objets {lastname, firstname, type}
     },
 
+    mounted(){
+        this.chargerTypeUtilisateur();
+    },
     // Declaration des methodes utiliser dans l'application
     methods: {
+        estAutorise(typesAutorises, action = '') {
+            const autorise = typesAutorises.includes(this.userType);
+            if (!autorise) {
+              this.erreurAutorisation = `⛔ Action "${action}" non autorisée pour le rôle "${this.userType}"`;
+              setTimeout(() => this.erreurAutorisation = '', 4000); // efface le message après 4 sec
+            }
+            return autorise;
+          },
+          chargerTypeUtilisateur() {
+            fetch('../PHP_request/get_user_type.php')
+              .then(res => res.json())
+              .then(data => {
+                if (data.success) {
+                  this.userType = data.type;
+                  console.log("Type utilisateur :", this.userType);
+                } else {
+                  console.warn("⚠️ Impossible de récupérer le type d'utilisateur :", data.error);
+                }
+              })
+              .catch(err => {
+                console.error("Erreur réseau type utilisateur :", err);
+              });
+          },
 
         displayUsersInfo() {
 
@@ -23,6 +51,7 @@ const usersApp = new Vue({
             return order[currentIndex + 1] || ''; // Si admin, on renvoie vide
         },
         toggleAutorisation(index) {
+            if (!this.estAutorise(['admin'], 'Autoriser au passage admin')) return;
             const user = this.users[index];
             const nouvelleValeur = user.autorisationAdmin === 'OUI' ? 'NON' : 'OUI';
         
@@ -56,6 +85,7 @@ const usersApp = new Vue({
         
         // Méthode pour supprimer un utilisateur
         removeUser(index) {
+            if (!this.estAutorise(['admin'], 'Supprimer un utilisateur')) return;
 
             const userToDelete = this.users[index];
         
@@ -95,6 +125,7 @@ const usersApp = new Vue({
 
         },
         goToAddUser() {
+            if (!this.estAutorise(['admin'], 'Ajouter un utilisateur')) return;
             window.location.href = "../Inscription_connection/ajouter_utilisateur.html";
         }
     }

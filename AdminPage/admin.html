@@ -112,7 +112,7 @@
                 <div v-if="afficherDetails" class="consumption-details">
                   <div class="object-usage" v-for="objet in objets" :key="objet.nom">
                     <span>{{ objet.nom }}</span>
-                    <span class="conso">{{ objet.conso }}</span>
+                    <span class="conso">:  {{ objet.conso }}</span>
                   </div>
                 </div>
 
@@ -139,7 +139,6 @@
                 <p>Prénom : <span>{{ firstname }}</span></p>
                 <p>Mail : <span>{{ mail }}</span></p>
                 <p>Type : <span>{{ type }}</span></p>
-                <button id="edit-profile">Modifier le profil</button>
             </section>
 
             <section id="users" class="tab-content">
@@ -169,8 +168,10 @@
                         </li>
                     </ul>
                     <button id="add-user" class="add-user" @click="goToAddUser">Ajouter un utilisateur</button>
+                    <p v-if="erreurAutorisation" class="error-message">
+                      {{ erreurAutorisation }}
+                    </p>
                 </div>
-                
             </section>
             
             
@@ -591,9 +592,6 @@
               <div class="solar-footer">
                 ⚡ Données stables et prêtes pour exploitation
               </div>
-              <div v-if="erreurAutorisation" class="error-message">
-                {{ erreurAutorisation }}
-              </div>
             </div>
 
 
@@ -666,7 +664,7 @@
         </main>
     </div>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="../functionalities/objet_connected.js"></script>
     <script src="../functionalities/consumption_loader.js"></script>

@@ -40,20 +40,18 @@ if ($success) {
         "success" => true,
         "etat" => $nouvelEtat ? "Actif" : "Inactif"
     ]);
-} else {
-    echo json_encode([
-        "success" => false,
-        "error" => "Échec de la mise à jour"
-    ]);
-}
-
-$id = $_SESSION['id'];
+    $id = $_SESSION['id'];
 
  // Incrémenter les points
             $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 1 WHERE id = ?");
             $updateStmt->bind_param("i", $id);
             $updateStmt->execute();
             $updateStmt->close();
-
+} else {
+    echo json_encode([
+        "success" => false,
+        "error" => "Échec de la mise à jour"
+    ]);
+}
 
 $conn->close();

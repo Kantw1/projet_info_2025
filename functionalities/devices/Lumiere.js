@@ -7,6 +7,7 @@ new Vue({
       totalConsommation: 0,
       lastAction: '',
       userType: '',
+      erreurAutorisation: '',
     },
   
     mounted() {
@@ -17,11 +18,20 @@ new Vue({
         this.visible = selection === 'lumiere';
         if (this.visible) {
           this.chargerLumieres();  // Charger les lumières depuis la base de données
+          this.chargerTypeUtilisateur();
         }
       });
     },
   
     methods: {
+      estAutorise(typesAutorises, action = '') {
+        const autorise = typesAutorises.includes(this.userType);
+        if (!autorise) {
+          this.erreurAutorisation = `⛔ Action "${action}" non autorisée pour le rôle "${this.userType}"`;
+          setTimeout(() => this.erreurAutorisation = '', 4000); // efface le message après 4 sec
+        }
+        return autorise;
+      },
       chargerTypeUtilisateur() {
         fetch('../PHP_request/get_user_type.php')
           .then(res => res.json())

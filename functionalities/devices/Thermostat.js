@@ -10,7 +10,8 @@ new Vue({
     baseHumidity: 50,
     radius: 80,
     thermostats: [],
-    userType: '',    
+    userType: '', 
+    erreurAutorisation: '',   
   },
   computed: {
     circumference() {
@@ -25,6 +26,14 @@ new Vue({
     }    
   },
   methods: {
+    estAutorise(typesAutorises, action = '') {
+      const autorise = typesAutorises.includes(this.userType);
+      if (!autorise) {
+        this.erreurAutorisation = `⛔ Action "${action}" non autorisée pour le rôle "${this.userType}"`;
+        setTimeout(() => this.erreurAutorisation = '', 4000); // efface le message après 4 sec
+      }
+      return autorise;
+    },
     chargerTypeUtilisateur() {
       fetch('../PHP_request/get_user_type.php')
         .then(res => res.json())
@@ -224,6 +233,7 @@ new Vue({
       this.visible = e.detail?.toLowerCase() === 'thermostat';
       if (this.visible) {
         this.fetchThermostats();
+        this.chargerTypeUtilisateur();
       }
     });
   

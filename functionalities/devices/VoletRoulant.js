@@ -18,6 +18,7 @@ new Vue({
       heureGlobaleFermeture: '21:00',
       derniereInteraction: 'Chargement en cours...',
       userType: '',
+      erreurAutorisation: '',
     },
     mounted() {
       console.log('Volet roulant component monté');
@@ -26,6 +27,7 @@ new Vue({
         this.visible = (e.detail && e.detail.toLowerCase() === 'volet roulant');
         console.log('→ volet-roulant visible =', this.visible);
         this.chargerVoletsDepuisServeur();
+        this.chargerTypeUtilisateur();
       });
       
     
@@ -35,6 +37,14 @@ new Vue({
       this.chargerDerniereInteraction();
     },
     methods: {
+      estAutorise(typesAutorises, action = '') {
+        const autorise = typesAutorises.includes(this.userType);
+        if (!autorise) {
+          this.erreurAutorisation = `⛔ Action "${action}" non autorisée pour le rôle "${this.userType}"`;
+          setTimeout(() => this.erreurAutorisation = '', 4000); // efface le message après 4 sec
+        }
+        return autorise;
+      },
       chargerTypeUtilisateur() {
         fetch('../PHP_request/get_user_type.php')
           .then(res => res.json())
@@ -172,6 +182,7 @@ new Vue({
         return volet.connectivity !== 'Déconnecté' && volet.position > 0;
       },      
       ouvrirVolet(id) {
+        if (!this.estAutorise(['admin', 'Complexe Utilisateur', 'Simple Utilisateur'], 'Ouvrir volet')) return;
         const volet = this.volets.find(v => v.id === id);
         if (!volet) return;
   
@@ -187,6 +198,7 @@ new Vue({
         this.sauvegarderVolet(volet, `Ouverture de ${volet.name}`);
       },
       fermerVolet(id) {
+        if (!this.estAutorise(['admin', 'Complexe Utilisateur', 'Simple Utilisateur'], 'Fermer volet')) return;
         const volet = this.volets.find(v => v.id === id);
         if (!volet) return;
   
@@ -202,6 +214,7 @@ new Vue({
         this.sauvegarderVolet(volet, `Fermeture de ${volet.name}`);
       },
       ajusterVolet(id, value) {
+        if (!this.estAutorise(['admin', 'Complexe Utilisateur', 'Simple Utilisateur'], 'Ajuster volet')) return;
         const volet = this.volets.find(v => v.id === id);
         if (!volet) return;
   

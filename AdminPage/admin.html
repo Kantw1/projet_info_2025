@@ -232,6 +232,9 @@
                   <p v-if="t.connectivity === 'Déconnecté'" class="offline-warning">
                     Appareil hors ligne – connectivité perdue.
                   </p>
+                  <div v-if="erreurAutorisation" class="error-message">
+                    {{ erreurAutorisation }}
+                  </div>
                 </div>
               </div>
               
@@ -320,7 +323,10 @@
                       {{ derniereInteraction }}
                     </div>
                   </div>
-                  <p v-if="messageErreur" class="error-message">{{ messageErreur }}</p>                  
+                  <p v-if="messageErreur" class="error-message">{{ messageErreur }}</p>
+                  <div v-if="erreurAutorisation" class="error-message">
+                    {{ erreurAutorisation }}
+                  </div>                  
               </div>
               
               <!-- component alarm -->
@@ -422,6 +428,9 @@
                     </div>
                 </div>
                 </div>
+                <div v-if="erreurAutorisation" class="error-message">
+                  {{ erreurAutorisation }}
+                </div>
             </div>
 
 
@@ -490,6 +499,9 @@
                   </div>
                 </div>
 
+              </div>
+              <div v-if="erreurAutorisation" class="error-message">
+                {{ erreurAutorisation }}
               </div>
             </div>
 
@@ -574,6 +586,9 @@
               <div class="solar-footer">
                 ⚡ Données stables et prêtes pour exploitation
               </div>
+              <div v-if="erreurAutorisation" class="error-message">
+                {{ erreurAutorisation }}
+              </div>
             </div>
 
 
@@ -638,8 +653,11 @@
               <div class="arrosage-footer">
                 🌿 Le système d’arrosage optimise votre consommation d’eau.
               </div>
+              <div v-if="erreurAutorisation" class="error-message">
+                {{ erreurAutorisation }}
+              </div>
             </div>
-
+            
         </main>
     </div>
 

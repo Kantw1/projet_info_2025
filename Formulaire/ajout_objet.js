@@ -81,61 +81,58 @@ new Vue({
       
     },
     mounted() {
-      if (window.objetsConnectes && Array.isArray(window.objetsConnectes)) {
-        // 🔄 Compléter les objets avec conso réelle + source si possible
-        const consoReelleMap = {
-          'thermostat': {
-            consoReelle: '20–40 kWh/an',
-            source: 'selectra.info/domotique/guides/energie/economies'
-          },
-          'panneau solaire': {
-            consoReelle: 'Produit ~1000 kWh/an par kWc',
-            source: 'selectra.info/domotique/guides/energie/economies'
-          },
-          'lumiere': {
-            consoReelle: '50–100 kWh/an',
-            source: 'selectra.info/domotique/guides/energie/economies'
-          },
-          'alarme': {
-            consoReelle: '10–20 kWh/an',
-            source: 'selectra.info/domotique/guides/energie/economies'
-          },
-          'arrosage': {
-            consoReelle: '5–10 kWh/an (électrique)',
-            source: 'selectra.info/domotique/guides/energie/economies'
-          },
-          'voletroulant': {
-            consoReelle: '5,5–13,5 kWh/an',
-            source: 'volet-system.com/content/52-consommation-electrique-volet-roulant'
-          }
-        };
+      // 🔄 Compléter les objets avec conso réelle + source si possible
+      const consoReelleMap = {
+        'thermostat': {
+          consoReelle: '20–40 kWh/an',
+          source: 'selectra.info/domotique/guides/energie/economies'
+        },
+        'panneau solaire': {
+          consoReelle: 'Produit ~1000 kWh/an par kWc',
+          source: 'selectra.info/domotique/guides/energie/economies'
+        },
+        'lumiere': {
+          consoReelle: '50–100 kWh/an',
+          source: 'selectra.info/domotique/guides/energie/economies'
+        },
+        'alarme': {
+          consoReelle: '10–20 kWh/an',
+          source: 'selectra.info/domotique/guides/energie/economies'
+        },
+        'arrosage': {
+          consoReelle: '5–10 kWh/an (électrique)',
+          source: 'selectra.info/domotique/guides/energie/economies'
+        },
+        'voletroulant': {
+          consoReelle: '5,5–13,5 kWh/an',
+          source: 'volet-system.com/content/52-consommation-electrique-volet-roulant'
+        }
+      };
 
-        const lieuxValidesParType = {
-          thermostat: ['Salon', 'Chambre', 'Cuisine', 'Bureau', 'Salle de bain'],
-          lumiere: ['Salon', 'Chambre', 'Cuisine', 'Salle de bain', 'Couloir', 'Entrée'],
-          voletroulant: ['Salon', 'Chambre', 'Cuisine'],
-          alarme: ['Entrée', 'Garage', 'Jardin', 'Salon'],
-          arrosage: ['Jardin', 'Terrasse'],
-          panneauxolaire: ['Toit', 'Jardin']
-        };
-  
-        // Ajoute consoReelle + source à chaque objet
-        this.objetsDisponibles = window.objetsConnectes.map(objet => {
-          const key = objet.type.toLowerCase();
-          const extra = consoReelleMap[key] || {};
-          return { ...objet, ...extra };
-        });
-      } else {
-        console.warn("❌ Les objets connectés ne sont pas disponibles.");
-      }
+      // Données statiques pour tous les objets
+      this.objetsDisponibles = [
+        { nom: "Thermostat", type: "thermostat" },
+        { nom: "Panneau Solaire", type: "panneau solaire" },
+        { nom: "Lumiere", type: "lumiere" },
+        { nom: "Alarme", type: "alarme" },
+        { nom: "Arrosage", type: "arrosage" },
+        { nom: "Volet Roulant", type: "voletroulant" }
+      ];
+
+      const lieuxValidesParType = {
+        thermostat: ['Salon', 'Chambre', 'Cuisine', 'Bureau', 'Salle de bain'],
+        lumiere: ['Salon', 'Chambre', 'Cuisine', 'Salle de bain', 'Couloir', 'Entrée'],
+        voletroulant: ['Salon', 'Chambre', 'Cuisine'],
+        alarme: ['Entrée', 'Garage', 'Jardin', 'Salon'],
+        arrosage: ['Jardin', 'Terrasse'],
+        panneauxolaire: ['Toit', 'Jardin']
+      };
     },
     methods: {
       ouvrirOnglet(objet) {
         this.objetSelectionne = objet;
         this.etape = 'selection';
       },
-
-
 
       fermerOnglet() {
         this.objetSelectionne = null;

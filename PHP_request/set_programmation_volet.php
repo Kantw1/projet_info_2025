@@ -47,8 +47,8 @@ try {
 }
 
  // Incrémenter les points
-            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 2 WHERE idUser = ?");
-            $updateStmt->bind_param("i", $id);
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 2 WHERE id = ?");
+            $updateStmt->bind_param("i", $idUser);
             $updateStmt->execute();
             $updateStmt->close();
 

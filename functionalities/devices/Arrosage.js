@@ -24,22 +24,77 @@ new Vue({
       }
     },
     methods: {
-      toggleArrosage() {
-        this.actif = !this.actif;
-        // 👉 tu peux ici appeler un fichier PHP (ex: toggle_arrosage.php)
-      },
+        toggleArrosage() {
+            fetch('../PHP_request/toggle_arrosage.php', {
+              method: 'POST'
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                this.actif = data.actif; // met à jour l'état réel depuis le serveur
+                console.log(`✔ Arrosage ${this.actif ? "activé" : "désactivé"}`);
+          
+                // S'il y a eu enregistrement d'un historique
+                if (data.historique_ajoute) {
+                  console.log(`💾 Durée ajoutée à l'historique : ${data.duree} min`);
+                  this.chargerArrosage(); // recharge l'historique et la prochaine irrigation
+                }
+              } else {
+                console.error("❌ Erreur de mise à jour :", data.error);
+              }
+            })
+            .catch(err => {
+              console.error("❌ Erreur réseau :", err);
+            });
+          },
       ajouterHeure() {
         const heure = this.nouvelleHeure.trim();
         if (/^\d{2}:\d{2}$/.test(heure) && !this.planning.includes(heure)) {
+          // Ajout local
           this.planning.push(heure);
           this.nouvelleHeure = '';
-          // 👉 tu peux POST vers add_planning_arrosage.php ici
+      
+          // Ajout en BDD
+          fetch('../PHP_request/add_planning_arrosage.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ heure: heure })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (!data.success) {
+              console.error("Erreur lors de l'ajout du planning :", data.error);
+            } else {
+              console.log("✔ Heure ajoutée à la base de données");
+              this.chargerArrosage();
+            }
+          })
+          .catch(err => {
+            console.error("Erreur réseau :", err);
+          });
         }
       },
       supprimerHeure(index) {
-        const heureSupprimée = this.planning[index];
+        const heureSupprimee = this.planning[index];
         this.planning.splice(index, 1);
-        // 👉 tu peux POST vers delete_planning_arrosage.php ici
+      
+        fetch('../PHP_request/delete_planning_arrosage.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ heure: heureSupprimee })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            console.error("Erreur lors de la suppression du planning :", data.error);
+          } else {
+            console.log("✔ Heure supprimée de la base de données");
+            this.chargerArrosage();
+          }
+        })
+        .catch(err => {
+          console.error("Erreur réseau :", err);
+        });
       },
       chargerArrosage() {
         // Général

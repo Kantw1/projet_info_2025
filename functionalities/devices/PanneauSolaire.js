@@ -4,20 +4,45 @@ new Vue({
     el: '#panneau-solaire-component',
     data: {
     visible: false,
-    production: 3.2, // en kW
-    capacite: 6.0, // en kWc
-    consommation: 1.7, // en kW
-    temperature: 24, // en °C
-    tension: 230, // en V
-    economieEuro: 18.7, // en €
-    economieKWh: 26.4, // en kWh
-    co2: 12.5, // en kg
-    tauxUtilisation: 0.6, // 60% d'utilisation simulée
-    derniereMiseAJour: '07/04/2025 10:58',
-    etat: 'Actif',
+    production:0, // en kW
+    capacite: 0, // en kWc
+    consommation: 0, // en kW
+    temperature: 0, // en °C
+    tension: 0, // en V
+    economieEuro: 0, // en €
+    economieKWh: 0, // en kWh
+    co2: 0, // en kg
+    tauxUtilisation: 0, // 60% d'utilisation simulée
+    derniereMiseAJour: '',
+    etat: '',
     afficherEconomieEnKwh: false
     },
     methods: {
+        chargerPanneauSolaire() {
+            fetch('../PHP_request/get_panneau_solaire.php')
+              .then(res => res.json())
+              .then(data => {
+                if (data.success) {
+                  this.production = data.production;
+                  this.capacite = data.capacite;
+                  this.consommation = data.consommation;
+                  this.temperature = data.temperature;
+                  this.tension = data.tension;
+                  this.economieKWh = Math.floor(this.production - this.consommation);
+                  this.economieEuro = Math.floor(this.economieKWh * 2,1);
+                  this.co2 = data.co2;
+                  this.tauxUtilisation = this.production/this.capacite;
+                  this.etat = data.etat;
+                  this.derniereMiseAJour = data.derniereMiseAJour;
+                  console.log("✔ Panneau solaire chargé depuis la BDD");
+                } else {
+                  console.error("❌ Erreur récupération panneau :", data.error);
+                }
+              })
+              .catch(err => {
+                console.error("❌ Erreur réseau :", err);
+              });
+          },          
     // Basculer entre affichage € / kWh
     toggleAffichageEconomie() {
         this.afficherEconomieEnKwh = !this.afficherEconomieEnKwh;
@@ -41,22 +66,48 @@ new Vue({
 
     // Activation/désactivation
     toggleEtat() {
-        this.etat = this.etat === 'Actif' ? 'Inactif' : 'Actif';
-    },
+        fetch('../PHP_request/toggle_panneau_solaire.php', {
+          method: 'POST'
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.etat = data.etat;
+            this.chargerPanneauSolaire(); // recharge la date de mise à jour
+            console.log("✔ État du panneau mis à jour :", data.etat);
+          } else {
+            console.error("❌ Erreur :", data.error);
+          }
+        })
+        .catch(err => {
+          console.error("❌ Erreur réseau :", err);
+        });
+      },
     
     //met a jour les modifs effectues
     changerCapacite() {
         const nouvelle = parseFloat(prompt("Nouvelle capacité max (kWc) :", this.capacite));
         if (!isNaN(nouvelle) && nouvelle > 0) {
-        this.capacite = nouvelle;
-        this.derniereMiseAJour = this.getDateActuelle(); // ✅ MAJ auto
+          fetch('../PHP_request/update_capacite_panneau.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ capacite: nouvelle })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.capacite = data.capacite;
+              this.chargerPanneauSolaire(); // recharge les données mises à jour
+              console.log("✔ Capacité mise à jour :", data.capacite, "kWc");
+            } else {
+              console.error("❌ Erreur mise à jour capacité :", data.error);
+            }
+          })
+          .catch(err => {
+            console.error("❌ Erreur réseau :", err);
+          });
         }
-    },
-    
-    toggleEtat() {
-        this.etat = this.etat === 'Actif' ? 'Inactif' : 'Actif';
-        this.derniereMiseAJour = this.getDateActuelle(); // ✅ MAJ auto
-    },
+      },
 
     getStatutColor() {
         switch (this.etat) {
@@ -71,6 +122,9 @@ new Vue({
     window.addEventListener('device-selected', (e) => {
         const selection = e.detail && e.detail.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
         this.visible = selection === 'panneau solaire';
+        if (this.visible) {
+            this.chargerPanneauSolaire();
+          }
     });
     },
     computed: {

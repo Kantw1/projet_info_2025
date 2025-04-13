@@ -151,6 +151,7 @@ CREATE TABLE arrosage (
     id_objet_connecte INT PRIMARY KEY,  -- Clé étrangère + identifiant unique de l’arrosage
     actif BOOLEAN DEFAULT TRUE,         -- L’arrosage est-il activé ?
     humidite_sol INT CHECK (humidite_sol BETWEEN 0 AND 100),  -- % d’humidité
+    heure_modification DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
 );
 
@@ -167,5 +168,29 @@ CREATE TABLE historique_arrosage (
     id_objet_connecte INT,
     date_irrigation DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Date et heure de début
     duree_minutes INT CHECK (duree_minutes BETWEEN 1 AND 120), -- Durée d’arrosage en minutes
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+
+CREATE TABLE panneau_solaire (
+    id_objet_connecte INT PRIMARY KEY,       -- Identifiant unique + clé étrangère
+    production_kw FLOAT DEFAULT 0.0,         -- Production instantanée (kW)
+    capacite_kwc FLOAT DEFAULT 6.0,          -- Capacité totale en kWc
+    consommation_kw FLOAT DEFAULT 0.0,       -- Consommation instantanée simulée (kW)
+    temperature_c INT DEFAULT 25,            -- Température panneau en °C
+    tension_v INT DEFAULT 230,               -- Tension (V)
+    economie_kwh FLOAT DEFAULT 0.0,          -- Économie totale (kWh)
+    co2_evite_kg FLOAT DEFAULT 0.0,          -- CO₂ évité (kg)
+    actif BOOLEAN DEFAULT TRUE,              -- Statut actif/inactif
+    derniere_mise_a_jour DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+
+CREATE TABLE historique_panneau_solaire (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_objet_connecte INT,
+    date_heure DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Heure de l'enregistrement
+    production_kw FLOAT,                            -- Production mesurée (kW)
     FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
 );

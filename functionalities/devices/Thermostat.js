@@ -9,7 +9,8 @@ new Vue({
     baseTemp: 20,
     baseHumidity: 50,
     radius: 80,
-    thermostats: []    
+    thermostats: [],
+    userType: '',    
   },
   computed: {
     circumference() {
@@ -24,6 +25,21 @@ new Vue({
     }    
   },
   methods: {
+    chargerTypeUtilisateur() {
+      fetch('../PHP_request/get_user_type.php')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.userType = data.type;
+            console.log("Type utilisateur :", this.userType);
+          } else {
+            console.warn("⚠️ Impossible de récupérer le type d'utilisateur :", data.error);
+          }
+        })
+        .catch(err => {
+          console.error("Erreur réseau type utilisateur :", err);
+        });
+    },    
     sendUpdate(index) {
       const t = this.thermostats[index];
       const payload = {

@@ -17,7 +17,7 @@ new Vue({
       heureGlobaleOuverture: '07:00',
       heureGlobaleFermeture: '21:00',
       derniereInteraction: 'Chargement en cours...',
-      
+      userType: '',
     },
     mounted() {
       console.log('Volet roulant component monté');
@@ -35,6 +35,21 @@ new Vue({
       this.chargerDerniereInteraction();
     },
     methods: {
+      chargerTypeUtilisateur() {
+        fetch('../PHP_request/get_user_type.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.userType = data.type;
+              console.log("Type utilisateur :", this.userType);
+            } else {
+              console.warn("⚠️ Impossible de récupérer le type d'utilisateur :", data.error);
+            }
+          })
+          .catch(err => {
+            console.error("Erreur réseau type utilisateur :", err);
+          });
+      },      
       chargerDerniereInteraction() {
         fetch('../PHP_request/get_last_action_volet.php')
           .then(res => res.json())

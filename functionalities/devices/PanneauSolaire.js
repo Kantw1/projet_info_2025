@@ -15,9 +15,25 @@ new Vue({
     tauxUtilisation: 0, // 60% d'utilisation simulée
     derniereMiseAJour: '',
     etat: '',
-    afficherEconomieEnKwh: false
+    afficherEconomieEnKwh: false,
+    userType: '',
     },
     methods: {
+      chargerTypeUtilisateur() {
+        fetch('../PHP_request/get_user_type.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.userType = data.type;
+              console.log("Type utilisateur :", this.userType);
+            } else {
+              console.warn("⚠️ Impossible de récupérer le type d'utilisateur :", data.error);
+            }
+          })
+          .catch(err => {
+            console.error("Erreur réseau type utilisateur :", err);
+          });
+      },      
         chargerPanneauSolaire() {
             fetch('../PHP_request/get_panneau_solaire.php')
               .then(res => res.json())

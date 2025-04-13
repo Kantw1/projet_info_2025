@@ -5,7 +5,8 @@ new Vue({
       lumieres: [],
       couleursOptions: ['Blanc', 'Jaune', 'Bleu', 'Rouge', 'Vert'],
       totalConsommation: 0,
-      lastAction: ''
+      lastAction: '',
+      userType: '',
     },
   
     mounted() {
@@ -21,6 +22,21 @@ new Vue({
     },
   
     methods: {
+      chargerTypeUtilisateur() {
+        fetch('../PHP_request/get_user_type.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.userType = data.type;
+              console.log("Type utilisateur :", this.userType);
+            } else {
+              console.warn("⚠️ Impossible de récupérer le type d'utilisateur :", data.error);
+            }
+          })
+          .catch(err => {
+            console.error("Erreur réseau type utilisateur :", err);
+          });
+      },      
       chargerLumieres() {
         fetch('../PHP_request/get_lumiere.php')
           .then(res => res.json())

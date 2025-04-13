@@ -95,4 +95,13 @@ if (
     echo json_encode(["error" => "Paramètres manquants"]);
 }
 
+$idUser = $_SESSION['id'];
+
+ // Incrémenter les points
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 1 WHERE idUser = ?");
+            $updateStmt->bind_param("i", $id);
+            $updateStmt->execute();
+            $updateStmt->close();
+
+
 $conn->close();

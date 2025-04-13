@@ -48,5 +48,12 @@ if ($success) {
     $log->close();
 }
 
+ // Incrémenter les points
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 2 WHERE idUser = ?");
+            $updateStmt->bind_param("i", $id);
+            $updateStmt->execute();
+            $updateStmt->close();
+
+
 echo json_encode(["success" => $success]);
 $conn->close();

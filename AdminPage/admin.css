@@ -1676,3 +1676,31 @@ canvas {
     }
   }
   
+
+/* 
+bouton pour ajouter des objetzs
+ */
+
+
+.ajouter-objet-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.ajouter-objet-button {
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.ajouter-objet-button:hover {
+    background-color: #0056b3;
+}
+  

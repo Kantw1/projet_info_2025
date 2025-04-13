@@ -34,4 +34,12 @@ if ($success) {
     echo json_encode(["success" => false, "error" => "Erreur lors de la mise à jour"]);
 }
 
+$id = $_SESSION['id'];
+
+ // Incrémenter les points
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 2 WHERE id = ?");
+            $updateStmt->bind_param("i", $id);
+            $updateStmt->execute();
+            $updateStmt->close();
+
 $conn->close();

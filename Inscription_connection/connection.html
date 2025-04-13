@@ -1,42 +1,31 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .alert {
-            display: none;
-            padding: 10px;
-            background-color: red;
-            color: white;
-            text-align: center;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
-        <h2>Connexion</h2>
+  <div class="form-container">
+    <h2>Connexion</h2>
 
-        <!-- Message d'erreur -->
-        <p id="errorMessage" class="alert"></p>
+    <!-- Message d'erreur dynamique -->
+    <p id="errorMessage" class="alert">Veuillez entrer vos informations correctement.</p>
 
-        <form action="login.php" method="POST">
-            <label for="email">Email :</label>
-            <input type="email" id="email" name="email" required>
+    <form action="login.php" method="POST">
+      <label for="email">Email :</label>
+      <input type="email" id="email" name="email" required>
 
-            <label for="password">Mot de passe :</label>
-            <input type="password" id="password" name="password" required>
+      <label for="password">Mot de passe :</label>
+      <input type="password" id="password" name="password" required>
 
-            <button type="submit">Se connecter</button>
-        </form>
-    </div>
+      <button type="submit">Se connecter</button>
+    </form>
+  </div>
 
-    <script src="connection.js"></script>
+  <script src="connection.js"></script>
 
 </body>
 </html>

@@ -5,25 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .alert {
-            display: none;
-            padding: 10px;
-            background-color: red;
-            color: white;
-            text-align: center;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-    </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="form-container">
         <h2>Inscription</h2>
 
         <!-- Message d'erreur dynamique -->
-        <p id="errorMessage" class="alert"></p>
+        <p id="errorMessage" class="alert">Veuillez remplir tous les champs correctement.</p>
 
         <form id="registerForm" action="addUser.php" method="POST" onsubmit="return validateForm()">
             <label for="nom">Nom :</label>
@@ -44,6 +33,8 @@
             <button type="submit">S'inscrire</button>
         </form>
     </div>
-<script src="inscription.js"></script>
+
+    <script src="inscription.js"></script>
+
 </body>
 </html>

@@ -5,19 +5,6 @@ new Vue({
   },
   mounted() {
     this.chargerDevices();
-    window.objetsConnectes = this.devices.map(d => ({
-      nom: d.name,
-      type: d.name.toLowerCase(), // ex: "thermostat"
-      conso: d.name === 'Thermostat' ? '42.1 kWh' : '—',
-      description: {
-        'Thermostat': 'Régule automatiquement la température de la pièce.',
-        'Panneau Solaire': 'Produit de l’énergie solaire à partir du soleil.',
-        'Lumiere': 'Contrôle l’éclairage dans une pièce.',
-        'Alarme': 'Détecte les intrusions et déclenche une alerte.',
-        'Arrosage': 'Active automatiquement l’arrosage d’un jardin.',
-        'VoletRoulant': 'Ouvre et ferme les volets motorisés.'
-      }[d.name] || ''
-    }));
   },
   methods: {
     normalizeType(type) {
@@ -60,6 +47,20 @@ new Vue({
               script.onerror = () => console.warn(`Erreur chargement ${device.script}`);
               document.head.appendChild(script);
             });
+
+            window.objetsConnectes = this.devices.map(d => ({
+              nom: d.name,
+              type: d.name.toLowerCase(), // ex: "thermostat"
+              conso: d.name === 'Thermostat' ? '42.1 kWh' : '—',
+              description: {
+                'Thermostat': 'Régule automatiquement la température de la pièce.',
+                'Panneau Solaire': 'Produit de l’énergie solaire à partir du soleil.',
+                'Lumiere': 'Contrôle l’éclairage dans une pièce.',
+                'Alarme': 'Détecte les intrusions et déclenche une alerte.',
+                'Arrosage': 'Active automatiquement l’arrosage d’un jardin.',
+                'Volet Roulant': 'Ouvre et ferme les volets motorisés.'
+              }[d.name] || ''
+            }));
     
           } else {
             console.error("❌ Erreur chargement des types :", data.error);

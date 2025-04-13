@@ -45,6 +45,14 @@ if ($stmt->affected_rows > 0) {
     echo json_encode(["success" => false, "message" => "Aucune mise à jour effectuée"]);
 }
 
+$id = $_SESSION['id'];
+
+ // Incrémenter les points
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 1 WHERE id = ?");
+            $updateStmt->bind_param("i", $id);
+            $updateStmt->execute();
+            $updateStmt->close();
+
 $stmt->close();
 $conn->close();
 ?>

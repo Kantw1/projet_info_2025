@@ -85,6 +85,14 @@ if (
             $stmt_hist->close();
         }
 
+        $idUser = $_SESSION['id'];
+
+ // Incrémenter les points
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 1 WHERE id = ?");
+            $updateStmt->bind_param("i", $idUser);
+            $updateStmt->execute();
+            $updateStmt->close();
+
     } else {
         echo json_encode(["success" => false, "message" => "Aucune modification"]);
     }
@@ -94,5 +102,7 @@ if (
     http_response_code(400);
     echo json_encode(["error" => "Paramètres manquants"]);
 }
+
+
 
 $conn->close();

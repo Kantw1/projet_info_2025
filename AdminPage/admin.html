@@ -37,6 +37,11 @@
                     </button>
                     <div id="backdrop" @click="closeDevice" style="display: none;"></div>
                 </div>
+                <div class="ajouter-objet-container">
+                  <button class="ajouter-objet-button" onclick="window.location.href='../Formulaire/ajout_objet.html'">
+                    ➕ Ajouter un objet
+                  </button>
+                </div>                
             </section>
 
             <section id="conso" class="tab-content">
@@ -109,7 +114,7 @@
                 <div v-if="afficherDetails" class="consumption-details">
                   <div class="object-usage" v-for="objet in objets" :key="objet.nom">
                     <span>{{ objet.nom }}</span>
-                    <span class="conso">{{ objet.conso }}</span>
+                    <span class="conso">:  {{ objet.conso }}</span>
                   </div>
                 </div>
 
@@ -136,7 +141,6 @@
                 <p>Prénom : <span>{{ firstname }}</span></p>
                 <p>Mail : <span>{{ mail }}</span></p>
                 <p>Type : <span>{{ type }}</span></p>
-                <button id="edit-profile">Modifier le profil</button>
             </section>
 
             <section id="users" class="tab-content">
@@ -166,8 +170,10 @@
                         </li>
                     </ul>
                     <button id="add-user" class="add-user" @click="goToAddUser">Ajouter un utilisateur</button>
+                    <p v-if="erreurAutorisation" class="error-message">
+                      {{ erreurAutorisation }}
+                    </p>
                 </div>
-                
             </section>
             
             
@@ -234,6 +240,9 @@
                   <p v-if="t.connectivity === 'Déconnecté'" class="offline-warning">
                     Appareil hors ligne – connectivité perdue.
                   </p>
+                  <div v-if="erreurAutorisation" class="error-message">
+                    {{ erreurAutorisation }}
+                  </div>
                 </div>
               </div>
               
@@ -322,7 +331,10 @@
                       {{ derniereInteraction }}
                     </div>
                   </div>
-                  <p v-if="messageErreur" class="error-message">{{ messageErreur }}</p>                  
+                  <p v-if="messageErreur" class="error-message">{{ messageErreur }}</p>
+                  <div v-if="erreurAutorisation" class="error-message">
+                    {{ erreurAutorisation }}
+                  </div>                  
               </div>
               
               <!-- component alarm -->
@@ -424,6 +436,9 @@
                     </div>
                 </div>
                 </div>
+                <div v-if="erreurAutorisation" class="error-message">
+                  {{ erreurAutorisation }}
+                </div>
             </div>
 
 
@@ -492,6 +507,9 @@
                   </div>
                 </div>
 
+              </div>
+              <div v-if="erreurAutorisation" class="error-message">
+                {{ erreurAutorisation }}
               </div>
             </div>
 
@@ -640,12 +658,15 @@
               <div class="arrosage-footer">
                 🌿 Le système d’arrosage optimise votre consommation d’eau.
               </div>
+              <div v-if="erreurAutorisation" class="error-message">
+                {{ erreurAutorisation }}
+              </div>
             </div>
-
+            
         </main>
     </div>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="../functionalities/objet_connected.js"></script>
     <script src="../functionalities/consumption_loader.js"></script>

@@ -17,15 +17,17 @@ new Vue({
       heureGlobaleOuverture: '07:00',
       heureGlobaleFermeture: '21:00',
       derniereInteraction: 'Chargement en cours...',
-      
+      userType: '',
+      erreurAutorisation: '',
     },
     mounted() {
       console.log('Volet roulant component monté');
       window.addEventListener('device-selected', (e) => {
         console.log('Événement reçu :', e.detail);
-        this.visible = (e.detail && e.detail.toLowerCase() === 'voletroulant');
+        this.visible = (e.detail && e.detail.toLowerCase() === 'volet roulant');
         console.log('→ volet-roulant visible =', this.visible);
         this.chargerVoletsDepuisServeur();
+        this.chargerTypeUtilisateur();
       });
       
     
@@ -35,6 +37,29 @@ new Vue({
       this.chargerDerniereInteraction();
     },
     methods: {
+      estAutorise(typesAutorises, action = '') {
+        const autorise = typesAutorises.includes(this.userType);
+        if (!autorise) {
+          this.erreurAutorisation = `⛔ Action "${action}" non autorisée pour le rôle "${this.userType}"`;
+          setTimeout(() => this.erreurAutorisation = '', 4000); // efface le message après 4 sec
+        }
+        return autorise;
+      },
+      chargerTypeUtilisateur() {
+        fetch('../PHP_request/get_user_type.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.userType = data.type;
+              console.log("Type utilisateur :", this.userType);
+            } else {
+              console.warn("⚠️ Impossible de récupérer le type d'utilisateur :", data.error);
+            }
+          })
+          .catch(err => {
+            console.error("Erreur réseau type utilisateur :", err);
+          });
+      },      
       chargerDerniereInteraction() {
         fetch('../PHP_request/get_last_action_volet.php')
           .then(res => res.json())
@@ -90,6 +115,7 @@ new Vue({
         .catch(err => console.error("Erreur conso mensuelle :", err));
     },    
       appliquerProgrammationGlobale() {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Fermer volet')) return;
         this.volets.forEach(v => {
           if (v.connectivity !== 'Déconnecté') {
             v.heure_ouverture = this.heureGlobaleOuverture;
@@ -157,6 +183,7 @@ new Vue({
         return volet.connectivity !== 'Déconnecté' && volet.position > 0;
       },      
       ouvrirVolet(id) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Ouvrir volet')) return;
         const volet = this.volets.find(v => v.id === id);
         if (!volet) return;
   
@@ -172,6 +199,7 @@ new Vue({
         this.sauvegarderVolet(volet, `Ouverture de ${volet.name}`);
       },
       fermerVolet(id) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Fermer volet')) return;
         const volet = this.volets.find(v => v.id === id);
         if (!volet) return;
   
@@ -187,6 +215,7 @@ new Vue({
         this.sauvegarderVolet(volet, `Fermeture de ${volet.name}`);
       },
       ajusterVolet(id, value) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Ajuster volet')) return;
         const volet = this.volets.find(v => v.id === id);
         if (!volet) return;
   
@@ -203,6 +232,7 @@ new Vue({
         this.sauvegarderVolet(volet, `Règlage de ${volet.name}`);
       },
       ouvrirTous() {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Ouvrir tous les volets')) return;
         this.volets.forEach(v => {
           if (v.connectivity !== 'Déconnecté') {
             v.position = 100;
@@ -216,6 +246,7 @@ new Vue({
         });
       },
       fermerTous() {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Fermer tous les volets')) return;
         this.volets.forEach(v => {
           if (v.connectivity !== 'Déconnecté') {
             v.position = 0;
@@ -229,6 +260,7 @@ new Vue({
         });
       },
       toggleModeSecurite() {
+        if (!this.estAutorise(['admin'], 'Activer/désactiver le mode sécurité')) return;
         // Vérifie l’état de l’alarme avant de basculer le mode sécurité
         fetch('../PHP_request/get_alarme.php')
           .then(res => res.json())

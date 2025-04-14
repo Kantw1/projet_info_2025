@@ -7,7 +7,9 @@ new Vue({
       prochaineIrrigation: 'Aucune irrigation prévue', // optionnel
       historique: [],
       planning: [],
-      nouvelleHeure: ''
+      nouvelleHeure: '',
+      userType: '',
+      erreurAutorisation: '',
     },
     computed: {
       messageEtatSol() {
@@ -24,7 +26,31 @@ new Vue({
       }
     },
     methods: {
+      estAutorise(typesAutorises, action = '') {
+        const autorise = typesAutorises.includes(this.userType);
+        if (!autorise) {
+          this.erreurAutorisation = `⛔ Action "${action}" non autorisée pour le rôle "${this.userType}"`;
+          setTimeout(() => this.erreurAutorisation = '', 4000); // efface le message après 4 sec
+        }
+        return autorise;
+      },
+      chargerTypeUtilisateur() {
+        fetch('../PHP_request/get_user_type.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.userType = data.type;
+              console.log("Type utilisateur :", this.userType);
+            } else {
+              console.warn("⚠️ Impossible de récupérer le type d'utilisateur :", data.error);
+            }
+          })
+          .catch(err => {
+            console.error("Erreur réseau type utilisateur :", err);
+          });
+      },      
         toggleArrosage() {
+          if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'Activer/désactiver arrosage')) return;
             fetch('../PHP_request/toggle_arrosage.php', {
               method: 'POST'
             })
@@ -48,6 +74,7 @@ new Vue({
             });
           },
       ajouterHeure() {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'Ajouter dans le planning')) return;
         const heure = this.nouvelleHeure.trim();
         if (/^\d{2}:\d{2}$/.test(heure) && !this.planning.includes(heure)) {
           // Ajout local
@@ -75,6 +102,7 @@ new Vue({
         }
       },
       supprimerHeure(index) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'Supprimer une heure du planning')) return;
         const heureSupprimee = this.planning[index];
         this.planning.splice(index, 1);
       
@@ -142,6 +170,7 @@ new Vue({
         this.visible = selection === 'arrosage';
         if (this.visible) {
           this.chargerArrosage();
+          this.chargerTypeUtilisateur();
         }
       });
     }

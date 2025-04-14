@@ -64,5 +64,14 @@ if ($actuel === true && $nouvelEtat === false && $heureModif) {
     $response["duree"] = $dureeMinutes;
 }
 
+$id = $_SESSION['id'];
+
+ // Incrémenter les points
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 1 WHERE id = ?");
+            $updateStmt->bind_param("i", $id);
+            $updateStmt->execute();
+            $updateStmt->close();
+
+
 echo json_encode($response);
 $conn->close();

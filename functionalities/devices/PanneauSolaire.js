@@ -15,9 +15,34 @@ new Vue({
     tauxUtilisation: 0, // 60% d'utilisation simulée
     derniereMiseAJour: '',
     etat: '',
-    afficherEconomieEnKwh: false
+    afficherEconomieEnKwh: false,
+    userType: '',
+    erreurAutorisation: '',
     },
     methods: {
+      estAutorise(typesAutorises, action = '') {
+        const autorise = typesAutorises.includes(this.userType);
+        if (!autorise) {
+          this.erreurAutorisation = `⛔ Action "${action}" non autorisée pour le rôle "${this.userType}"`;
+          setTimeout(() => this.erreurAutorisation = '', 4000); // efface le message après 4 sec
+        }
+        return autorise;
+      },
+      chargerTypeUtilisateur() {
+        fetch('../PHP_request/get_user_type.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.userType = data.type;
+              console.log("Type utilisateur :", this.userType);
+            } else {
+              console.warn("⚠️ Impossible de récupérer le type d'utilisateur :", data.error);
+            }
+          })
+          .catch(err => {
+            console.error("Erreur réseau type utilisateur :", err);
+          });
+      },      
         chargerPanneauSolaire() {
             fetch('../PHP_request/get_panneau_solaire.php')
               .then(res => res.json())
@@ -66,6 +91,7 @@ new Vue({
 
     // Activation/désactivation
     toggleEtat() {
+      if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'Activer/désactiver panneau solaire')) return;
         fetch('../PHP_request/toggle_panneau_solaire.php', {
           method: 'POST'
         })
@@ -86,6 +112,7 @@ new Vue({
     
     //met a jour les modifs effectues
     changerCapacite() {
+      if (!this.estAutorise(['admin'], 'Changer la capcité max')) return;
         const nouvelle = parseFloat(prompt("Nouvelle capacité max (kWc) :", this.capacite));
         if (!isNaN(nouvelle) && nouvelle > 0) {
           fetch('../PHP_request/update_capacite_panneau.php', {
@@ -124,6 +151,7 @@ new Vue({
         this.visible = selection === 'panneau solaire';
         if (this.visible) {
             this.chargerPanneauSolaire();
+            this.chargerTypeUtilisateur();
           }
     });
     },

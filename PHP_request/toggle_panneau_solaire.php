@@ -40,6 +40,13 @@ if ($success) {
         "success" => true,
         "etat" => $nouvelEtat ? "Actif" : "Inactif"
     ]);
+    $id = $_SESSION['id'];
+
+ // Incrémenter les points
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 1 WHERE id = ?");
+            $updateStmt->bind_param("i", $id);
+            $updateStmt->execute();
+            $updateStmt->close();
 } else {
     echo json_encode([
         "success" => false,

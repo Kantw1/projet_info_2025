@@ -15,6 +15,8 @@ new Vue({
     capteurs: ["Détecteur salon", "Porte d'entrée", "Fenêtre chambre", "Garage", "Cuisine", "Jardin"],
     alarmPassword: null,
     activationTime: null,
+    userType: '',
+    erreurAutorisation: '',
   },
 
   mounted() {
@@ -34,6 +36,7 @@ new Vue({
     });
     this.chargerHistorique();
     this.chargerCapteurs();
+    this.chargerTypeUtilisateur();
   },
 
   computed: {
@@ -52,6 +55,29 @@ new Vue({
   },
 
   methods: {
+    estAutorise(typesAutorises, action = '') {
+      const autorise = typesAutorises.includes(this.userType);
+      if (!autorise) {
+        this.erreurAutorisation = `⛔ Action "${action}" non autorisée pour le rôle "${this.userType}"`;
+        setTimeout(() => this.erreurAutorisation = '', 4000); // efface le message après 4 sec
+      }
+      return autorise;
+    },
+    chargerTypeUtilisateur() {
+      fetch('../PHP_request/get_user_type.php')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.userType = data.type;
+            console.log("Type utilisateur :", this.userType);
+          } else {
+            console.warn("⚠️ Impossible de récupérer le type d'utilisateur :", data.error);
+          }
+        })
+        .catch(err => {
+          console.error("Erreur réseau type utilisateur :", err);
+        });
+    },    
     chargerAlarme() {
       fetch('../PHP_request/get_alarme.php')
         .then(res => res.json())
@@ -109,6 +135,7 @@ new Vue({
     },
 
     validerCode() {
+      if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'activer/Désactiver alarme')) return;
       if (this.codeSaisi !== this.alarmPassword) {
         alert("Code incorrect.");
         this.codeSaisi = '';

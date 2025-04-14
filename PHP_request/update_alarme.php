@@ -37,6 +37,12 @@ $stmt->close();
 
 // Historique
 if ($success) {
+
+     // Incrémenter les points
+     $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 2 WHERE id = ?");
+     $updateStmt->bind_param("i", $idUser);
+     $updateStmt->execute();
+     $updateStmt->close();
     $action = $isActive ? ($isPartial ? "Activée (partielle)" : "Activée") : "Désactivée";
 
     $log = $conn->prepare("
@@ -47,6 +53,8 @@ if ($success) {
     $log->execute();
     $log->close();
 }
+
+
 
 echo json_encode(["success" => $success]);
 $conn->close();

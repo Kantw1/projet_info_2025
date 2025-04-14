@@ -1643,3 +1643,64 @@ canvas {
     font-size: 1.5rem;
     }
 }
+
+
+.error-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff3f3;
+    border: 2px solid #e53935;
+    color: #b71c1c;
+    padding: 20px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    animation: fade-in 0.3s ease-out;
+    max-width: 80%;
+    text-align: center;
+  }
+  
+  /* Optionnel : petite animation d’apparition */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -60%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+
+/* 
+bouton pour ajouter des objetzs
+ */
+
+
+.ajouter-objet-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.ajouter-objet-button {
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.ajouter-objet-button:hover {
+    background-color: #0056b3;
+}
+  

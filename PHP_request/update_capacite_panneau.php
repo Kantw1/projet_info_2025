@@ -30,8 +30,17 @@ $stmt->close();
 
 if ($success) {
     echo json_encode(["success" => true, "capacite" => $nouvelleCapacite]);
+    
+ // Incrémenter les points
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 2 WHERE id = ?");
+            $updateStmt->bind_param("i", $id);
+            $updateStmt->execute();
+            $updateStmt->close();
 } else {
     echo json_encode(["success" => false, "error" => "Erreur lors de la mise à jour"]);
 }
+
+$id = $_SESSION['id'];
+
 
 $conn->close();

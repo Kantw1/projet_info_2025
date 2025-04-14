@@ -34,5 +34,14 @@ try {
     echo json_encode(["success" => false, "error" => $e->getMessage()]);
 }
 
+$id = $_SESSION['id'];
+
+ // Incrémenter les points
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 2 WHERE id = ?");
+            $updateStmt->bind_param("i", $id);
+            $updateStmt->execute();
+            $updateStmt->close();
+
+
 $stmt->close();
 $conn->close();

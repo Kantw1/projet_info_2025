@@ -1,10 +1,7 @@
 CREATE TABLE house(
     id INT PRIMARY KEY,
-    id_eau INT,
-    FOREIGN KEY (id_eau) REFERENCES eau(id),
     adresse VARCHAR(255),
-    id_electricite INT,
-    FOREIGN KEY (id_electricite) REFERENCES electricite(id)
+    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP;
 );
 
 CREATE TABLE users(
@@ -193,4 +190,27 @@ CREATE TABLE historique_panneau_solaire (
     date_heure DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Heure de l'enregistrement
     production_kw FLOAT,                            -- Production mesurée (kW)
     FOREIGN KEY (id_objet_connecte) REFERENCES objet_connecte(id)
+);
+
+
+CREATE TABLE electricity (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_house INT NOT NULL,
+    type_objet VARCHAR(50), -- Ex: Thermostat, Lumière, Panneau Solaire
+    conso_kwh DECIMAL(10,2) NOT NULL, -- négatif si production
+    mois VARCHAR(20) NOT NULL, -- Ex: 'avril'
+    annee INT NOT NULL,        -- Ex: 2025
+
+    FOREIGN KEY (id_house) REFERENCES house(id)
+);
+
+CREATE TABLE water (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_house INT NOT NULL,
+    type_objet VARCHAR(50),       -- Ex: Arrosage, Lave-linge, etc.
+    conso_litre DECIMAL(10,2) NOT NULL, -- consommation en litres
+    mois VARCHAR(20) NOT NULL,    -- ex: 'avril'
+    annee INT NOT NULL,           -- ex: 2025
+
+    FOREIGN KEY (id_house) REFERENCES house(id)
 );

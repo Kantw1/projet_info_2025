@@ -51,8 +51,17 @@ try {
     $stmt->execute();
     $stmt->close();
 
+     // Incrémenter les points
+            $updateStmt = $conn->prepare("UPDATE USERS SET point = point + 1 WHERE id = ?");
+            $updateStmt->bind_param("i", $idUser);
+            $updateStmt->execute();
+            $updateStmt->close();
+
     echo json_encode(["success" => true]);
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(["success" => false, "error" => $e->getMessage()]);
 }
+
+
+

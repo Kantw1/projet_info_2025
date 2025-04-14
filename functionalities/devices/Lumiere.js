@@ -5,7 +5,9 @@ new Vue({
       lumieres: [],
       couleursOptions: ['Blanc', 'Jaune', 'Bleu', 'Rouge', 'Vert'],
       totalConsommation: 0,
-      lastAction: ''
+      lastAction: '',
+      userType: '',
+      erreurAutorisation: '',
     },
   
     mounted() {
@@ -16,11 +18,35 @@ new Vue({
         this.visible = selection === 'lumiere';
         if (this.visible) {
           this.chargerLumieres();  // Charger les lumières depuis la base de données
+          this.chargerTypeUtilisateur();
         }
       });
     },
   
     methods: {
+      estAutorise(typesAutorises, action = '') {
+        const autorise = typesAutorises.includes(this.userType);
+        if (!autorise) {
+          this.erreurAutorisation = `⛔ Action "${action}" non autorisée pour le rôle "${this.userType}"`;
+          setTimeout(() => this.erreurAutorisation = '', 4000); // efface le message après 4 sec
+        }
+        return autorise;
+      },
+      chargerTypeUtilisateur() {
+        fetch('../PHP_request/get_user_type.php')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.userType = data.type;
+              console.log("Type utilisateur :", this.userType);
+            } else {
+              console.warn("⚠️ Impossible de récupérer le type d'utilisateur :", data.error);
+            }
+          })
+          .catch(err => {
+            console.error("Erreur réseau type utilisateur :", err);
+          });
+      },      
       chargerLumieres() {
         fetch('../PHP_request/get_lumiere.php')
           .then(res => res.json())
@@ -84,6 +110,7 @@ new Vue({
       },              
   
       allumerLumiere(index) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Allumer lumière')) return;
         const lum = this.lumieres[index];
         if (!lum.etat) {
           lum.etat = true;
@@ -95,6 +122,7 @@ new Vue({
       },
   
       eteindreLumiere(index) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Eteindre lumière')) return;
         const lum = this.lumieres[index];
         if (lum.etat) {
           lum.etat = false;
@@ -105,6 +133,7 @@ new Vue({
       },
   
       ajusterIntensite(index, valeur) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Régler intensité lumière')) return;
         const lum = this.lumieres[index];
         lum.intensite = valeur;
         lum.etat = valeur > 0;
@@ -114,6 +143,7 @@ new Vue({
       },
   
       changerCouleur(index, nouvelleCouleur) {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Chanager lumière')) return;
         const lum = this.lumieres[index];
         lum.couleur = nouvelleCouleur;
         this.lastAction = `Couleur de ${lum.nom} changée en ${nouvelleCouleur}`;
@@ -121,6 +151,7 @@ new Vue({
       },
   
       allumerToutes() {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Allumer toutes les lumières')) return;
         this.lumieres.forEach((lum, index) => {
           if (!lum.etat) {
             lum.etat = true;
@@ -134,6 +165,7 @@ new Vue({
       },
   
       eteindreToutes() {
+        if (!this.estAutorise(['admin', 'Complexe utilisateur', 'Simple utilisateur'], 'Eteindre toutes les lumières')) return;
         this.lumieres.forEach((lum, index) => {
           if (lum.etat) {
             lum.etat = false;

@@ -9,7 +9,9 @@ new Vue({
     baseTemp: 20,
     baseHumidity: 50,
     radius: 80,
-    thermostats: []    
+    thermostats: [],
+    userType: '', 
+    erreurAutorisation: '',   
   },
   computed: {
     circumference() {
@@ -24,6 +26,29 @@ new Vue({
     }    
   },
   methods: {
+    estAutorise(typesAutorises, action = '') {
+      const autorise = typesAutorises.includes(this.userType);
+      if (!autorise) {
+        this.erreurAutorisation = `⛔ Action "${action}" non autorisée pour le rôle "${this.userType}"`;
+        setTimeout(() => this.erreurAutorisation = '', 4000); // efface le message après 4 sec
+      }
+      return autorise;
+    },
+    chargerTypeUtilisateur() {
+      fetch('../PHP_request/get_user_type.php')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.userType = data.type;
+            console.log("Type utilisateur :", this.userType);
+          } else {
+            console.warn("⚠️ Impossible de récupérer le type d'utilisateur :", data.error);
+          }
+        })
+        .catch(err => {
+          console.error("Erreur réseau type utilisateur :", err);
+        });
+    },    
     sendUpdate(index) {
       const t = this.thermostats[index];
       const payload = {
@@ -92,6 +117,7 @@ new Vue({
       return this.minTemp + (angle / 360) * (this.maxTemp - this.minTemp);
     },
     updateTargetFromEvent(e, index) {
+      if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'Ajuster température')) return;
       const t = this.thermostats[index];
       if (t.connectivity === 'Déconnecté') return;
       const newTarget = Math.round(this.computeTemperatureFromEvent(e));
@@ -99,6 +125,7 @@ new Vue({
       this.logInteraction(index, `Changement de température à ${newTarget}°C`);
     },
     adjustHumidity(delta, index) {
+      if (!this.estAutorise(['admin', 'Complexe utilisateur'], 'Ajuster humididé')) return;
       const t = this.thermostats[index];
       if (t.connectivity === 'Déconnecté') return;
       const newTarget = Math.max(0, Math.min(100, t.targetHumidity + delta));
@@ -208,6 +235,7 @@ new Vue({
       this.visible = e.detail?.toLowerCase() === 'thermostat';
       if (this.visible) {
         this.fetchThermostats();
+        this.chargerTypeUtilisateur();
       }
     });
   

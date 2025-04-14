@@ -289,8 +289,8 @@ form button {
     margin: auto;
     overflow: auto;
 }
-  
-  
+
+
 .thermostat-card {
     background: #f9f9f9;
     border-radius: 12px;
@@ -300,9 +300,9 @@ form button {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-  
-  
-  
+
+
+
 
 .thermo-stats {
     display: flex;
@@ -462,18 +462,18 @@ form button {
     font-size: 0.95rem;
     color: #333;
   }
-  
+
   .info-footer .energy,
   .info-footer .connectivity {
     display: flex;
     align-items: center;
     gap: 6px;
   }
-  
+
   .info-footer .icon {
     font-size: 1.2rem;
   }
-  
+
   .offline-warning {
     margin-top: 15px;
     color: red;
@@ -486,7 +486,7 @@ form button {
     font-size: 0.9rem;
     color: #444;
   }
-  
+
 
 /*voletroulant*/
 
@@ -499,7 +499,7 @@ form button {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    
+
     width: 100%;
     max-width: 1000px;
     box-sizing: border-box;
@@ -507,8 +507,8 @@ form button {
 }
 
 
-  
-  
+
+
   #volet-roulant-component h3 {
     margin-bottom: 15px;
     font-size: 1.5rem;
@@ -521,31 +521,31 @@ form button {
     border: 1px solid #ccc;
     border-radius: 8px;
   }
-  
-  
+
+
   .volet-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
   }
-  
+
   .volet-table th,
   .volet-table td {
     padding: 10px;
     border: 1px solid #ddd;
     text-align: center;
   }
-  
+
   .volet-table th {
     background-color: #e0e0e0;
     font-weight: 600;
   }
-  
+
   .volet-table td input[type="range"] {
     width: 100px;
     margin-top: 5px;
   }
-  
+
   .volet-table button {
     margin: 2px;
     padding: 5px 10px;
@@ -557,18 +557,18 @@ form button {
     color: white;
     transition: background-color 0.2s;
   }
-  
+
   .volet-table button:hover {
     background-color: #0056b3;
   }
-  
+
   .global-actions {
     display: flex;
     gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
   }
-  
+
   .global-actions button {
     padding: 10px 16px;
     background-color: #222;
@@ -579,7 +579,7 @@ form button {
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
-  
+
   .global-actions button:hover {
     background-color: #000;
   }
@@ -596,24 +596,24 @@ form button {
     padding-top: 10px;
 }
 
-  
+
   .volet-footer .info-bloc {
     flex: 1 1 30%;
   }
-  
+
   .volet-table td:nth-child(5) {
     font-weight: 500;
     color: #2b7a0b; /* Vert pour "signal fort" */
   }
-  
+
   .volet-table td:nth-child(5):contains("faible") {
     color: orange;
   }
-  
+
   .volet-table td:nth-child(5):contains("déconnecté") {
     color: red;
   }
-  
+
   .error-message {
     background-color: #fdd;
     border: 1px solid #f99;
@@ -629,7 +629,7 @@ form button {
     opacity: 0.5;
     cursor: not-allowed;
   }
-  
+
   input[type="range"]:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -643,7 +643,7 @@ form button {
     background-color: #f9f9f9;
     transition: border-color 0.2s ease-in-out;
   }
-  
+
   select:focus {
     border-color: #4a90e2;
     outline: none;
@@ -654,16 +654,16 @@ form button {
     gap: 15px;
     margin-top: 15px;
   }
-  
+
   .programmation-global label {
     font-size: 14px;
     color: #333;
   }
-  
+
   .programmation-global select {
     margin-left: 5px;
   }
-    
+
 
 
 /*
@@ -1581,7 +1581,7 @@ component Consommation d’eau / d’électricité
     width: calc(100% - 40px); /* pour être sûr que le padding n’élargit pas trop */
     max-width: 700px;
 }
-  
+
 
 .device-card > div {
     max-height: 80vh;
@@ -1593,7 +1593,7 @@ component Consommation d’eau / d’électricité
     padding: 30px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
-  
+
 .device-card > * {
     width: 100%;
     max-width: 700px;
@@ -1663,7 +1663,7 @@ canvas {
     max-width: 80%;
     text-align: center;
   }
-  
+
   /* Optionnel : petite animation d’apparition */
   @keyframes fade-in {
     from {
@@ -1703,4 +1703,3 @@ bouton pour ajouter des objetzs
 .ajouter-objet-button:hover {
     background-color: #0056b3;
 }
-  

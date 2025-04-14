@@ -48,6 +48,20 @@ new Vue({
               document.head.appendChild(script);
             });
 
+            // Rendre #overArrosage visible si un objet est présent
+            this.devices.forEach(d => {
+              const id = 'over' + d.name.replace(/\s/g, ''); // ex: "Volet Roulant" → "overVoletRoulant"
+              const el = document.getElementById(id);
+              if (el) {
+                el.style.display = 'block';
+                el.style.visibility = 'visible';
+                el.style.opacity = '1';
+                el.style.height = 'auto';
+                el.style.width = '100%';
+                el.style.pointerEvents = 'auto';
+              }
+            });
+
             window.objetsConnectes = this.devices.map(d => ({
               nom: d.name,
               type: d.name.toLowerCase(), // ex: "thermostat"

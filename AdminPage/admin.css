@@ -1703,3 +1703,20 @@ bouton pour ajouter des objetzs
 .ajouter-objet-button:hover {
     background-color: #0056b3;
 }
+
+
+/* 
+cacher les boutons
+ */
+[id^="over"] {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+  
+  

@@ -182,70 +182,72 @@
             <div id="dynamic-tabs"></div>
 
             <!-- component thermostat -->
+            <div id="overThermostat">
+              <div id="thermostat-component" class="device-card" v-show="visible">
+                  <div v-for="(t, index) in thermostats" :key="index" class="thermostat-card">
+                    <h3>{{ t.name }} <span style="font-weight: normal; font-size: 0.9em;">– {{ t.position }}</span></h3>
 
-            <div id="thermostat-component" class="device-card" v-show="visible">
-                <div v-for="(t, index) in thermostats" :key="index" class="thermostat-card">
-                  <h3>{{ t.name }} <span style="font-weight: normal; font-size: 0.9em;">– {{ t.position }}</span></h3>
-
-              
-                  <div class="thermo-circle">
-                    <svg viewBox="0 0 200 200"
-                         @click="clickToUpdateTemperature($event, index)"
-                         @mousedown="startDrag($event, index)"
-                         @mousemove="onDrag($event, index)"
-                         @mouseup="endDrag(index)"
-                         @mouseleave="endDrag(index)">
-                      <circle cx="100" cy="100" r="80" stroke="#ccc" stroke-width="10" fill="none" />
-                      <circle
-                        cx="100"
-                        cy="100"
-                        r="80"
-                        stroke="#f90"
-                        stroke-width="10"
-                        fill="none"
-                        :stroke-dasharray="circumference"
-                        :stroke-dashoffset="dashOffset(t.target)"
-                        transform="rotate(-90 100 100)"
-                      />
-                      <text x="100" y="110" text-anchor="middle" font-size="24">{{ t.currentDisplayedTemp.toFixed(1) }}°C</text>
-                      <text x="100" y="125" text-anchor="middle" font-size="14">Cible : {{ t.target }}°C</text>
-                    </svg>
-                  </div>
-              
-                  <div class="humidity-control side" :class="{ disabled: t.connectivity === 'Déconnecté' }">
-                    <div class="arrow-up" @click="adjustHumidity(+1, index)">▲</div>
-              
-                    <div class="humidity-circle">
-                      <div class="humidity-value">
-                        {{ t.humidityDisplayed.toFixed(1) }}%
+                
+                    <div class="thermo-circle">
+                      <svg viewBox="0 0 200 200"
+                          @click="clickToUpdateTemperature($event, index)"
+                          @mousedown="startDrag($event, index)"
+                          @mousemove="onDrag($event, index)"
+                          @mouseup="endDrag(index)"
+                          @mouseleave="endDrag(index)">
+                        <circle cx="100" cy="100" r="80" stroke="#ccc" stroke-width="10" fill="none" />
+                        <circle
+                          cx="100"
+                          cy="100"
+                          r="80"
+                          stroke="#f90"
+                          stroke-width="10"
+                          fill="none"
+                          :stroke-dasharray="circumference"
+                          :stroke-dashoffset="dashOffset(t.target)"
+                          transform="rotate(-90 100 100)"
+                        />
+                        <text x="100" y="110" text-anchor="middle" font-size="24">{{ t.currentDisplayedTemp.toFixed(1) }}°C</text>
+                        <text x="100" y="125" text-anchor="middle" font-size="14">Cible : {{ t.target }}°C</text>
+                      </svg>
+                    </div>
+                
+                    <div class="humidity-control side" :class="{ disabled: t.connectivity === 'Déconnecté' }">
+                      <div class="arrow-up" @click="adjustHumidity(+1, index)">▲</div>
+                
+                      <div class="humidity-circle">
+                        <div class="humidity-value">
+                          {{ t.humidityDisplayed.toFixed(1) }}%
+                        </div>
+                        <div class="humidity-label">Humidité</div>
                       </div>
-                      <div class="humidity-label">Humidité</div>
+                
+                      <div class="arrow-down" @click="adjustHumidity(-1, index)">▼</div>
                     </div>
-              
-                    <div class="arrow-down" @click="adjustHumidity(-1, index)">▼</div>
-                  </div>
-              
-                  <div class="info-footer">
-                    <div class="energy">
-                      <span class="icon">⚡</span>
-                      <span class="value">{{ calculatedEnergy(t) }} kWh</span>
+                
+                    <div class="info-footer">
+                      <div class="energy">
+                        <span class="icon">⚡</span>
+                        <span class="value">{{ calculatedEnergy(t) }} kWh</span>
+                      </div>
+                      <div class="connectivity">
+                        <span class="icon">📶</span>
+                        <span class="value">{{ t.connectivity }}</span>
+                      </div>
                     </div>
-                    <div class="connectivity">
-                      <span class="icon">📶</span>
-                      <span class="value">{{ t.connectivity }}</span>
+                
+                    <p class="last-interaction">Dernière action : {{ t.derniereInteraction }}</p>
+                    <p v-if="t.connectivity === 'Déconnecté'" class="offline-warning">
+                      Appareil hors ligne – connectivité perdue.
+                    </p>
+                    <div v-if="erreurAutorisation" class="error-message">
+                      {{ erreurAutorisation }}
                     </div>
-                  </div>
-              
-                  <p class="last-interaction">Dernière action : {{ t.derniereInteraction }}</p>
-                  <p v-if="t.connectivity === 'Déconnecté'" class="offline-warning">
-                    Appareil hors ligne – connectivité perdue.
-                  </p>
-                  <div v-if="erreurAutorisation" class="error-message">
-                    {{ erreurAutorisation }}
                   </div>
                 </div>
-              </div>
-              
+            </div>
+
+            <div id="overVoletRoulant">
               <!-- component volet roulant -->
 
               <div id="volet-roulant-component" class="device-card" v-show="visible">
@@ -336,9 +338,10 @@
                     {{ erreurAutorisation }}
                   </div>                  
               </div>
-              
+            </div>  
               <!-- component alarm -->
             
+              <div id="overAlarm">
             <div id="alarm-component" class="device-card" v-show="visible">
                 <h3>Alarme</h3>
 
@@ -440,9 +443,12 @@
                   {{ erreurAutorisation }}
                 </div>
             </div>
+          </div>
 
 
             <!-- component lumiere -->
+
+            <div id="overLumiere">
             <div id="lumiere-component" class="device-card" v-show="visible">
               <div class="lumiere-content" style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
                 
@@ -512,8 +518,12 @@
                 {{ erreurAutorisation }}
               </div>
             </div>
+          </div>
+
 
             <!-- component panneau solaire -->
+
+            <div id="overPanneauSolaire">
             <div id="panneau-solaire-component" class="device-card" v-show="visible">
               <h3 class="solar-title">Panneau Solaire</h3>
 
@@ -595,12 +605,13 @@
                 ⚡ Données stables et prêtes pour exploitation
               </div>
             </div>
+          </div>
 
-
+          
             <!-- Component arrosage automat -->
 
 
-
+            <div id="overArrosage">
             <div id="arrosage-automatique-component" class="device-card" v-show="visible">
               <h3 class="arrosage-title">Arrosage Automatique</h3>
 
@@ -662,6 +673,7 @@
                 {{ erreurAutorisation }}
               </div>
             </div>
+          </div>
             
         </main>
     </div>

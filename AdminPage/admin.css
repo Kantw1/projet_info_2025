@@ -1718,5 +1718,97 @@ cacher les boutons
     overflow: hidden;
     transition: all 0.3s ease;
 }
+
+/* 
+pour rendre la partie profile plus belle
+ */
+#profile {
+    max-width: 600px;
+    margin: auto;
+    padding: 2rem;
+}
+
+#profile label {
+    display: block;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: 0.4rem;
+}
+
+#profile input[type="text"],
+#profile input[type="email"] {
+    width: 100%;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.95rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+#profile input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+#profile input.modifie {
+    border: 2px solid #007bff;
+}
+
+#profile .error-message {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+}
+
+#profile .success-message {
+    color: green;
+    font-weight: bold;
+    margin-top: 1.5rem;
+}
+
+#profile button {
+    margin-top: 2rem;
+    background-color: #007bff;
+    color: white;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#profile button:hover {
+    background-color: #0056b3;
+}
+
+#profile button {
+    margin-top: 2rem;
+    background-color: #007bff; /* Bleu principal */
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.2);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#profile button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+#profile button:active {
+    background-color: #004c99;
+    transform: translateY(0);
+}
   
+
   

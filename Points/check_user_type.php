@@ -36,7 +36,7 @@ if (isset($_SESSION['id'])) {
         $_SESSION['type'] = $newType; // 🔄 Mise à jour de la session
     }
 
-    // ✅ Passage de Complexe → Admin (avec autorisation)
+    // ✅ Passage de Complexe → Admin (avec autorisation) a modifier
     elseif ($type === "Complexe utilisateur" && $points >= 20 && $autorisationAdmin === "OUI") {
         $newType = 'admin';
         $updateStmt = $conn->prepare("UPDATE USERS SET type = ? WHERE id = ?");

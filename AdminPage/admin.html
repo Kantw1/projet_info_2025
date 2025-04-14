@@ -9,7 +9,7 @@
 <body>
     <div class="admin-dashboard">
       <header>
-        <h1>Tableau de bord Administrateur</h1>
+        <h1>Tableau de bord</h1>
         <a href="../vitrine/vitrine.html">
             <button>Déconnexion</button>
         </a>
@@ -134,14 +134,49 @@
 
             </section>
             
-
+            <!-- onglet pour modifier le profil et tout -->
             <section id="profile" class="tab-content">
-                <h2>Profil</h2>
-                <p>Nom : <span>{{ lastname }}</span></p>
-                <p>Prénom : <span>{{ firstname }}</span></p>
-                <p>Mail : <span>{{ mail }}</span></p>
-                <p>Type : <span>{{ type }}</span></p>
+              <h2>Profil</h2>
+            
+              <label>Nom :
+                <input 
+                  type="text" 
+                  v-model="modifLastname" 
+                  :class="{ modifie: modifLastname !== lastname }" 
+                  :placeholder="lastname">
+              </label>
+              <p v-if="erreurLastname" class="error-message">{{ erreurLastname }}</p>
+              
+              <label>Prénom :
+                <input 
+                  type="text" 
+                  v-model="modifFirstname" 
+                  :class="{ modifie: modifFirstname !== firstname }" 
+                  :placeholder="firstname">
+              </label>
+              <p v-if="erreurFirstname" class="error-message">{{ erreurFirstname }}</p>
+              
+              <label>Mail :
+                <input 
+                  type="email" 
+                  v-model="modifMail" 
+                  :class="{ modifie: modifMail !== mail }" 
+                  :placeholder="mail">
+              </label>
+              <p v-if="erreurMail" class="error-message">{{ erreurMail }}</p>              
+              
+            
+              <p><strong>Type : </strong><span>{{ type }}</span></p>
+            
+              <button
+                v-if="modifLastname !== lastname || modifFirstname !== firstname || modifMail !== mail"
+                @click="enregistrerModifications">
+                Enregistrer les modifications
+              </button>
+            
+              <p v-if="messageSucces" class="success-message">{{ messageSucces }}</p>
             </section>
+
 
             <section id="users" class="tab-content">
                 <h2>Gestion des utilisateurs</h2>
@@ -154,7 +189,7 @@
                                 <progress :value="user.point" max="20"></progress>
                                 <span class="type-label">{{ getNextType(user.type) }}</span>
             
-                                <!-- ✅ Case à cocher pour autorisationAdmin -->
+                                <!-- Case à cocher pour autorisationAdmin -->
                                 <label>
                                     <input type="checkbox"
                                            :checked="user.autorisationAdmin === 'OUI'"
@@ -607,7 +642,7 @@
             </div>
           </div>
 
-          
+
             <!-- Component arrosage automat -->
 
 

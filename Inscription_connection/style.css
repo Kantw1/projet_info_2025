@@ -1,65 +1,74 @@
+/* Style de base de la page */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f0f2f5;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .form-container {
-    max-width: 450px;
-    margin: 60px auto;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #333;
-  }
-  
-  label {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-    color: #444;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-sizing: border-box;
-  }
-  
-  button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 25px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  .alert {
-    display: none;
-    padding: 10px;
-    background-color: red;
-    color: white;
-    text-align: center;
-    border-radius: 5px;
-    margin-bottom: 15px;
-  }
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Bloc principal du formulaire */
+.form-container {
+  max-width: 450px;
+  margin: 60px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Titre centré */
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* Labels des champs */
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+  color: #444;
+}
+
+/* Champs de saisie (texte, email, etc.) */
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* Bouton d'envoi */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 25px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Changement de couleur au survol du bouton */
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Message d’erreur ou alerte */
+.alert {
+  display: none;
+  padding: 10px;
+  background-color: red;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
   

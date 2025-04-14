@@ -1,25 +1,35 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("form");
-
-    form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const email = document.getElementById("email").value;
-
-    const response = await fetch("send_reset_link.php", {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `email=${encodeURIComponent(email)}`
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('reset-form');
+    const feedback = document.getElementById('feedback');
+  
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); // empêche l'envoi classique
+      sendEmail();
     });
-
-    if (response.redirected) {
-        window.location.href = response.url;
-    } else {
-        const text = await response.text();
-        alert("Erreur : " + text);
+  
+    function sendEmail() {
+      const email = document.getElementById('email').value;
+  
+      fetch('../PHP_request/send_reset_link.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            feedback.style.color = 'green';
+            feedback.textContent = "📧 Lien envoyé ! Vérifiez votre boîte de réception (via MailHog en local).";
+          } else {
+            feedback.style.color = 'red';
+            feedback.textContent = "❌ " + data.message;
+          }
+        })
+        .catch(error => {
+          console.error('Erreur réseau :', error);
+          feedback.style.color = 'red';
+          feedback.textContent = "❌ Erreur réseau. Veuillez réessayer.";
+        });
     }
-    });
-});
+  });
   

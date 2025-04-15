@@ -71,4 +71,15 @@ button:hover {
   margin-bottom: 15px;
 }
 
-  
+.forgot-link {
+  display: block;
+  margin-top: 10px;
+  text-align: right;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}

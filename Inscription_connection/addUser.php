@@ -47,6 +47,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("INSERT INTO USERS (lastname, firstname, mail, password, type, id_house) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("sssssi", $lastname, $firstname, $mail, $hashed_password, $type, $id_house);
 
+        ini_set('SMTP', 'localhost');
+                ini_set('smtp_port', 1025);
+                ini_set('sendmail_from', 'admin@smarthouse.local');
+
+                $to = $mail;
+                $subject = "Inscription ";
+                $message = "Bonjour,\nMerci de votre inscription au près de notre plateform";
+                $headers = "From: admin@smarthouse.local";
+
+                
+                mail($to, $subject, $message, $headers);
+
         if ($stmt->execute()) {
             header("Location: ../AdminPage/admin.html?success=1");
             exit();

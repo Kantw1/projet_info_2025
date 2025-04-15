@@ -1,3 +1,4 @@
+/* Style de base de la page */
 body {
   font-family: 'Segoe UI', sans-serif;
   background-color: #f0f2f5;
@@ -5,6 +6,7 @@ body {
   padding: 0;
 }
 
+/* Bloc principal du formulaire */
 .form-container {
   max-width: 450px;
   margin: 60px auto;
@@ -14,12 +16,14 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Titre centré */
 h2 {
   text-align: center;
   margin-bottom: 25px;
   color: #333;
 }
 
+/* Labels des champs */
 label {
   display: block;
   margin-top: 15px;
@@ -27,6 +31,7 @@ label {
   color: #444;
 }
 
+/* Champs de saisie (texte, email, etc.) */
 input {
   width: 100%;
   padding: 10px;
@@ -36,6 +41,7 @@ input {
   box-sizing: border-box;
 }
 
+/* Bouton d'envoi */
 button {
   width: 100%;
   padding: 12px;
@@ -49,10 +55,12 @@ button {
   transition: background-color 0.3s;
 }
 
+/* Changement de couleur au survol du bouton */
 button:hover {
   background-color: #0056b3;
 }
 
+/* Message d’erreur ou alerte */
 .alert {
   display: none;
   padding: 10px;

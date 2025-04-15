@@ -1,3 +1,5 @@
+/* ----- GLOBAL ----- */
+/* Style général de la page : police moderne, fond clair, texte foncé */
 body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
@@ -5,6 +7,23 @@ body {
   color: #333;
 }
 
+/* Titres de niveau 2 : couleur principale du site et petit espacement en bas */
+h2 {
+  color: #003366;
+  margin-bottom: 5px;
+}
+
+/* Images responsives, centrées et légèrement arrondies */
+img {
+  max-width: 100%;
+  border-radius: 20px;
+  display: block;
+  margin: 5px auto;
+}
+
+
+/* ----- HEADER ----- */
+/* Barre d’en-tête : fond bleu foncé, texte blanc, centrée, positionnée pour accueillir des éléments absolus */
 header {
   background-color: #003366;
   color: white;
@@ -13,32 +32,40 @@ header {
   position: relative;
 }
 
+/* Légèrement décalé pour laisser la place à l’icône menu */
+header h1 {
+  margin-left: 50px;
+}
+
+/* Boutons en haut à droite (connexion et inscription) : formatés et alignés */
 header a {
   position: absolute;
   right: 20px;
-  background-color: #0055a5;
-  color: white;
   padding: 10px 15px;
   border-radius: 5px;
   text-decoration: none;
   font-size: 0.9rem;
   width: 150px;
   text-align: center;
+  background-color: #0055a5;
+  color: white;
 }
 
+/* Légère transparence au survol des boutons */
 header a:hover {
   opacity: 0.8;
 }
 
+/* Position verticale spécifique pour chaque bouton */
 .login-btn {
   top: 20px;
 }
 
 .signup-btn {
   top: 65px;
-  background-color: #0055a5;
 }
 
+/* Icône du menu latéral (hamburger) à gauche dans l'en-tête */
 .menu-icon {
   font-size: 1.8rem;
   cursor: pointer;
@@ -48,10 +75,9 @@ header a:hover {
   color: white;
 }
 
-header h1 {
-  margin-left: 50px;
-}
 
+/* ----- MENU LATÉRAL ----- */
+/* Menu caché par défaut, prend tout l'écran, transition fluide pour ouverture/fermeture */
 .side-menu {
   height: 100%;
   width: 0;
@@ -65,6 +91,7 @@ header h1 {
   padding-top: 60px;
 }
 
+/* Liens du menu : padding généreux, blancs, transition au survol */
 .side-menu a {
   padding: 15px 30px;
   text-decoration: none;
@@ -74,10 +101,12 @@ header h1 {
   transition: 0.3s;
 }
 
+/* Fond légèrement plus clair au survol d’un lien */
 .side-menu a:hover {
   background-color: #0055a5;
 }
 
+/* Bouton de fermeture du menu (croix en haut à droite) */
 .side-menu .close-btn {
   position: absolute;
   top: 15px;
@@ -86,6 +115,9 @@ header h1 {
   color: white;
 }
 
+
+/* ----- SECTION HERO ----- */
+/* Bandeau principal avec image en arrière-plan, centré et avec effet arrondi */
 .hero {
   background: url('maison connectée.jpg') center/cover no-repeat;
   height: 440px;
@@ -98,6 +130,7 @@ header h1 {
   border-radius: 30px;
 }
 
+/* Contenu de la section hero : texte centré sur fond semi-transparent */
 .hero-container {
   text-align: center;
   color: white;
@@ -106,30 +139,58 @@ header h1 {
   border-radius: 15px;
 }
 
+
+/* ----- SECTION GÉNÉRIQUE ----- */
+/* Mise en page standard des sections : largeur réduite et marge intérieure */
 section {
   max-width: 90%;
   margin: 5px auto;
   padding: 10px 0;
 }
 
-h2 {
-  color: #003366;
-  margin-bottom: 5px;
+/* Espacement entre les sections pour une meilleure lisibilité */
+.hero + section,
+section + section,
+section + footer {
+  margin-top: 5px;
 }
 
-img {
-  max-width: 100%;
-  border-radius: 20px;
-  display: block;
-  margin: 5px auto;
+
+/* ----- SECTION POURQUOI ----- */
+/* Bloc avec fond blanc, coins arrondis, ombre légère et contenu centré */
+#benefits {
+  margin: 30px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
 }
 
+/* Titre avec plus d’espace en dessous */
+#benefits h2 {
+  margin-bottom: 15px;
+}
+
+/* Texte d’introduction : centré, lisible, bien espacé */
+.benefit-intro {
+  color: #555;
+  font-size: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+
+/* ----- SECTION SOLUTIONS ----- */
+/* Grille responsive pour afficher les différentes solutions en cartes */
 .articles-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 10px;
 }
 
+/* Carte individuelle : fond blanc, ombre douce et effet au survol */
 .card {
   background: white;
   border-radius: 15px;
@@ -138,16 +199,37 @@ img {
   transition: transform 0.2s ease;
 }
 
+/* Légère élévation au survol de la carte */
 .card:hover {
   transform: translateY(-5px);
 }
 
+/* Image dans la carte : couvre entièrement la zone prévue */
 .card img {
   width: 100%;
   height: 200px;
   object-fit: cover;
 }
 
+/* Zone de contenu textuel de la carte */
+.card-content {
+  padding: 15px;
+}
+
+/* Titre de la carte */
+.card-content h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #222;
+}
+
+/* Description sous le titre */
+.card-content p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Badge en haut à gauche des cartes pour mettre en avant une info */
 .badge {
   position: absolute;
   top: 15px;
@@ -159,21 +241,47 @@ img {
   font-size: 0.8rem;
 }
 
-.card-content {
-  padding: 15px;
+
+/* ----- SECTION OFFRES ----- */
+/* Section contenant les différentes offres proposées */
+#offres {
+  margin: 20px auto;
+  padding: 20px 0;
 }
 
-.card-content h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: #222;
+/* Grille flexible : deux colonnes adaptables selon la taille d’écran */
+.offres-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.card-content p {
-  font-size: 0.9rem;
-  color: #666;
+/* Bloc individuel pour chaque offre */
+.offre {
+  flex: 1 1 45%;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
+/* Titre de l’offre */
+.offre h3 {
+  color: #003366;
+  margin-bottom: 10px;
+}
+
+/* Texte descriptif de l’offre ou liste éventuelle */
+.offre p,
+.offre li {
+  color: #444;
+  font-size: 0.95rem;
+}
+
+
+/* ----- FOOTER ----- */
+/* Pied de page : fond bleu foncé, texte blanc, centré */
 footer {
   background: #003366;
   color: white;
@@ -182,6 +290,7 @@ footer {
   position: relative;
 }
 
+/* Contenu organisé en deux blocs côte à côte */
 .footer-content {
   display: flex;
   justify-content: space-between;
@@ -190,17 +299,18 @@ footer {
   margin-bottom: 20px;
 }
 
+/* Titres du footer (à propos, contact...) */
 footer h2 {
   font-size: 1.1rem;
-  color: white;
 }
 
+/* Texte standard du pied de page */
 footer p {
   font-size: 0.9rem;
-  color: white;
   margin-bottom: 0;
 }
 
+/* Liens blancs par défaut, avec effet orange au survol */
 footer a {
   color: white;
   text-decoration: none;
@@ -210,74 +320,14 @@ footer a:hover {
   color: #FF5733;
 }
 
+/* Largeur équilibrée pour les deux colonnes */
 #about-footer,
 #contact-footer {
   width: 48%;
 }
 
+/* Mentions légales en bas du pied de page */
 .footer-legal {
   font-size: 0.8rem;
-  color: white;
   margin-top: 20px;
-  text-align: center;
-}
-
-.hero + section,
-section + section,
-section + footer {
-  margin-top: 5px;
-}
-
-#benefits {
-  max-width: 90%;
-  margin: 30px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  text-align: center;
-}
-
-#benefits h2 {
-  color: #003366;
-  margin-bottom: 15px;
-}
-
-.benefit-intro {
-  color: #555;
-  font-size: 1rem;
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
-
-#offres {
-  max-width: 90%;
-  margin: 20px auto;
-  padding: 20px 0;
-}
-
-.offres-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.offre {
-  flex: 1 1 45%;
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-}
-
-.offre h3 {
-  color: #003366;
-  margin-bottom: 10px;
-}
-
-.offre p {
-  color: #444;
-  font-size: 0.95rem;
 }

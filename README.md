@@ -57,7 +57,11 @@ projet_info_2025/sql/smarthouse.sql
 
 ### 🧑‍💻 Remplir la base pour plus de confort
 
-Importe le fichier SQL smarthouse_sample_data.sql pour obtenir directement une multitude de données
+Importe le fichier SQL smarthouse_sample_data.sql pour obtenir directement une multitude de données:
+```
+projet_info_2025/sql/smarthouse_sample_data.sql
+```
+
 
 Ou tu peux ajouter :
 
@@ -65,9 +69,9 @@ Ou tu peux ajouter :
 - des objets connectés manuellement ou via le formulaire
 - une maison dans la table `house` (ex : `id = 1`, `adresse = "Test City"`)
 
----
-
 Ou partir de 0 est très bien aussi !!
+
+---
 
 ## 📬 Configuration de MailHog (envoi d’emails en local)
 
@@ -160,10 +164,11 @@ git push -u origin main
 
 ## 👨‍🏫 Auteur
 
-Développé dans le cadre du projet de fin d’année 2025 – École d’ingénieur.  
-Auteurs : Quentin Fourrier, Ahmed Metwally
-Collaborateurs : Vincent Poulin, Capucine Lardiere, Clément Aouali 
-Email : fourrierquentin9@gmail.com
+Développé dans le cadre du projet de fin d’année 2025 – École d’ingénieur CY Tech.  
+
+Auteurs : Quentin Fourrier, Ahmed Metwally.
+
+Collaborateurs : Vincent Poulin, Capucine Lardiere, Clément Aouali.
 
 ---
 

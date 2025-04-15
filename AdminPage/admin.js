@@ -13,10 +13,4 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById(this.dataset.tab).style.display = "block";
         });
     });
-
-    // Déconnexion
-    logoutButton.addEventListener("click", function() {
-        alert("Déconnexion réussie");
-        window.location.href = "../Inscription_connection/logout.php";
-    });
 })

@@ -157,8 +157,9 @@ git push -u origin main
 ## 👨‍🏫 Auteur
 
 Développé dans le cadre du projet de fin d’année 2025 – École d’ingénieur.  
-Auteur : **TonNom**  
-Email : *[à remplir]*
+Auteurs : Quentin Fourrier, Ahmed Metwally
+Collaborateurs : Vincent Poulin, Capucine Lardiere, Clément Aouali 
+Email : fourrierquentin9@gmail.com
 
 ---
 

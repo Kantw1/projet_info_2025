@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"type":"volet_roulant","nom":"Volet Roulant","nomUtilisateur":"oracle","position":"Chambre","heureOuverture":"07:00","heureFermeture":"21:00","positionInitiale":0}
-=======
-{"type":"volet_roulant","nom":"Volet Roulant","nomUtilisateur":"test","position":"Cuisine","heureOuverture":"07:00","heureFermeture":"21:00","positionInitiale":20}
->>>>>>> 41ad08be4d76df951fe99c02938dd7a01254a94d
+{"type":"lumiere","nom":"Lumiere","nomUtilisateur":"ss","emplacement":"salon","intensite":100,"couleur":"Blanc"}

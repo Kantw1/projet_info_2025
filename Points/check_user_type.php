@@ -26,7 +26,7 @@ if (isset($_SESSION['id'])) {
     $stmt->close();
 
     // ✅ Passage de Simple → Complexe
-    if ($type === "Simple utilisateur" && $points >= 10) {
+    if ($type === "Simple utilisateur" && $points >= 300) {
         $newType = 'Complexe utilisateur';
         $updateStmt = $conn->prepare("UPDATE USERS SET type = ? WHERE id = ?");
         $updateStmt->bind_param("si", $newType, $userId);
@@ -37,7 +37,7 @@ if (isset($_SESSION['id'])) {
     }
 
     // ✅ Passage de Complexe → Admin (avec autorisation)
-    elseif ($type === "Complexe utilisateur" && $points >= 20 && $autorisationAdmin === "OUI") {
+    elseif ($type === "Complexe utilisateur" && $points >= 500 && $autorisationAdmin === "OUI") {
         $newType = 'admin';
         $updateStmt = $conn->prepare("UPDATE USERS SET type = ? WHERE id = ?");
         $updateStmt->bind_param("si", $newType, $userId);

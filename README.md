@@ -57,13 +57,17 @@ projet_info_2025/sql/smarthouse.sql
 
 ### 🧑‍💻 Remplir la base pour plus de confort
 
-Tu peux ajouter :
+Importe le fichier SQL smarthouse_sample_data.sql pour obtenir directement une multitude de données
+
+Ou tu peux ajouter :
 
 - des `users` avec des rôles `admin` ou `Simple utilisateur`
 - des objets connectés manuellement ou via le formulaire
 - une maison dans la table `house` (ex : `id = 1`, `adresse = "Test City"`)
 
 ---
+
+Ou partir de 0 est très bien aussi !!
 
 ## 📬 Configuration de MailHog (envoi d’emails en local)
 

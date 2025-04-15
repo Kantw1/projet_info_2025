@@ -6,10 +6,7 @@ body {
   padding: 0;
 }
 
-<<<<<<< HEAD
 /* Bloc principal du formulaire */
-=======
->>>>>>> dc1a057b6d41a99d8623518097024c9c31c77170
 .form-container {
   max-width: 450px;
   margin: 60px auto;
@@ -19,20 +16,14 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-<<<<<<< HEAD
 /* Titre centré */
-=======
->>>>>>> dc1a057b6d41a99d8623518097024c9c31c77170
 h2 {
   text-align: center;
   margin-bottom: 25px;
   color: #333;
 }
 
-<<<<<<< HEAD
 /* Labels des champs */
-=======
->>>>>>> dc1a057b6d41a99d8623518097024c9c31c77170
 label {
   display: block;
   margin-top: 15px;
@@ -40,10 +31,7 @@ label {
   color: #444;
 }
 
-<<<<<<< HEAD
 /* Champs de saisie (texte, email, etc.) */
-=======
->>>>>>> dc1a057b6d41a99d8623518097024c9c31c77170
 input {
   width: 100%;
   padding: 10px;
@@ -53,10 +41,7 @@ input {
   box-sizing: border-box;
 }
 
-<<<<<<< HEAD
 /* Bouton d'envoi */
-=======
->>>>>>> dc1a057b6d41a99d8623518097024c9c31c77170
 button {
   width: 100%;
   padding: 12px;
@@ -70,18 +55,12 @@ button {
   transition: background-color 0.3s;
 }
 
-<<<<<<< HEAD
 /* Changement de couleur au survol du bouton */
-=======
->>>>>>> dc1a057b6d41a99d8623518097024c9c31c77170
 button:hover {
   background-color: #0056b3;
 }
 
-<<<<<<< HEAD
 /* Message d’erreur ou alerte */
-=======
->>>>>>> dc1a057b6d41a99d8623518097024c9c31c77170
 .alert {
   display: none;
   padding: 10px;

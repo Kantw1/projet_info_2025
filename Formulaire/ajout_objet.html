@@ -80,7 +80,7 @@
           </div>
 
           <!-- Formulaire spécifique à Volet Roulant -->
-          <div v-if="objetSelectionne.type === 'voletroulant'">
+          <div v-if="objetSelectionne.type === 'volet_roulant'">
             <label for="heureOuverture">Heure d'ouverture :</label>
             <select id="heureOuverture" v-model="configVolet.heureOuverture">
               <option v-for="heure in heuresDisponibles" :key="heure" :value="heure">{{ heure }}</option>
@@ -138,7 +138,7 @@
           </div>
 
           <!-- Formulaire spécifique à Panneau Solaire -->
-          <div v-if="objetSelectionne.type === 'panneau solaire'">
+          <div v-if="objetSelectionne.type === 'panneau_solaire'">
             <label for="nomSolaire">Nom personnalisé :</label>
             <input type="text" id="nomSolaire" v-model="configSolaire.nomUtilisateur" placeholder="ex : Panneau Toiture Est">
 

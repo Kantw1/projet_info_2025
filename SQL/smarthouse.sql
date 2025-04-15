@@ -1,7 +1,7 @@
 CREATE TABLE house(
     id INT PRIMARY KEY,
     adresse VARCHAR(255),
-    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP;
+    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE users(
@@ -18,7 +18,7 @@ CREATE TABLE users(
 );
 
 CREATE TABLE objet_connecte(
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     type VARCHAR(255),
     id_house INT,
     FOREIGN KEY (id_house) REFERENCES house(id)  

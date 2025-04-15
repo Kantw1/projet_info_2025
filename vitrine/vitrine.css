@@ -20,7 +20,7 @@ body {
 
 
 h2 {
-  color: #003366;
+  color: #739dca;
   margin-bottom: 5px;
 }
 
@@ -43,7 +43,7 @@ img {
 
 /* Barre d’en-tête : fond bleu foncé, texte blanc, centrée, positionnée pour accueillir des éléments absolus */
 header {
-  background-color: #003366;
+  background-color: #007bff !important;
   color: white;
   padding: 20px;
   text-align: center;
@@ -65,13 +65,22 @@ header a {
   font-size: 0.9rem;
   width: 150px;
   text-align: center;
-  background-color: #0055a5;
-  color: white;
+  background-color: #228ff5 !important;
+  color: white !important;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+button:hover, .btn:hover, header a:hover {
+  background-color: #0d3c6e !important;
+  transform: translateY(-2px);
+  opacity: 1;
 }
 
 /* Légère transparence au survol des boutons */
 header a:hover {
   opacity: 0.8;
+  color : #0056b3;
 }
 
 /* Position verticale spécifique pour chaque bouton */
@@ -123,7 +132,7 @@ header a:hover {
 
 /* Fond légèrement plus clair au survol d’un lien */
 .side-menu a:hover {
-  background-color: #0055a5;
+  background-color: #092b4b;
 }
 
 /* Bouton de fermeture du menu (croix en haut à droite) */
@@ -228,8 +237,11 @@ section + footer {
   background: white;
   border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
+  border: 1px solid #e1e1e1;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Légère élévation au survol de la carte */
@@ -302,13 +314,15 @@ section + footer {
   flex: 1 1 45%;
   background: white;
   padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e1e1e1;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Titre de l’offre */
 .offre h3 {
-  color: #003366;
+  color: #02101f;
   margin-bottom: 10px;
 }
 
@@ -325,7 +339,7 @@ section + footer {
 
 /* Pied de page : fond bleu foncé, texte blanc, centré */
 footer {
-  background: #003366;
+  background: #0056b3;
   color: white;
   padding: 10px 20px;
   text-align: center;

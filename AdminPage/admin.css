@@ -1,4 +1,4 @@
-/* Styles généraux */
+/* Styles globaux de la page*/
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,6 +6,7 @@ body {
     background-color: #f4f4f4;
 }
 
+/* Conteneur principal du tableau de bord */
 .admin-dashboard {
     width: 80%;
     margin: auto;
@@ -15,6 +16,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* En-tête du tableau de bord*/
 header {
     display: flex;
     justify-content: space-between;
@@ -34,6 +36,7 @@ header button {
     border-radius: 5px;
 }
 
+/* Navigation*/
 nav ul {
     list-style: none;
     display: flex;
@@ -54,6 +57,7 @@ nav ul li:hover, .active {
     border-radius: 5px;
 }
 
+/* Contenu principal et sections dynamiques*/
 main {
     padding: 20px;
 }
@@ -77,6 +81,7 @@ main {
     color: #007bff;
 }
 
+/* Listes d'objets connectés et autres éléments*/
 #device-list, #user-list, #energy-list {
     list-style: none;
     padding: 0;
@@ -105,6 +110,7 @@ main {
     margin-bottom: 10px;
 }
 
+/* Boutons d'action pour les objets et utilisateurs*/
 .toggle-device, .remove-user {
     background: #ff4d4d;
     border: none;
@@ -119,6 +125,7 @@ button:hover {
     opacity: 0.8;
 }
 
+/* Formulaires et champs de saisie*/
 form {
     display: flex;
     flex-direction: column;
@@ -147,6 +154,7 @@ form button {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Style de graphique d'énergie */
 .energy-chart {
     width: 100%;
     height: 300px;
@@ -160,6 +168,7 @@ form button {
     font-size: 16px;
 }
 
+/* Boutons de dispositifs et énergie */
 .device-button, .energy-button {
     display: block;
     width: 100%;
@@ -178,6 +187,7 @@ form button {
     background-color: #0056b3;
 }
 
+/* Onglet dynamique et bouton de fermeture */
 .dynamic-tab {
     border: 1px solid #ddd;
     padding: 15px;
@@ -199,7 +209,7 @@ form button {
 }
 
 
-/* Styles pour la popup (modale) */
+/* Style de la popup (modale) */
 .modal {
     position: fixed;
     top: 50%;
@@ -239,9 +249,10 @@ form button {
     color: red;
 }
 
-
+/* Importation de la police */
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap');
 
+/* Style de la carte de dispositif */
 .device-card {
     position: fixed;
     top: 50%;
@@ -275,7 +286,7 @@ form button {
     grid-column: span 2;
 }
 
-
+/* Style du composant thermostat */
 #thermostat-component {
     display: flex;
     flex-wrap: wrap;
@@ -291,6 +302,7 @@ form button {
 }
 
 
+/* Carte thermostat */
 .thermostat-card {
     background: #f9f9f9;
     border-radius: 12px;
@@ -303,7 +315,7 @@ form button {
 
 
 
-
+/* Statistiques thermostat */
 .thermo-stats {
     display: flex;
     flex-direction: column;
@@ -331,6 +343,7 @@ form button {
     color: #3498db;
 }
 
+/* Actions thermostat */
 .thermo-actions {
     display: flex;
     justify-content: space-around;
@@ -353,6 +366,7 @@ form button {
     background-color: #2980b9;
 }
 
+/* Cercle thermostat */
 .thermo-circle {
     grid-column: 1;
     width: 150px;
@@ -362,6 +376,7 @@ form button {
     cursor: pointer;
 }
 
+/* Contrôle humidité */
 .humidity-control.side {
     grid-column: 2;
     display: flex;
@@ -371,6 +386,7 @@ form button {
     gap: 12px;
 }
 
+/* Cercle humidité */
 .humidity-circle {
     width: 100px;
     height: 100px;
@@ -396,6 +412,7 @@ form button {
     margin-top: 4px;
 }
 
+/* Flèches de contrôle humidité */
 .arrow-up,
 .arrow-down {
     font-size: 24px;
@@ -410,13 +427,14 @@ form button {
     transform: scale(1.2);
 }
 
-
+/* Affichage humidité */
 .humidity-display {
     margin-top: 10px;
     font-size: 16px;
     color: #555;
 }
 
+/* Énergie thermostat */
 .energy {
     grid-column: span 2;
     text-align: center;
@@ -434,6 +452,7 @@ form button {
     color: #f90;
 }
 
+/* Fond de la superposition */
 #backdrop {
     position: fixed;
     top: 0;
@@ -444,6 +463,7 @@ form button {
     z-index: 9998;
 }
 
+/* Animation de fondu */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -455,6 +475,7 @@ form button {
     }
 }
 
+/* Pied de page des informations */
 .info-footer {
     display: flex;
     justify-content: space-between;
@@ -474,6 +495,7 @@ form button {
     font-size: 1.2rem;
   }
 
+  /* Avertissement hors ligne */
   .offline-warning {
     margin-top: 15px;
     color: red;
@@ -481,15 +503,14 @@ form button {
     font-size: 0.95rem;
   }
 
+  /* Dernière interaction */
   .last-interaction {
     margin-top: 12px;
     font-size: 0.9rem;
     color: #444;
   }
 
-
-/*voletroulant*/
-
+/* Composant volet roulant */
 #volet-roulant-component {
     background-color: #f9f9f9;
     padding: 20px 30px;
@@ -506,15 +527,14 @@ form button {
     margin: auto;
 }
 
-
-
-
+/* Titre volet roulant */
   #volet-roulant-component h3 {
     margin-bottom: 15px;
     font-size: 1.5rem;
     color: #333;
   }
 
+/* Conteneur de la table des volets */
   .volet-table-wrapper {
     max-height: 300px; /* ou 400px si tu veux plus grand */
     overflow-y: auto;
@@ -522,7 +542,7 @@ form button {
     border-radius: 8px;
   }
 
-
+  /* Table des volets */
   .volet-table {
     width: 100%;
     border-collapse: collapse;
@@ -541,11 +561,13 @@ form button {
     font-weight: 600;
   }
 
+  /* Champ de saisie pour les volets */
   .volet-table td input[type="range"] {
     width: 100px;
     margin-top: 5px;
   }
 
+  /* Boutons dans la table des volets */
   .volet-table button {
     margin: 2px;
     padding: 5px 10px;
@@ -562,6 +584,7 @@ form button {
     background-color: #0056b3;
   }
 
+  /* Actions globales pour les volets */
   .global-actions {
     display: flex;
     gap: 10px;
@@ -584,6 +607,7 @@ form button {
     background-color: #000;
   }
 
+  /* Pied de page des volets */
   .volet-footer {
     display: flex;
     justify-content: space-between;
@@ -601,19 +625,24 @@ form button {
     flex: 1 1 30%;
   }
 
+  
+/* Mise en valeur des volets avec signal fort */
   .volet-table td:nth-child(5) {
     font-weight: 500;
     color: #2b7a0b; /* Vert pour "signal fort" */
   }
 
+  /* Mise en valeur pour signal faible */
   .volet-table td:nth-child(5):contains("faible") {
     color: orange;
   }
 
+  /* Mise en valeur pour déconnecté */
   .volet-table td:nth-child(5):contains("déconnecté") {
     color: red;
   }
 
+  /* Message d'erreur */
   .error-message {
     background-color: #fdd;
     border: 1px solid #f99;
@@ -625,6 +654,7 @@ form button {
     text-align: center;
   }
 
+  /* Styles pour les éléments désactivés */
   button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -635,6 +665,8 @@ form button {
     cursor: not-allowed;
   }
 
+  
+/* Sélecteur déroulant */
   select {
     padding: 5px 10px;
     font-size: 14px;
@@ -648,6 +680,9 @@ form button {
     border-color: #4a90e2;
     outline: none;
   }
+  
+  
+/* Programmation globale */
   .programmation-global {
     display: flex;
     align-items: center;

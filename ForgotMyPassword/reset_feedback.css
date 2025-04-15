@@ -1,3 +1,8 @@
+/*
+ Corps de la page 
+ */
+
+ 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f5f7fa;
@@ -7,6 +12,12 @@ body {
     height: 100vh;
     margin: 0;
 }
+
+
+/*
+ Conteneur principal de feedback 
+*/
+
 
 .feedback-container {
     background-color: white;
@@ -19,22 +30,42 @@ body {
     text-align: center;
 }
 
+
+/* 
+Titre du message 
+*/
+
+
 .feedback-container h2 {
     font-size: 1.6em;
     margin-bottom: 20px;
     color: #333;
 }
 
+
+/*
+ Texte du message 
+ */
+
+
 .feedback-container p {
     font-size: 1em;
     color: #555;
 }
 
+
+/* 
+Style spécifique pour un message de succès 
+*/
+
+
 .feedback-container.success {
     border-left: 5px solid #2ecc71;
 }
 
+
+/* Style spécifique pour un message d’erreur */
+
 .feedback-container.error {
     border-left: 5px solid #e74c3c;
 }
-  

@@ -1,5 +1,11 @@
 /* ----- GLOBAL ----- */
-/* Style général de la page : police moderne, fond clair, texte foncé */
+
+
+/* 
+Style général de la page : police moderne, fond clair, texte foncé 
+*/
+
+
 body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
@@ -7,13 +13,23 @@ body {
   color: #333;
 }
 
-/* Titres de niveau 2 : couleur principale du site et petit espacement en bas */
+
+/*
+ Titres de niveau 2 : couleur principale du site et petit espacement en bas 
+ */
+
+
 h2 {
   color: #003366;
   margin-bottom: 5px;
 }
 
-/* Images responsives, centrées et légèrement arrondies */
+
+/*
+ Images responsives, centrées et légèrement arrondies 
+ */
+
+
 img {
   max-width: 100%;
   border-radius: 20px;
@@ -23,6 +39,8 @@ img {
 
 
 /* ----- HEADER ----- */
+
+
 /* Barre d’en-tête : fond bleu foncé, texte blanc, centrée, positionnée pour accueillir des éléments absolus */
 header {
   background-color: #003366;
@@ -77,6 +95,8 @@ header a:hover {
 
 
 /* ----- MENU LATÉRAL ----- */
+
+
 /* Menu caché par défaut, prend tout l'écran, transition fluide pour ouverture/fermeture */
 .side-menu {
   height: 100%;
@@ -117,6 +137,8 @@ header a:hover {
 
 
 /* ----- SECTION HERO ----- */
+
+
 /* Bandeau principal avec image en arrière-plan, centré et avec effet arrondi */
 .hero {
   background: url('maison connectée.jpg') center/cover no-repeat;
@@ -141,6 +163,8 @@ header a:hover {
 
 
 /* ----- SECTION GÉNÉRIQUE ----- */
+
+
 /* Mise en page standard des sections : largeur réduite et marge intérieure */
 section {
   max-width: 90%;
@@ -157,6 +181,8 @@ section + footer {
 
 
 /* ----- SECTION POURQUOI ----- */
+
+
 /* Bloc avec fond blanc, coins arrondis, ombre légère et contenu centré */
 #benefits {
   margin: 30px auto;
@@ -183,6 +209,8 @@ section + footer {
 
 
 /* ----- SECTION SOLUTIONS ----- */
+
+
 /* Grille responsive pour afficher les différentes solutions en cartes */
 .articles-grid {
   display: grid;
@@ -190,7 +218,12 @@ section + footer {
   gap: 10px;
 }
 
-/* Carte individuelle : fond blanc, ombre douce et effet au survol */
+
+/*
+ Carte individuelle : fond blanc, ombre douce et effet au survol 
+ */
+
+
 .card {
   background: white;
   border-radius: 15px;
@@ -229,7 +262,12 @@ section + footer {
   color: #666;
 }
 
-/* Badge en haut à gauche des cartes pour mettre en avant une info */
+
+/*
+ Badge en haut à gauche des cartes pour mettre en avant une info 
+ */
+
+
 .badge {
   position: absolute;
   top: 15px;
@@ -243,6 +281,8 @@ section + footer {
 
 
 /* ----- SECTION OFFRES ----- */
+
+
 /* Section contenant les différentes offres proposées */
 #offres {
   margin: 20px auto;
@@ -281,6 +321,8 @@ section + footer {
 
 
 /* ----- FOOTER ----- */
+
+
 /* Pied de page : fond bleu foncé, texte blanc, centré */
 footer {
   background: #003366;

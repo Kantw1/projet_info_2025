@@ -1,6 +1,5 @@
 /* Styles globaux de la page*/
 
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -8,9 +7,7 @@ body {
     background-color: #f4f4f4;
 }
 
-
 /* Conteneur principal du tableau de bord */
-
 
 .admin-dashboard {
     width: 80%;
@@ -21,9 +18,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-
 /* En-tête du tableau de bord*/
-
 
 header {
     display: flex;
@@ -44,9 +39,7 @@ header button {
     border-radius: 5px;
 }
 
-
 /* Navigation*/
-
 
 nav ul {
     list-style: none;
@@ -68,9 +61,7 @@ nav ul li:hover, .active {
     border-radius: 5px;
 }
 
-
 /* Contenu principal et sections dynamiques*/
-
 
 main {
     padding: 20px;
@@ -85,11 +76,10 @@ main {
 }
 
 
-/* Afficher par défaut l'onglet Objets connectés */
 
 
 #devices {
-    display: block; 
+    display: block; /* Afficher par défaut l'onglet Objets connectés */
 }
 
 .tab-content h2 {
@@ -97,6 +87,7 @@ main {
 }
 
 /* Listes d'objets connectés et autres éléments*/
+
 #device-list, #user-list, #energy-list {
     list-style: none;
     padding: 0;
@@ -126,6 +117,7 @@ main {
 }
 
 /* Boutons d'action pour les objets et utilisateurs*/
+
 .toggle-device, .remove-user {
     background: #ff4d4d;
     border: none;
@@ -140,9 +132,7 @@ button:hover {
     opacity: 0.8;
 }
 
-
 /* Formulaires et champs de saisie*/
-
 
 form {
     display: flex;
@@ -163,9 +153,7 @@ form button {
     cursor: pointer;
 }
 
-
 /* Nouvel onglet Consommation */
-
 
 #consumption {
     display: none;
@@ -175,9 +163,7 @@ form button {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-
 /* Style de graphique d'énergie */
-
 
 .energy-chart {
     width: 100%;
@@ -193,6 +179,7 @@ form button {
 }
 
 /* Boutons de dispositifs et énergie */
+
 .device-button, .energy-button {
     display: block;
     width: 100%;
@@ -211,9 +198,7 @@ form button {
     background-color: #0056b3;
 }
 
-
 /* Onglet dynamique et bouton de fermeture */
-
 
 .dynamic-tab {
     border: 1px solid #ddd;
@@ -237,7 +222,6 @@ form button {
 
 
 /* Style de la popup (modale) */
-
 
 .modal {
     position: fixed;
@@ -265,10 +249,7 @@ form button {
     display: none;
 }
 
-
 /* Bouton de fermeture en haut à droite */
-
-
 .close-tab {
     position: absolute;
     top: 10px;
@@ -281,16 +262,10 @@ form button {
     color: red;
 }
 
-
 /* Importation de la police */
-
-
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap');
 
-
 /* Style de la carte de dispositif */
-
-
 .device-card {
     position: fixed;
     top: 50%;
@@ -324,10 +299,7 @@ form button {
     grid-column: span 2;
 }
 
-
 /* Style du composant thermostat */
-
-
 #thermostat-component {
     display: flex;
     flex-wrap: wrap;
@@ -475,10 +447,7 @@ form button {
     color: #555;
 }
 
-
 /* Énergie thermostat */
-
-
 .energy {
     grid-column: span 2;
     text-align: center;
@@ -496,10 +465,7 @@ form button {
     color: #f90;
 }
 
-
 /* Fond de la superposition */
-
-
 #backdrop {
     position: fixed;
     top: 0;
@@ -510,10 +476,7 @@ form button {
     z-index: 9998;
 }
 
-
 /* Animation de fondu */
-
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -525,46 +488,49 @@ form button {
     }
 }
 
-
 /* Pied de page des informations */
-
-
 .info-footer {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
     font-size: 0.95rem;
     color: #333;
-  }
+}
 
-  .info-footer .energy,
-  .info-footer .connectivity {
+.info-footer .energy,
+.info-footer .connectivity {
     display: flex;
     align-items: center;
     gap: 6px;
-  }
+}
 
-  .info-footer .icon {
+.info-footer .icon {
     font-size: 1.2rem;
-  }
+}
 
-  /* Avertissement hors ligne */
-  .offline-warning {
+/* Avertissement hors ligne */
+.offline-warning {
     margin-top: 15px;
     color: red;
     font-weight: bold;
     font-size: 0.95rem;
-  }
+}
 
-  /* Dernière interaction */
-  .last-interaction {
+/* Dernière interaction */
+.last-interaction {
     margin-top: 12px;
     font-size: 0.9rem;
     color: #444;
-  }
+}
 
 
-/* Composant volet roulant */
+
+
+/* 
+Composant volet roulant 
+*/
+
+
 
 
 #volet-roulant-component {
@@ -579,52 +545,64 @@ form button {
 
     width: 100%;
     max-width: 1000px;
+    max-height: 85vh;
     box-sizing: border-box;
     margin: auto;
+    overflow-y: auto;
+    overflow-x: auto;
 }
 
 /* Titre volet roulant */
-  #volet-roulant-component h3 {
+#volet-roulant-component h3 {
     margin-bottom: 15px;
     font-size: 1.5rem;
     color: #333;
-  }
+}
 
 /* Conteneur de la table des volets */
-  .volet-table-wrapper {
-    max-height: 300px; /* ou 400px si tu veux plus grand */
+.volet-table-wrapper {
+    max-height: 300px;
+    overflow-x: auto;
     overflow-y: auto;
     border: 1px solid #ccc;
     border-radius: 8px;
-  }
+    scroll-behavior: smooth;
+    background-color: white;
+}
 
-  /* Table des volets */
-  .volet-table {
-    width: 100%;
+/* Table des volets */
+.volet-table {
+    width: max-content;
     border-collapse: collapse;
     margin-bottom: 20px;
-  }
+    min-width: 900px;
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+}
 
-  .volet-table th,
-  .volet-table td {
+.volet-table th,
+.volet-table td {
     padding: 10px;
     border: 1px solid #ddd;
     text-align: center;
-  }
+    white-space: normal;
+    word-break: break-word;
+}
 
-  .volet-table th {
+.volet-table th {
     background-color: #e0e0e0;
     font-weight: 600;
-  }
+}
 
-  /* Champ de saisie pour les volets */
-  .volet-table td input[type="range"] {
+/* Champ de saisie pour les volets */
+.volet-table td input[type="range"] {
     width: 100px;
     margin-top: 5px;
-  }
+}
 
-  /* Boutons dans la table des volets */
-  .volet-table button {
+/* Boutons dans la table des volets */
+.volet-table button {
     margin: 2px;
     padding: 5px 10px;
     border: none;
@@ -634,24 +612,21 @@ form button {
     background-color: #007bff;
     color: white;
     transition: background-color 0.2s;
-  }
+}
 
-  .volet-table button:hover {
+.volet-table button:hover {
     background-color: #0056b3;
-  }
+}
 
-
-  /* Actions globales pour les volets */
-
-
-  .global-actions {
+/* Actions globales pour les volets */
+.global-actions {
     display: flex;
     gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
-  }
+}
 
-  .global-actions button {
+.global-actions button {
     padding: 10px 16px;
     background-color: #222;
     color: #fff;
@@ -662,12 +637,12 @@ form button {
     transition: background-color 0.2s ease;
 }
 
-  .global-actions button:hover {
+.global-actions button:hover {
     background-color: #000;
-  }
+}
 
-  /* Pied de page des volets */
-  .volet-footer {
+/* Pied de page des volets */
+.volet-footer {
     display: flex;
     justify-content: space-between;
     gap: 20px;
@@ -680,29 +655,67 @@ form button {
 }
 
 
-  .volet-footer .info-bloc {
+.volet-footer .info-bloc {
     flex: 1 1 30%;
-  }
+}
 
-  
+
 /* Mise en valeur des volets avec signal fort */
-  .volet-table td:nth-child(5) {
+.volet-table td:nth-child(5) {
     font-weight: 500;
     color: #2b7a0b; /* Vert pour "signal fort" */
-  }
+}
 
-  /* Mise en valeur pour signal faible */
-  .volet-table td:nth-child(5):contains("faible") {
+/* Mise en valeur pour signal faible */
+.volet-table td:nth-child(5):contains("faible") {
     color: orange;
-  }
+}
 
-  /* Mise en valeur pour déconnecté */
-  .volet-table td:nth-child(5):contains("déconnecté") {
+/* Mise en valeur pour déconnecté */
+.volet-table td:nth-child(5):contains("déconnecté") {
     color: red;
-  }
+}
 
-  /* Message d'erreur */
-  .error-message {
+/* Stylise uniquement la 3e colonne (Position) du tableau */
+.volet-table td:nth-child(3) {
+    gap: 4px;
+    padding: 6px;
+    max-height: 300px;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    table-layout: auto;
+}
+
+/* Stylise proprement le slider */
+.volet-table td:nth-child(3) input[type="range"] {
+    width: 90px;
+    height: 4px;
+    -webkit-appearance: none;
+    background: #ccc;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+.volet-table td:nth-child(3) input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 14px;
+    width: 14px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.volet-table td:nth-child(3) input[type="range"]::-moz-range-thumb {
+    height: 14px;
+    width: 14px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Message d'erreur */
+.error-message {
     background-color: #fdd;
     border: 1px solid #f99;
     color: #900;
@@ -711,62 +724,64 @@ form button {
     border-radius: 6px;
     font-weight: bold;
     text-align: center;
-  }
+}
 
-  /* Styles pour les éléments désactivés */
-  button:disabled {
+/* Styles pour les éléments désactivés */
+button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-  }
+}
 
-  input[type="range"]:disabled {
+input[type="range"]:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-  }
+}
 
-  
+
 /* Sélecteur déroulant */
-
-
-  select {
+select {
     padding: 5px 10px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 6px;
     background-color: #f9f9f9;
     transition: border-color 0.2s ease-in-out;
-  }
+}
 
-  select:focus {
+select:focus {
     border-color: #4a90e2;
     outline: none;
-  }
-  
-  
+}
+
+
 /* Programmation globale */
-
-
-  .programmation-global {
+.programmation-global {
     display: flex;
     align-items: center;
     gap: 15px;
     margin-top: 15px;
-  }
+}
 
-  .programmation-global label {
+.programmation-global label {
     font-size: 14px;
     color: #333;
-  }
+}
 
-  .programmation-global select {
+.programmation-global select {
     margin-left: 5px;
-  }
+}
+
+
 
 
 
 /*
 Bouton de lalarme dans objets connectes
 */
+
+
+
+
 
 /* Bloc principal */
 #alarm-component {
@@ -851,10 +866,7 @@ Bouton de lalarme dans objets connectes
     transition: background 0.2s ease-in-out;
 }
 
-
 /* Corps du tableau scrollable */
-
-
 .scrollable-body {
     display: block;
     max-height: 150px;      /* ajuste la hauteur max visible */
@@ -868,10 +880,7 @@ Bouton de lalarme dans objets connectes
     table-layout: fixed;
 }
 
-
 /* Garder les entêtes fixes et alignées */
-
-
 table thead,
 table tbody tr {
     width: 100%;
@@ -935,10 +944,7 @@ table tbody tr {
     box-shadow: none;
 }
 
-
 /* Modal code */
-
-
 .modal-code {
     position: fixed;
     top: 0;
@@ -986,10 +992,7 @@ table tbody tr {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-
 /* Styles pour la barre de statut */
-
-
 .status-bar {
     display: flex;
     justify-content: space-between;
@@ -1065,23 +1068,24 @@ Parie pour la Lumiere css
 
 /* Conteneur scrollable propre */
 .table-wrapper-scroll {
-    max-height: 250px;
-    overflow-y: auto;
+    max-height: 300px;
     overflow-x: auto;
-    width: 100%;
-    min-height: 0;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    scroll-behavior: smooth;
+    background-color: white;
 }
 
 /* Table design */
 .lumiere-table {
-    width: 100%;
-    min-width: 100%;
+    width: max-content;
     border-collapse: collapse;
+    margin-bottom: 20px;
+    min-width: 900px;
+    width: 100%;
     table-layout: auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    font-size: 14px;
-    background: #fff;
+    border-collapse: collapse;
 }
 
 .lumiere-table thead {
@@ -1102,7 +1106,7 @@ Parie pour la Lumiere css
     padding: 12px 16px;
     text-align: center;
     border-bottom: 1px solid #eee;
-    white-space: nowrap;
+    white-space: normal;
 }
 
 .lumiere-table tbody tr:hover {
@@ -1138,6 +1142,11 @@ Parie pour la Lumiere css
     color: #999;
     cursor: not-allowed;
     box-shadow: none;
+}
+
+.lumiere-table td:nth-child(4) input[type="range"] {
+    margin: 0;
+    width: 80px;
 }
 
 /* Boutons Allumer / Éteindre en bas */
@@ -1229,10 +1238,7 @@ Parie pour la Lumiere css
     font-weight: bold;
 }
 
-
 /* Global actions si jamais utilisé */
-
-
 .global-actions {
     display: flex;
     gap: 10px;
@@ -1266,9 +1272,12 @@ Parie pour la Lumiere css
 }
 
 
+
+
 /* 
 Panneau solaire component
 */
+
 
 
 /* Composant Panneau Solaire */
@@ -1341,10 +1350,7 @@ Panneau solaire component
     font-weight: bold;
 }
 
-
 /* Progression production */
-
-
 .progress-bar {
     background-color: #e5e7eb;
     height: 12px;
@@ -1360,10 +1366,7 @@ Panneau solaire component
     transition: width 0.3s ease-in-out;
 }
 
-
 /* Mini boutons */
-
-
 .mini-btn {
     padding: 6px 12px;
     font-size: 0.9rem;
@@ -1381,10 +1384,7 @@ Panneau solaire component
     transform: translateY(-1px);
 }
 
-
 /* Footer */
-
-
 .solar-footer {
     padding-top: 10px;
     text-align: center;
@@ -1934,6 +1934,3 @@ pour rendre la partie profile plus belle
     background-color: #004c99;
     transform: translateY(0);
 }
-  
-
-  
